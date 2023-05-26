@@ -8,7 +8,7 @@
 		<version>3.1.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.elibou</groupId>
+	<groupId>com.jwt</groupId>
 	<artifactId>security </artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>security </name>
