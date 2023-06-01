@@ -22,3 +22,5 @@ const router = createBrowserRouter([
         element: <Teach/>,
     },
 ]);
+
+export default router;
