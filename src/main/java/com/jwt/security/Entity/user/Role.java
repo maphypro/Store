@@ -1,4 +1,4 @@
-package com.jwt.security.user;
+package com.jwt.security.Entity.user;
 
 public enum Role {
 

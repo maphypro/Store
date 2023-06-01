@@ -1,6 +1,7 @@
-package com.jwt.security.user;
+package com.jwt.security.Entity.user;
 
 
+import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +19,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "_user")
+@Table(name = "_user",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
 public class User implements UserDetails {
 
     @Id
@@ -29,16 +31,21 @@ public class User implements UserDetails {
 
     private String lastname;
 
+
+    @Nonnull
+    @Column(name = "email")
     private String email;
+
 
     private String password;
 
+    @ManyToOne
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Roles role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return List.of(new SimpleGrantedAuthority(role.getRole()));
     }
 
     @Override
@@ -49,6 +56,11 @@ public class User implements UserDetails {
     @Override
     public String getPassword() {
         return password;
+    }
+
+
+    public String getRole() {
+        return role.getRole();
     }
     @Override
     public boolean isAccountNonExpired() {
