@@ -1,6 +1,7 @@
 package com.jwt.security.Entity.user;
 
 
+import com.jwt.security.Entity.course.Course;
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -42,6 +43,14 @@ public class User implements UserDetails {
     @ManyToOne
     @Enumerated(EnumType.STRING)
     private Roles role;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_course",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private List<Course> courses;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
