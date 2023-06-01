@@ -46,7 +46,7 @@ public class User implements UserDetails {
 
     @ManyToMany
     @JoinTable(
-            name = "user_course",
+            name = "user_courses",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "course_id")
     )
