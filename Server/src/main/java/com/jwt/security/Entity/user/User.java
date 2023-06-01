@@ -50,7 +50,7 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "course_id")
     )
-    private List<Course> courses;
+    private List<Course> courses; 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
