@@ -11,13 +11,13 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
 import CameraIcon from '@mui/icons-material/Camera';
-import {Divider} from "@mui/material";
+import {Divider, Link, TextField} from "@mui/material";
 
 const pages = ['Каталог', 'Моё обучение', 'Преподавание'];
-
 const settings = ['Профиль', 'Настройки', 'Уведомления', 'Выйти'];
+
+
 
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -39,10 +39,10 @@ function ResponsiveAppBar() {
     };
 
     return (
-        <AppBar position="static">
+        <AppBar position="static" sx={ {mb: 2} }>
             <Container maxWidth="xl">
-                <Toolbar disableGutters>
-                    <CameraIcon sx={{display: {xs: 'none', md: 'flex'}, mr: 1}}/>
+                <Toolbar disableGutters sx={{display: 'flex' }}>
+                    <CameraIcon sx={{display: {xs: 'none', md: 'flex'}, flexDirection: {xs: 'column', md: 'row'}, mr: 1}}/>
                     <Typography
                         variant="h4"
                         noWrap
@@ -72,7 +72,14 @@ function ResponsiveAppBar() {
                         ))}
                     </Box>
 
-                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+
+                    <Box sx={{display: {xs: 'none', md: 'flex'}, flexGrow:1,  mr: 5, bgcolor: 'info.main'}}>
+                        <TextField variant='standard' type='search' sx={{width: "100%"}}/>
+                    </Box>
+
+
+
+                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, mr: 2 }}>
                         <IconButton
                             size="large"
                             aria-label="account of current user"
@@ -109,25 +116,9 @@ function ResponsiveAppBar() {
                         </Menu>
                     </Box>
 
-                    <CameraIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-                    <Typography
-                        variant="h5"
-                        noWrap
-                        component="a"
-                        href=""
-                        sx={{
-                            mr: 2,
-                            display: { xs: 'flex', md: 'none' },
-                            flexGrow: 1,
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
-                        }}
-                    >
-                        Stepik
-                    </Typography>
+                    <Box sx={{display: {xs: 'flex', md: 'none'}, width: 1, mr: 5, bgcolor: 'info.main'}}>
+                        <TextField variant='standard' type='search' sx={{width: 1}}/>
+                    </Box>
 
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings">
@@ -135,6 +126,7 @@ function ResponsiveAppBar() {
                                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
                             </IconButton>
                         </Tooltip>
+
                         <Menu
                             sx={{ mt: '45px' }}
                             id="menu-appbar"
