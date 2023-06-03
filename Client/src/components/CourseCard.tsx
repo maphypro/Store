@@ -1,8 +1,9 @@
 import React from 'react';
-import {Box, Card, Container, Typography} from "@mui/material";
+import {Box, Card, Container, Paper, Typography} from "@mui/material";
 import StarIcon from '@mui/icons-material/Star';
 import PersonIcon from '@mui/icons-material/Person';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import Grid from '@mui/material/Grid';
 
 type CourseCardProps = {
     title: string,
@@ -35,7 +36,7 @@ const Info = ({rating, studentsCount, courseTime}:InfoProps) => {
     }
 
     return (
-        <Box sx={ {display: 'flex', flexDirection: 'row', border: '1px solid black'} }>
+        <Box sx={ {display: 'flex', flexDirection: 'row', border: '1px solid black', minWidth: '200px'} }>
             <Box sx={style}>
                 <StarIcon/>
                 <Typography>
@@ -64,15 +65,15 @@ const Header = ({title, logo}: HeaderProps) => {
             <Typography variant={'h6'} sx={ { wordWrap: 'break-word' } } maxWidth={.5}>
                 {title}
             </Typography>
-            <img src={logo} alt="курс"/>
+            <img src={logo} alt="курс" style={{width:'100px', height: "auto"}}/>
         </Box>
     )
 }
 
 const CourseCard = ({title, author, logo, price, rating, studentsCount, courseTime}: CourseCardProps) => {
     return (
-        <Container>
-            <Card sx={{ display: 'flex', flexDirection: 'column', minWidth: '300px',  maxWidth: .3 ,p:2 }}>
+        <Grid item xs={3}>
+            <Card sx={{ display: 'flex', flexDirection: 'column', minWidth:'200px' }}>
                 <Header title={title} logo={logo}/>
                 <Typography variant={'body1'} sx={ {border: '1px solid black', textAlign:'start'} }>
                     {author}
@@ -82,7 +83,7 @@ const CourseCard = ({title, author, logo, price, rating, studentsCount, courseTi
                     {price}
                 </Typography>
             </Card>
-        </Container>
+        </Grid>
     );
 };
 
