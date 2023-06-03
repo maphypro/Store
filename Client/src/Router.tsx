@@ -3,6 +3,8 @@ import Catalog from "./pages/Catalog";
 import Course from "./pages/Course";
 import Learn from "./pages/Learn";
 import Teach from "./pages/Teach";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
 
 const router = createBrowserRouter([
     {
@@ -20,6 +22,14 @@ const router = createBrowserRouter([
     {
         path: "/teach",
         element: <Teach/>,
+    },
+    {
+        path: '/signin',
+        element: <SignIn />
+    },
+    {
+        path: '/signup',
+        element: <SignUp />
     },
 ]);
 

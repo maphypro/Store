@@ -12,10 +12,19 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import CameraIcon from '@mui/icons-material/Camera';
-import {Divider, Link, TextField} from "@mui/material";
+import { Divider, TextField } from "@mui/material";
+import { useAppSelector } from '../hook';
+import { Link } from 'react-router-dom';
 
 const pages = ['Каталог', 'Моё обучение', 'Преподавание'];
 const settings = ['Профиль', 'Настройки', 'Уведомления', 'Выйти'];
+
+const AuthButtonStyle = {
+    display: 'block',
+    color: 'white',
+    padding: '16px 8px',
+    textDecoration: 'none'
+}
 
 
 
@@ -38,11 +47,13 @@ function ResponsiveAppBar() {
         setAnchorElUser(null);
     };
 
+    const isAuth: boolean = useAppSelector(state => state.userReduces.isAuth)
+
     return (
-        <AppBar position="static" sx={ {mb: 2} }>
+        <AppBar position="static" sx={{ mb: 2 }}>
             <Container maxWidth="xl">
-                <Toolbar disableGutters sx={{display: 'flex' }}>
-                    <CameraIcon sx={{display: {xs: 'none', md: 'flex'}, flexDirection: {xs: 'column', md: 'row'}, mr: 1}}/>
+                <Toolbar disableGutters sx={{ display: 'flex' }}>
+                    <CameraIcon sx={{ display: { xs: 'none', md: 'flex' }, flexDirection: { xs: 'column', md: 'row' }, mr: 1 }} />
                     <Typography
                         variant="h4"
                         noWrap
@@ -71,10 +82,10 @@ function ResponsiveAppBar() {
                             </Button>
                         ))}
                     </Box>
-                            
 
-                    <Box sx={{display: {xs: 'none', md: 'flex'}, flexGrow:1,  mr: 5, bgcolor: 'info.main'}}>
-                        <TextField variant='standard' type='search' sx={{width: "100%"}}/>
+
+                    <Box sx={{ display: { xs: 'none', md: 'flex' }, flexGrow: 1, mr: 5, bgcolor: 'info.main' }}>
+                        <TextField variant='standard' type='search' sx={{ width: "100%" }} />
                     </Box>
 
 
@@ -100,7 +111,7 @@ function ResponsiveAppBar() {
                             keepMounted
                             transformOrigin={{
                                 vertical: 'top',
-                                    horizontal: 'left',
+                                horizontal: 'left',
                             }}
                             open={Boolean(anchorElNav)}
                             onClose={handleCloseNavMenu}
@@ -116,54 +127,67 @@ function ResponsiveAppBar() {
                         </Menu>
                     </Box>
 
-                    <Box sx={{display: {xs: 'flex', md: 'none'}, width: 1, mr: 5, bgcolor: 'info.main'}}>
-                        <TextField variant='standard' type='search' sx={{width: 1}}/>
+                    <Box sx={{ display: { xs: 'flex', md: 'none' }, width: 1, mr: 1, bgcolor: 'info.main' }}>
+                        <TextField variant='standard' type='search' sx={{ width: 1 }} />
                     </Box>
 
-                    <Box sx={{ flexGrow: 0 }}>
-                        <Tooltip title="Open settings">
-                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                            </IconButton>
-                        </Tooltip>
 
-                        <Menu
-                            sx={{ mt: '45px' }}
-                            id="menu-appbar"
-                            anchorEl={anchorElUser}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={Boolean(anchorElUser)}
-                            onClose={handleCloseUserMenu}
-                        >
-                            {settings.map((setting,index) => {
-                                if (index === setting.length - 2) {
-                                    return (
-                                        <>
-                                            <Divider/>
-                                            <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                                <Typography textAlign="center">{setting}</Typography>
-                                            </MenuItem>
-                                        </>
-                                    )
-                                }
-                                else {
-                                    return (
-                                        <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                            <Typography textAlign="center">{setting}</Typography>
-                                        </MenuItem>
-                                    )
-                                }
-                            })}
-                        </Menu>
-                    </Box>
+                    {
+                        isAuth ?
+                            <Box sx={{ flexGrow: 0 }}>
+                                <Tooltip title="Open settings">
+                                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                        <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                    </IconButton>
+                                </Tooltip>
+
+                                <Menu
+                                    sx={{ mt: '45px' }}
+                                    id="menu-appbar"
+                                    anchorEl={anchorElUser}
+                                    anchorOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                    keepMounted
+                                    transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                    open={Boolean(anchorElUser)}
+                                    onClose={handleCloseUserMenu}
+                                >
+                                    {settings.map((setting, index) => {
+                                        if (index === setting.length - 2) {
+                                            return (
+                                                <>
+                                                    <Divider />
+                                                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                                                        <Typography textAlign="center">{setting}</Typography>
+                                                    </MenuItem>
+                                                </>
+                                            )
+                                        }
+                                        else {
+                                            return (
+                                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                                                    <Typography textAlign="center">{setting}</Typography>
+                                                </MenuItem>
+                                            )
+                                        }
+                                    })}
+
+                                </Menu>
+                            </Box>
+                            :
+                            <Box sx={{ display: 'flex', flexGrow: 0 }}>
+                                <Link to="/signin" style={AuthButtonStyle} >
+                                    Войти
+                                </Link>
+                                <Link to="/signup" style={AuthButtonStyle}>Регистрация</Link>
+                            </Box>
+                    }
+
                 </Toolbar>
             </Container>
         </AppBar>

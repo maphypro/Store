@@ -3,6 +3,7 @@ import CourseCard from "../components/CourseCard";
 import {Container, Paper} from "@mui/material";
 import cat from '../images/cat.jpg'
 import Grid from '@mui/material/Grid';
+import Header from '../components/Header';
 const Catalog = () => {
 
     const arr = [{
@@ -50,9 +51,10 @@ const Catalog = () => {
 
 
     return (
-
+        <> 
+        <Header />
         <Container maxWidth={'lg'} sx={{mt:3}}>
-            <Grid container sx={{border: '1px solid black', pr: 3}} spacing={3}>
+            <Grid container  spacing={3}>
                 {
                     arr.map((card, index) => {
                         return (
@@ -64,6 +66,7 @@ const Catalog = () => {
                 }
             </Grid>
         </Container>
+        </>
     );
 };
 

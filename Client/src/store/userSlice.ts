@@ -11,15 +11,14 @@ const initialState:UserState = {
 
 const userSlice = createSlice({
     name:'user',
-    initialState:{
-        isAuth: false
-    },
+    initialState,
     reducers: {
       setAuthStatus(state, action: PayloadAction<boolean>) {
         state.isAuth = action.payload;
-      }  
+      },  
     }
 })
 
 
 export const {setAuthStatus} = userSlice.actions;
+export default userSlice.reducer;

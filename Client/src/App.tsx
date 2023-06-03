@@ -5,21 +5,16 @@ import router from "./Router";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import {CssBaseline} from "@mui/material";
+import { BrowserRouter } from 'react-router-dom'
 
 
 function App() {
-
-    let num: number;
-    num = 3;
-
 
 
     return (
         <div className="App">
             <CssBaseline/>
-            <Header/>
             <RouterProvider router={router}/>
-            <Footer/>
         </div>
     );
 }
