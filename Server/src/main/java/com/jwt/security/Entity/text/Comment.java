@@ -1,6 +1,7 @@
 package com.jwt.security.Entity.text;
 
-import com.jwt.security.Entity.course.Course;
+
+import com.jwt.security.Entity.course.Lesson;
 import com.jwt.security.Entity.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,11 +14,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "reviews")
-public class Review {
+@Table(name = "comments")
+public class Comment {
+
     @Id
     @GeneratedValue
-    private  Integer id;
+    private Long id;
 
     private String text;
 
@@ -26,6 +28,7 @@ public class Review {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "course_id")
-    private Course course;
+    @JoinColumn(name = "lesson_id")
+    private Lesson lesson;
+
 }
