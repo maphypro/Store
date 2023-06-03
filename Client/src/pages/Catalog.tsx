@@ -1,6 +1,5 @@
-import React from 'react';
 import CourseCard from "../components/CourseCard";
-import {Container, Paper} from "@mui/material";
+import {Container} from "@mui/material";
 import cat from '../images/cat.jpg'
 import Grid from '@mui/material/Grid';
 import Header from '../components/Header';
