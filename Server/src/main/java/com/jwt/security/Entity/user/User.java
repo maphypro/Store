@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.boot.context.config.Profiles;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,7 +35,7 @@ public class User implements UserDetails {
 
 
     @Nonnull
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
 
@@ -51,6 +52,12 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "course_id")
     )
     private List<Course> courses;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Profile profiles;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private CourseCreator courseCreator;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

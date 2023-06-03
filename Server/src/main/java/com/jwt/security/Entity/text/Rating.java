@@ -13,13 +13,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "reviews")
-public class Review {
+@Table(name = "ratings")
+public class Rating {
     @Id
     @GeneratedValue
     private  Integer id;
-
-    private String text;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -28,4 +26,5 @@ public class Review {
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
+
 }
