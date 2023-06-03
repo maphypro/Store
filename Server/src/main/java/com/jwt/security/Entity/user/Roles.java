@@ -19,6 +19,7 @@ public class Roles {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(unique = true)
     @JoinColumn(name = "name")
     private String role;
 }

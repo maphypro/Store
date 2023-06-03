@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/v1/demo-con")
+@RequestMapping("api/v1/demo-connn")
 public class DemoController {
 
     @GetMapping
