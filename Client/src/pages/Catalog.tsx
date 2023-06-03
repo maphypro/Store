@@ -51,7 +51,7 @@ const Catalog = () => {
 
     return (
 
-        <Container maxWidth={'lg'} sx={{height: '500px'}}>
+        <Container maxWidth={'lg'} sx={{mt:3}}>
             <Grid container sx={{border: '1px solid black', pr: 3}} spacing={3}>
                 {
                     arr.map((card, index) => {

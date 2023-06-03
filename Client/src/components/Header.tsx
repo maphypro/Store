@@ -71,7 +71,7 @@ function ResponsiveAppBar() {
                             </Button>
                         ))}
                     </Box>
-
+                            
 
                     <Box sx={{display: {xs: 'none', md: 'flex'}, flexGrow:1,  mr: 5, bgcolor: 'info.main'}}>
                         <TextField variant='standard' type='search' sx={{width: "100%"}}/>

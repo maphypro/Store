@@ -9,6 +9,9 @@ import {CssBaseline} from "@mui/material";
 
 function App() {
 
+    let num: number;
+    num = 3;
+
 
 
     return (
