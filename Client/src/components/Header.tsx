@@ -53,7 +53,10 @@ function ResponsiveAppBar() {
         <AppBar position="static" sx={{ mb: 2 }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters sx={{ display: 'flex' }}>
-                    <CameraIcon sx={{ display: { xs: 'none', md: 'flex' }, flexDirection: { xs: 'column', md: 'row' }, mr: 1 }} />
+                    <CameraIcon sx={{
+                        display: { xs: 'none', md: 'flex' },
+                        flexDirection: { xs: 'column', md: 'row' }, mr: 1
+                    }} />
                     <Typography
                         variant="h4"
                         noWrap

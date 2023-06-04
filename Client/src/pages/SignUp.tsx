@@ -1,4 +1,6 @@
+import { Box, Button, Container, FormControl, FormLabel, Input, TextField, Typography } from "@mui/material";
 import { useForm, SubmitHandler } from "react-hook-form";
+import CameraIcon from '@mui/icons-material/Camera';
 
 
 
@@ -6,33 +8,94 @@ type Inputs = {
     firstName: string,
     lastName: string,
     email: string,
-    password: string
+    password: string,
+    confirmPassword: string,
 };
 
 export default function SignUp() {
-    const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<Inputs>();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<Inputs>();
+
     const onSubmit: SubmitHandler<Inputs> = data => {
         reset();
     };
 
-    //console.log(watch("example")) // watch input value by passing the name of it
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <Container
+            component={'form'}
+            onSubmit={handleSubmit(onSubmit)}
+            maxWidth='lg'
+            sx={{  display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+        >
 
-            <input {...register("firstName", { required: 'This field is required' })} />
-            {errors?.firstName && ( <div>{errors.firstName.message}</div> )  }
+            <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', mb: 2, mt: 2}}>
+                <CameraIcon sx={{ display: { xs: 'flex', md: 'flex' }, flexDirection: { xs: 'column', md: 'row' }, mr: 1 }} />
+                <Typography
+                    variant="h4"
+                    noWrap
+                    sx={{
+                        mr: 2,
+                        display: { xs: 'flex', md: 'flex' },
+                        fontFamily: 'monospace',
+                        fontWeight: 700,
+                        letterSpacing: '.1rem',
+                        color: 'inherit',
+                        textDecoration: 'none',
+                    }}
+                >
+                    Stepik
+                </Typography>
+            </Box>
 
-            <input {...register("lastName", { required: 'This field is required' })} />
-            {errors?.lastName && ( <div>{errors.lastName.message}</div> )  }
+            <FormControl sx={{ minWidth: '300px', mb: 3 }}>
+                <TextField
+                    variant='outlined'
+                    label="First name"
+                    {...register("firstName", { required: 'This field is required' })}>
+                </TextField>
+            </FormControl>
+            <FormControl sx={{ minWidth: '300px', mb: 3 }}>
+                <TextField
+                    variant='outlined'
+                    label="Last name"
+                    {...register("lastName", { required: 'This field is required' })}>
+                </TextField>
+            </FormControl>
 
-            <input {...register("email", { required: 'This field is required' })} />
-            {errors?.email && ( <div>{errors.email.message}</div> )  }
 
-            <input {...register("password", { required: 'This field is required' })} />
-            {errors?.password && ( <div>{errors.password.message}</div> )  }
+            <FormControl sx={{ minWidth: '300px', mb: 3 }}>
+                <TextField
+                    variant='outlined'
+                    label="Email"
+                    {...register("email", { required: 'This field is required' })}>
+                </TextField>
+            </FormControl>
 
-            <input type="submit" value={'Send'} />
-        </form>
+            <FormControl sx={{ minWidth: '300px', mb: 3 }}>
+                <TextField
+                    variant='outlined'
+                    label="Password"
+                    {...register("password", { required: 'This field is required' })}>
+                </TextField>
+            </FormControl>
+
+            <FormControl sx={{ minWidth: '300px', mb: 3 }}>
+                <TextField
+                    variant='outlined'
+                    label="Confirm password"
+                    {...register("confirmPassword", { required: 'This field is required' })}>
+                </TextField>
+            </FormControl>
+
+            <Button type="submit"
+                variant="outlined"
+                sx={{
+                    display: 'block',
+                    color: 'black',
+                    padding: '8px 4px',
+                    textDecoration: 'none',
+                    minWidth: '300px'
+                }} >Регистрация</Button>
+        </Container>
     );
 }

@@ -57,7 +57,7 @@ const Catalog = () => {
                 {
                     arr.map((card, index) => {
                         return (
-                            <CourseCard title={card.title} author={card.author} logo={card.logo}
+                            <CourseCard key={index} title={card.title} author={card.author} logo={card.logo}
                                         courseTime={card.courseTime} studentsCount={card.studentsCount}
                                         rating={card.rating} price={card.price}/>
                         )
