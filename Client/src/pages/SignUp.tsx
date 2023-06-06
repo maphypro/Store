@@ -1,6 +1,8 @@
 import { Box, Button, Container, FormControl, FormLabel, Input, TextField, Typography } from "@mui/material";
 import { useForm, SubmitHandler } from "react-hook-form";
 import CameraIcon from '@mui/icons-material/Camera';
+import { useRegistrationMutation } from "../store/userApi";
+import { UserReg } from "../types/UserTypes";
 
 
 
@@ -13,10 +15,17 @@ type Inputs = {
 };
 
 export default function SignUp() {
-    const { register, handleSubmit, reset, formState: { errors } } = useForm<Inputs>();
+
+    const { register, handleSubmit, getValues, formState: { errors } } = useForm<Inputs>();
+
+    const [trigger, result] = useRegistrationMutation();
+
 
     const onSubmit: SubmitHandler<Inputs> = data => {
-        reset();
+        const values: UserReg = getValues();
+        console.log(values)
+        trigger(values)
+        //reset();
     };
 
 
@@ -27,7 +36,7 @@ export default function SignUp() {
             maxWidth='lg'
             sx={{  display: 'flex', flexDirection: 'column', alignItems: 'center' }}
         >
-
+            <div>{null}</div>
             <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', mb: 2, mt: 2}}>
                 <CameraIcon sx={{ display: { xs: 'flex', md: 'flex' }, flexDirection: { xs: 'column', md: 'row' }, mr: 1 }} />
                 <Typography
