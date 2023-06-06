@@ -26,8 +26,8 @@ public class AuthenticationService {
         Optional<Roles> rolesOptional = roleRepository.findByRole("ADMIN");
         Roles roles = rolesOptional.orElse(null);
         var user = User.builder()
-                .firstname(request.getFirstname())
-                .lastname(request.getLastname())
+                .firstname(request.getFirstName())
+                .lastname(request.getLastName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(roles)
