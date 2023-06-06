@@ -3,7 +3,9 @@ import { UserReg, UserAuth } from '../types/UserTypes'
 
 export const userApi = createApi({
     reducerPath: 'userApi',
-    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:5002/' }),
+    baseQuery: fetchBaseQuery({
+        baseUrl: 'http://localhost:5002/', credentials: "same-origin",
+    }),
 
     endpoints: build => ({
         registration: build.mutation<UserReg, UserReg>({
@@ -17,4 +19,4 @@ export const userApi = createApi({
 }
 );
 
-export const { useRegistrationMutation,  } = userApi;
+export const { useRegistrationMutation, } = userApi;
