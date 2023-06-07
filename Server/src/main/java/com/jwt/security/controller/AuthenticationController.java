@@ -1,5 +1,9 @@
-package com.jwt.security.auth;
+package com.jwt.security.controller;
 
+import com.jwt.security.requestResponse.AuthenticationRequest;
+import com.jwt.security.requestResponse.AuthenticationResponse;
+import com.jwt.security.service.AuthenticationService;
+import com.jwt.security.requestResponse.RegisterRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

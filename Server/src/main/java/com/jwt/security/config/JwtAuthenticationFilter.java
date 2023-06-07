@@ -1,5 +1,6 @@
 package com.jwt.security.config;
 
+import com.jwt.security.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,4 +1,5 @@
-package com.jwt.security.update.user;
+package com.jwt.security.requestResponse;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +10,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateUserRequest {
+public class GetUserResponse {
 
     private String firstName;
     private String lastName;
     private String email;
+
 }

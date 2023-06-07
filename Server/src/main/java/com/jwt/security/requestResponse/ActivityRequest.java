@@ -1,4 +1,4 @@
-package com.jwt.security.activity;
+package com.jwt.security.requestResponse;
 
 import com.jwt.security.Entity.user.User;
 import lombok.AllArgsConstructor;

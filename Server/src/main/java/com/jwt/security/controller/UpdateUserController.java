@@ -1,9 +1,12 @@
-package com.jwt.security.update.user;
+package com.jwt.security.controller;
 
 import com.jwt.security.Entity.user.User;
 import com.jwt.security.Entity.user.repository.UserRepository;
-import com.jwt.security.auth.AuthenticationResponse;
-import com.jwt.security.auth.AuthenticationService;
+import com.jwt.security.requestResponse.AuthenticationResponse;
+import com.jwt.security.service.AuthenticationService;
+import com.jwt.security.requestResponse.GetUserResponse;
+import com.jwt.security.requestResponse.UpdateUserRequest;
+import com.jwt.security.service.UpdateUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

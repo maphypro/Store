@@ -1,4 +1,5 @@
-package com.jwt.security.auth;
+package com.jwt.security.requestResponse;
+
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -12,10 +13,19 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticationRequest {
+public class RegisterRequest {
+
+
+    private String firstName;
+
+
+    private String lastName;
+
 
     private String email;
 
-    String password;
+    private String password;
 
+
+    private String confirmPassword;
 }

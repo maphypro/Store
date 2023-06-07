@@ -1,9 +1,10 @@
-package com.jwt.security.activity;
+package com.jwt.security.service;
 
 
 import com.jwt.security.Entity.user.User;
 import com.jwt.security.Entity.user.UserActivity;
 import com.jwt.security.Entity.user.repository.UserActiveRepository;
+import com.jwt.security.requestResponse.ActivityRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

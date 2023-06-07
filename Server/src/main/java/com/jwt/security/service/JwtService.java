@@ -1,4 +1,4 @@
-package com.jwt.security.config;
+package com.jwt.security.service;
 
 import com.jwt.security.Entity.user.User;
 import io.jsonwebtoken.Claims;

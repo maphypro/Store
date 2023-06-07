@@ -1,5 +1,4 @@
-package com.jwt.security.main;
-
+package com.jwt.security.requestResponse;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,9 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MainResponse {
-    private String hola;
+public class AuthenticationResponse {
 
-    private Integer number;
-
+    private String token;
 }
