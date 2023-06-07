@@ -18,7 +18,7 @@ import java.sql.Timestamp;
 public class UserActivity {
     @Id
     @GeneratedValue
-    private  Integer id;
+    private  Long id;
 
     @JoinColumn(name = "visit_date")
     private Timestamp visitDate;
