@@ -27,7 +27,7 @@ public class ArrController {
     @GetMapping
     public ResponseEntity<ArrayList<Arr>> getArr(@AuthenticationPrincipal User user) {
         String image = "1679955190_phonoteka-org-p-overlord-neironist-art-vkontakte-4.png";
-        String imageUrl = "/" + "img/" + image;
+        String imageUrl = "img/" + image; // Относительный путь к изображению
 
         Arr a = new Arr("title", "author", imageUrl, 10.0, 200, 300, 10);
         Arr b = new Arr("title1", "author", imageUrl, 10.0, 200, 300, 1);
@@ -40,4 +40,5 @@ public class ArrController {
 
         return ResponseEntity.ok(arrayList);
     }
+
 }
