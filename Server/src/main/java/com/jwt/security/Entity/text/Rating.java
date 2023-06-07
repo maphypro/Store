@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class Rating {
     @Id
     @GeneratedValue
-    private  Integer id;
+    private  Long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

@@ -16,7 +16,7 @@ public class Profile {
 
     @Id
     @GeneratedValue
-    private  Integer id;
+    private  Long id;
 
 
     private String avatar;
