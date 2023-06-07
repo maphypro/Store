@@ -25,7 +25,7 @@ public class MvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/img/**")
+        registry.addMapping("/static/**")
                 .allowedOrigins("http://localhost:3000") // Замените на соответствующий адрес вашего клиента
                 .allowedMethods("GET")
                 .allowedMethods("POST");
