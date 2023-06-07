@@ -8,9 +8,6 @@ export type UserReg =  {
 
 
 export type UserAuth =  {
-    id: number,
-    firstName: string,
-    lastName: string,
     email: string,
-    isAuth: boolean
+    password: string
 }

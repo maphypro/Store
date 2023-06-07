@@ -18,15 +18,18 @@ export default function SignUp() {
 
     const { register, handleSubmit, getValues, formState: { errors } } = useForm<Inputs>();
 
-    const [trigger, result] = useRegistrationMutation();
+    const [trigger, {error}] = useRegistrationMutation();
 
 
     const onSubmit: SubmitHandler<Inputs> = data => {
         const values: UserReg = getValues();
-        console.log(values)
         trigger(values)
         //reset();
     };
+
+    if (error && 'status' in error) {
+        return <Box>{error.status}</Box>
+    }
 
 
     return (

@@ -1,7 +1,8 @@
 import { Box, Button, Container, FormControl, FormLabel, Input, TextField, Typography } from "@mui/material";
 import { useForm, SubmitHandler } from "react-hook-form";
 import CameraIcon from '@mui/icons-material/Camera';
-
+import { UserAuth } from "../types/UserTypes";
+import { useLoginMutation } from "../store/userApi";
 
 
 type Inputs = {
@@ -10,11 +11,19 @@ type Inputs = {
 };
 
 export default function SignIn() {
-    const { register, handleSubmit, reset, formState: { errors } } = useForm<Inputs>();
+    const { register, handleSubmit, reset, getValues, formState: { errors } } = useForm<Inputs>();
+
+    const [trigger, {error}] = useLoginMutation();
 
     const onSubmit: SubmitHandler<Inputs> = data => {
+        const values: UserAuth = getValues();
+        trigger(values)
         reset();
     };
+
+    if (error && 'status' in error) {
+        return <Box>{error.status}</Box>
+    }
 
 
     return (
