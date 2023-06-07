@@ -16,7 +16,7 @@ export const userApi = createApi({
                 body: userRegData,
             })
         }),
-        login: build.mutation<UserAuth, UserAuth>({
+        login: build.mutation<any, UserAuth>({
             query: (userAuthData: UserAuth) => ({
                 url: `api/v1/auth/authenticate`,
                 method: 'POST',
@@ -24,8 +24,10 @@ export const userApi = createApi({
             }),
             async onQueryStarted(id, {dispatch, queryFulfilled}) {
                 try {
-                    const data = await queryFulfilled;
+                    const {data} = await queryFulfilled;
                     dispatch(setAuthStatus(true))
+                    console.log(data)
+                    localStorage.setItem("token", `Bearer ${data.token}`);
                 } catch (err) {
                     dispatch(setAuthStatus(false))
                 }

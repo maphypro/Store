@@ -13,8 +13,8 @@ export const courseCardApi = createApi({
             query: () => `api/demo`,
             async onQueryStarted(id, {dispatch, queryFulfilled}) {
                 const  {data}  = await queryFulfilled;
+                console.log(data)
                 dispatch(loadCourseCards(data))
-                
             }
         }),
     }),
