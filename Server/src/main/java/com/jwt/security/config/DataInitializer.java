@@ -1,4 +1,4 @@
-package com.jwt.security.auth;
+package com.jwt.security.config;
 
 import com.jwt.security.Entity.user.Roles;
 import com.jwt.security.Entity.user.repository.RoleRepository;

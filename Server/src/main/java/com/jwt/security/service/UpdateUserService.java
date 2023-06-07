@@ -1,9 +1,8 @@
-package com.jwt.security.update.user;
+package com.jwt.security.service;
 
 import com.jwt.security.Entity.user.User;
-import com.jwt.security.auth.AuthenticationRequest;
-import com.jwt.security.auth.AuthenticationResponse;
-import com.jwt.security.config.JwtService;
+import com.jwt.security.requestResponse.AuthenticationResponse;
+import com.jwt.security.requestResponse.GetUserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

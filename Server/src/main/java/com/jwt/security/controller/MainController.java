@@ -1,4 +1,4 @@
-package com.jwt.security.main;
+package com.jwt.security.controller;
 
 
 

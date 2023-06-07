@@ -17,17 +17,15 @@ public class MvcConfig implements WebMvcConfigurer {
     // Позволяет Spring найти CSS и изображения
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/**")
-                .addResourceLocations("file://"+uploadPath+'/');
-        registry.addResourceHandler("/static/**")
-                .addResourceLocations("classpath:/static/");
+        registry.addResourceHandler("/img/**")
+                .addResourceLocations("classpath:/static/img/");
     }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/static/**")
+        registry.addMapping("/**")
                 .allowedOrigins("http://localhost:3000") // Замените на соответствующий адрес вашего клиента
-                .allowedMethods("GET")
-                .allowedMethods("POST");
+                .allowedMethods("*")
+                .allowedHeaders("*");
     }
 }

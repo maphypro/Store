@@ -1,19 +1,19 @@
-package com.jwt.security.auth;
+package com.jwt.security.service;
 
 import com.jwt.security.Entity.user.*;
 import com.jwt.security.Entity.user.repository.RoleRepository;
 import com.jwt.security.Entity.user.repository.UserRepository;
-import com.jwt.security.config.JwtService;
+import com.jwt.security.requestResponse.AuthenticationRequest;
+import com.jwt.security.requestResponse.AuthenticationResponse;
+import com.jwt.security.requestResponse.RegisterRequest;
 import com.jwt.security.exception.YourCustomException;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.naming.AuthenticationException;
 import java.util.Optional;
 
 @Service

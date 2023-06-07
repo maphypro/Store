@@ -1,4 +1,4 @@
-package com.jwt.security.auth;
+package com.jwt.security.requestResponse;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticationResponse {
+public class UpdateUserRequest {
 
-    private String token;
+    private String firstName;
+    private String lastName;
+    private String email;
 }

@@ -1,9 +1,9 @@
-package com.jwt.security.activity;
+package com.jwt.security.controller;
 
 
 import com.jwt.security.Entity.user.User;
-import com.jwt.security.auth.AuthenticationRequest;
-import com.jwt.security.auth.AuthenticationResponse;
+import com.jwt.security.requestResponse.ActivityRequest;
+import com.jwt.security.service.ActivityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
