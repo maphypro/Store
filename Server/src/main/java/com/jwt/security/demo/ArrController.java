@@ -31,9 +31,9 @@ public class ArrController {
         String image = "1679955190_phonoteka-org-p-overlord-neironist-art-vkontakte-4.png";
         String imageUrl = "img/" + image; // Относительный путь к изображению
 
-        Arr a = new Arr("title", "author", imageUrl, 10.0, 200, 300, 10);
-        Arr b = new Arr("title1", "author", imageUrl, 10.0, 200, 300, 1);
-        Arr c = new Arr("title2", "author", imageUrl, 10.0, 200, 300, 2);
+        Arr a = new Arr(1l,"title", "author", imageUrl, 10.0, 200, 300, 10);
+        Arr b = new Arr(2l,"title1", "author", imageUrl, 10.0, 200, 300, 1);
+        Arr c = new Arr(3l,"title2", "author", imageUrl, 10.0, 200, 300, 2);
 
         ArrayList<Arr> arrayList = new ArrayList<>();
         arrayList.add(a);

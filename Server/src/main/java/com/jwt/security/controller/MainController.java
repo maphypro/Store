@@ -21,9 +21,9 @@ public class MainController {
     @GetMapping("/test")
     public ResponseEntity<ArrayList<Arr>> addmain(){
         String image = "1679955190_phonoteka-org-p-overlord-neironist-art-vkontakte-4.png";
-        Arr a = new Arr("title", "author", uploadPath+ "/static/" +image, 10.0, 200, 300, 10);
-        Arr b = new Arr("title1", "author", uploadPath+ "/static/" +image, 10.0, 200, 300, 1);
-        Arr c = new Arr("title2", "author", uploadPath+ "/static/" +image, 10.0, 200, 300, 2);
+        Arr a = new Arr(1l,"title", "author", uploadPath+ "/static/" +image, 10.0, 200, 300, 10);
+        Arr b = new Arr(2l, "title1", "author", uploadPath+ "/static/" +image, 10.0, 200, 300, 1);
+        Arr c = new Arr(3l,"title2", "author", uploadPath+ "/static/" +image, 10.0, 200, 300, 2);
         ArrayList<Arr> arrayList = new ArrayList<>();
         arrayList.add(a);
         arrayList.add(b);

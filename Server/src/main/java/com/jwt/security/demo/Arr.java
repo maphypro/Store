@@ -14,6 +14,7 @@ import java.util.ArrayList;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Arr {
+    private Long id;
     private String title;
     private String author;
     private String image;
