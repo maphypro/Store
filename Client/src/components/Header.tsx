@@ -15,8 +15,25 @@ import CameraIcon from '@mui/icons-material/Camera';
 import { Divider, TextField } from "@mui/material";
 import { useAppSelector } from '../hook';
 import { Link } from 'react-router-dom';
+import { inherits } from 'util';
 
 const pages = ['Каталог', 'Моё обучение', 'Преподавание'];
+
+const pagesRoutes = [
+    {
+        name: 'Каталог',
+        path: '/catalog'
+    },
+    {
+        name: 'Моё обучение',
+        path: '/learn'
+    },
+    {
+        name: 'Преподавание',
+        path: '/teach'
+    }
+]
+
 const settings = ['Профиль', 'Настройки', 'Уведомления', 'Выйти'];
 
 const AuthButtonStyle = {
@@ -75,14 +92,17 @@ function ResponsiveAppBar() {
                         Vodim
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pages.map((page) => (
-                            <Button
-                                key={page}
-                                onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
-                            >
-                                {page}
-                            </Button>
+                        {pagesRoutes.map((page) => (
+                            <Link to={page.path} style={AuthButtonStyle} >
+                                <Button
+                                    key={page.name}
+                                    onClick={handleCloseNavMenu}
+                                    sx={{ color: 'white', display: 'block' }}
+                                >
+                                    {page.name}
+                                </Button>
+                            </Link>
+
                         ))}
                     </Box>
 
@@ -122,10 +142,12 @@ function ResponsiveAppBar() {
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
-                            {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">{page}</Typography>
-                                </MenuItem>
+                            {pagesRoutes.map((page) => (
+                                <Link to={page.path} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                    <MenuItem key={page.name} onClick={handleCloseNavMenu}>
+                                        <Typography textAlign="center">{page.name}</Typography>
+                                    </MenuItem>
+                                </Link>
                             ))}
                         </Menu>
                     </Box>

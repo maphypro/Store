@@ -17,6 +17,9 @@ export const courseCardApi = createApi({
                 dispatch(loadCourseCards(data))
             }
         }),
+        loadOneCard: build.query<CourseCardType, void>({
+            query: (id) => `api/demo/${id}`
+        })
         
     }),
 })

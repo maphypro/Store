@@ -1,4 +1,4 @@
-import {Navigate, createBrowserRouter, redirect} from "react-router-dom";
+import {Navigate, createBrowserRouter} from "react-router-dom";
 import Catalog from "./pages/Catalog";
 import Course from "./pages/Course";
 import Learn from "./pages/Learn";

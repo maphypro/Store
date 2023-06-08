@@ -1,8 +1,9 @@
-import { Box, Button, Container, FormControl, FormLabel, Input, TextField, Typography } from "@mui/material";
+import { Box, Button, Container, FormControl, TextField, Typography } from "@mui/material";
 import { useForm, SubmitHandler } from "react-hook-form";
 import CameraIcon from '@mui/icons-material/Camera';
 import { useRegistrationMutation } from "../store/userApi";
 import { UserReg } from "../types/UserTypes";
+import { Navigate } from "react-router-dom";
 
 
 
@@ -16,16 +17,20 @@ type Inputs = {
 
 export default function SignUp() {
 
-    const { register, handleSubmit, getValues, formState: { errors } } = useForm<Inputs>();
+    const { register, handleSubmit, reset, getValues} = useForm<Inputs>();
 
-    const [trigger, {error}] = useRegistrationMutation();
+    const [trigger, { data, error }] = useRegistrationMutation();
 
 
     const onSubmit: SubmitHandler<Inputs> = data => {
         const values: UserReg = getValues();
         trigger(values)
-        //reset();
+        reset();
     };
+
+    if (data) {
+        return <Navigate to={'/catalog'} replace/>   
+    }
 
     if (error && 'status' in error) {
         return <Box>{error.status}</Box>
@@ -37,10 +42,10 @@ export default function SignUp() {
             component={'form'}
             onSubmit={handleSubmit(onSubmit)}
             maxWidth='lg'
-            sx={{  display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+            sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
         >
             <div>{null}</div>
-            <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', mb: 2, mt: 2}}>
+            <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', mb: 2, mt: 2 }}>
                 <CameraIcon sx={{ display: { xs: 'flex', md: 'flex' }, flexDirection: { xs: 'column', md: 'row' }, mr: 1 }} />
                 <Typography
                     variant="h4"
