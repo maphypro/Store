@@ -17,6 +17,7 @@ export const courseCardApi = createApi({
                 dispatch(loadCourseCards(data))
             }
         }),
+        
     }),
 })
 

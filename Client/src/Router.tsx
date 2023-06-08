@@ -1,4 +1,4 @@
-import {createBrowserRouter} from "react-router-dom";
+import {Navigate, createBrowserRouter, redirect} from "react-router-dom";
 import Catalog from "./pages/Catalog";
 import Course from "./pages/Course";
 import Learn from "./pages/Learn";
@@ -7,6 +7,10 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 
 const router = createBrowserRouter([
+    {
+        path: '/',
+        element: <Navigate to="/catalog" replace/>
+    },
     {
         path: "/catalog",
         element: <Catalog/>,
@@ -31,6 +35,10 @@ const router = createBrowserRouter([
         path: '/signup',
         element: <SignUp />
     },
+    {
+        path: '*',
+        element: <Navigate to={'./catalog'} replace/>
+    }
 ]);
 
 export default router;
