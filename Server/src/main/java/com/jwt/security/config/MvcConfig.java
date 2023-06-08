@@ -21,11 +21,14 @@ public class MvcConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/static/img/");
     }
 
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000") // Замените на соответствующий адрес вашего клиента
-                .allowedMethods("*")
-                .allowedHeaders("*");
+                .allowedOrigins("http://localhost:3000")
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedHeaders("Origin", "Content-Type", "Accept")
+                .allowCredentials(true)
+                .maxAge(3600);
     }
 }

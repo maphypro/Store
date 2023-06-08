@@ -21,6 +21,8 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String title;
+
     @ManyToOne
     @JoinColumn(name = "creator_id")
     private CourseCreator courseCreator;
@@ -34,6 +36,17 @@ public class Course {
 
     @ManyToMany(mappedBy = "courses")
     private List<User> users;
+
+    private Integer price;
+    private Integer courseTime;
+    private String image;
+    private String video;
+    private String description;
+
+    @OneToOne(mappedBy = "course", cascade = CascadeType.ALL)
+    private CourseDescription courseDescription;
+
+
 
     // Остальные поля, геттеры/сеттеры
 }
