@@ -15,10 +15,10 @@ export const courseCreateApi = createApi({
     }),
     endpoints: build => ({
         createEmptyCourse: build.mutation<any, any>({
-            query: (courseName: any) => ({
+            query: (title: any) => ({
                 url: '/create_post',
                 method: 'POST',
-                body: {courseName: courseName},
+                body: {courseName: title},
             }),
             async onQueryStarted(id, {dispatch, queryFulfilled}) {
                 try {
