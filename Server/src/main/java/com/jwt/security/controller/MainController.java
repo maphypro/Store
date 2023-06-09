@@ -2,18 +2,27 @@ package com.jwt.security.controller;
 
 
 
+import com.jwt.security.Entity.course.Course;
+import com.jwt.security.Entity.user.User;
 import com.jwt.security.demo.Arr;
+import com.jwt.security.requestResponse.CourseResponse;
+import com.jwt.security.requestResponse.NewCourseResponse;
+import com.jwt.security.service.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/home")
+@RequiredArgsConstructor
 public class MainController {
 
+    private final CourseService courseService;
     @Value("${upload.path}")
     private String uploadPath;
 
@@ -28,5 +37,11 @@ public class MainController {
         arrayList.add(b);
         arrayList.add(c);
         return ResponseEntity.ok(arrayList);
+    }
+
+    @GetMapping("/courses")
+    public ResponseEntity<List<CourseResponse>> newCourse(
+    ){
+        return courseService.allCourse();
     }
 }

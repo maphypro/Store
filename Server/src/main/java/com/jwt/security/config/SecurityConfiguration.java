@@ -30,7 +30,7 @@ public class SecurityConfiguration {
                 .csrf().disable()
                 .authorizeRequests()
                 .requestMatchers("/api/v1/auth/**").permitAll()
-                .requestMatchers("/home/test").permitAll()
+                .requestMatchers("/home/courses").permitAll()
                 .requestMatchers("/api/demo").permitAll()
                 .requestMatchers("/img/**").permitAll()
                 .anyRequest().authenticated()
