@@ -9,51 +9,6 @@ import React from "react";
 
 const Catalog = () => {
 
-    /*
-    const arr = [{
-        title: 'Title Lorem ipsum dolor sit amet',
-        author: 'Author',
-        courseTime: 10,
-        logo: cat,
-        price: 1199,
-        rating: 4.6,
-        studentsCount: 212
-    }, {
-        title: 'Title Lorem ipsum dolor sit amet',
-        author: 'Author',
-        courseTime: 10,
-        logo: cat,
-        price: 1199,
-        rating: 4.6,
-        studentsCount: 212
-    }, {
-        title: 'Title Lorem ipsum dolor sit amet',
-        author: 'Author',
-        courseTime: 10,
-        logo: cat,
-        price: 1199,
-        rating: 4.6,
-        studentsCount: 212
-    }, {
-        title: 'Title Lorem ipsum dolor sit amet',
-        author: 'Author',
-        courseTime: 10,
-        logo: cat,
-        price: 1199,
-        rating: 4.6,
-        studentsCount: 212
-    }, {
-        title: 'Title Lorem ipsum dolor sit amet',
-        author: 'Author',
-        courseTime: 10,
-        logo: cat,
-        price: 1199,
-        rating: 4.6,
-        studentsCount: 212
-    },
-    ];
-    */
-
 
     const {data, isFetching, isLoading} = useLoadCardsQuery();
 
