@@ -18,7 +18,7 @@ export const courseCreateApi = createApi({
             query: (title: any) => ({
                 url: '/create_post',
                 method: 'POST',
-                body: {courseName: title},
+                body: {title: title},
             }),
             async onQueryStarted(id, {dispatch, queryFulfilled}) {
                 try {

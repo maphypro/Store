@@ -4,9 +4,19 @@ import { useAppDispatch } from "../../hook";
 import { createCourse } from "../../store/CourseCreate/courseCreateSlice";
 import { useCreateEmptyCourseMutation } from "../../store/CourseCreate/courseCreateApi";
 
+
+
+
+
+
+
+
+
+
+
+
 const CourseCreate = () => {
 
-    const dispatch = useAppDispatch();
 
     const [createCourse, { data, error }] = useCreateEmptyCourseMutation();
 
@@ -14,7 +24,8 @@ const CourseCreate = () => {
     if (error && 'status' in error) {
         return <Box>{error.status}</Box>
     }
-
+    
+    
     return (
         <Container maxWidth='lg' sx={
             { w: 1, display: 'flex', flexDirection: 'column', }
@@ -38,5 +49,7 @@ const CourseCreate = () => {
         </Container>
     );
 };
+
+
 
 export default CourseCreate;
