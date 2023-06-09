@@ -4,22 +4,17 @@ import com.jwt.security.Entity.course.Categories;
 import com.jwt.security.Entity.course.repository.CategoriesRepository;
 import com.jwt.security.Entity.user.Roles;
 import com.jwt.security.Entity.user.repository.RoleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class DataInitializer implements ApplicationRunner {
 
     private final RoleRepository roleRepository;
     private final CategoriesRepository categoriesRepository;
-
-    @Autowired
-    public DataInitializer(RoleRepository roleRepository, CategoriesRepository categoriesRepository) {
-        this.roleRepository = roleRepository;
-        this.categoriesRepository = categoriesRepository;
-    }
 
     @Override
     public void run(ApplicationArguments args) {
@@ -46,6 +41,5 @@ public class DataInitializer implements ApplicationRunner {
             categories.setName("analitic");
             categoriesRepository.save(categories);
         }
-        // Добавьте другие роли, если необходимо
     }
 }

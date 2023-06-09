@@ -1,13 +1,9 @@
 package com.jwt.security.demo;
 
-import jakarta.annotation.Resource;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.awt.*;
-import java.util.ArrayList;
 
 @Data
 @Builder

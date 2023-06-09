@@ -1,27 +1,23 @@
 package com.jwt.security.service;
 
-import com.jwt.security.Entity.user.*;
+import com.jwt.security.Entity.user.Roles;
+import com.jwt.security.Entity.user.User;
 import com.jwt.security.Entity.user.repository.RoleRepository;
 import com.jwt.security.Entity.user.repository.UserRepository;
+import com.jwt.security.exception.YourCustomException;
 import com.jwt.security.requestResponse.AuthenticationRequest;
 import com.jwt.security.requestResponse.AuthenticationResponse;
 import com.jwt.security.requestResponse.RegisterRequest;
-import com.jwt.security.exception.YourCustomException;
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
+
 public class AuthenticationService {
 
     private final UserRepository repository;
@@ -29,6 +25,19 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final RoleRepository roleRepository;
+
+    public AuthenticationService(UserRepository repository,
+                                 PasswordEncoder passwordEncoder,
+                                 JwtService jwtService,
+                                 AuthenticationManager authenticationManager,
+                                 RoleRepository roleRepository
+    ) {
+        this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
+        this.roleRepository = roleRepository;
+    }
 
     public AuthenticationResponse register(RegisterRequest request) {
         try {

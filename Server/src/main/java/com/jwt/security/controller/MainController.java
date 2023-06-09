@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/home")
-@RequiredArgsConstructor
 public class MainController {
 
     @Value("${upload.path}")
