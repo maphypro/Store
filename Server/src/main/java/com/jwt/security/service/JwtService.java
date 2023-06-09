@@ -4,14 +4,12 @@ import com.jwt.security.Entity.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.impl.crypto.MacProvider;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
-import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -46,7 +44,7 @@ public class JwtService {
                 .setSubject(userDetails.getUsername())
                 .claim("Role", user.getRole())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+1000*60*24))
+                .setExpiration(new Date(System.currentTimeMillis()+1000*60*24*1000))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
 

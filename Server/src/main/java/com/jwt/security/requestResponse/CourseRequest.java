@@ -1,6 +1,5 @@
 package com.jwt.security.requestResponse;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,19 +9,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterRequest {
+public class CourseRequest {
 
-
-    private String firstName;
-
-
-    private String lastName;
-
-
-    private String email;
-
-    private String password;
-
-
-    private String confirmPassword;
+    private String title;
+    private Integer memberCount;
+    private Integer price;
+    private Integer courseTime;
+    private String description;
 }
