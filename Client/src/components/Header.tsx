@@ -15,9 +15,7 @@ import CameraIcon from '@mui/icons-material/Camera';
 import { Divider, TextField } from "@mui/material";
 import { useAppSelector } from '../hook';
 import { Link } from 'react-router-dom';
-import { inherits } from 'util';
 
-const pages = ['Каталог', 'Моё обучение', 'Преподавание'];
 
 const pagesRoutes = [
     {

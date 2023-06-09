@@ -1,7 +1,7 @@
 import { Box, Button, Container, FormControl, TextField, Typography } from "@mui/material";
 import { useForm, SubmitHandler } from "react-hook-form";
 import CameraIcon from '@mui/icons-material/Camera';
-import { useRegistrationMutation } from "../store/userApi";
+import { useRegistrationMutation } from "../store/User/userApi";
 import { UserReg } from "../types/UserTypes";
 import { Navigate } from "react-router-dom";
 

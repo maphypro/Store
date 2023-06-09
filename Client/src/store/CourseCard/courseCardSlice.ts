@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CourseCardType } from "../types/CourseCardTypes";
+import { CourseCardType } from "../../types/CourseCardTypes";
 
 
 type CourseCardState = {

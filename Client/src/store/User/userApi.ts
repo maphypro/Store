@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { UserReg, UserAuth } from '../types/UserTypes'
+import { UserReg, UserAuth } from '../../types/UserTypes'
 import { setAuthStatus } from './userSlice';
 
 export const userApi = createApi({
@@ -26,7 +26,6 @@ export const userApi = createApi({
                 try {
                     const {data} = await queryFulfilled;
                     dispatch(setAuthStatus(true))
-                    console.log(data)
                     localStorage.setItem("token", `Bearer ${data.token}`);
                 } catch (err) {
                     dispatch(setAuthStatus(false))

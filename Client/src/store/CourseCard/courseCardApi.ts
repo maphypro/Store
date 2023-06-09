@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { loadCourseCards } from './courseCardSlice';
-import { CourseCardType } from '../types/CourseCardTypes';
+import { CourseCardType } from '../../types/CourseCardTypes';
 
 export const courseCardApi = createApi({
     reducerPath: 'courseCardApi',
@@ -11,17 +11,22 @@ export const courseCardApi = createApi({
     endpoints: build => ({
         loadCards: build.query<CourseCardType[], void>({
             query: () => `api/demo`,
-            async onQueryStarted(id, {dispatch, queryFulfilled}) {
-                const  {data}  = await queryFulfilled;
-                console.log(data)
-                dispatch(loadCourseCards(data))
+            async onQueryStarted(id, { dispatch, queryFulfilled }) {
+                try {
+                    const { data } = await queryFulfilled;
+                    console.log('kek')
+                    dispatch(loadCourseCards(data))
+                }
+                catch (e) {
+                    console.log('Не судьба')
+                }
             }
         }),
         loadOneCard: build.query<CourseCardType, void>({
             query: (id) => `api/demo/${id}`
         })
-        
+
     }),
 })
 
-export const {useLoadCardsQuery} = courseCardApi
+export const { useLoadCardsQuery } = courseCardApi
