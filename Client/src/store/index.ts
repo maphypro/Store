@@ -15,7 +15,10 @@ const store = configureStore({
         [courseCardApi.reducerPath]: courseCardApi.reducer,
         [courseCreateApi.reducerPath]: courseCreateApi.reducer
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(userApi.middleware).concat(courseCardApi.middleware)
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware()
+        .concat(userApi.middleware)
+        .concat(courseCardApi.middleware)
+        .concat(courseCreateApi.middleware)
 })
 
 export default store;

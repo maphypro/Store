@@ -15,6 +15,7 @@ const courseCreateSlice = createSlice({
         createCourse: (state, action) => {
             //state.id = action.payload.course_id,
             state.title = action.payload.title
+            
         }
     }
 })

@@ -11,7 +11,7 @@ const Teach = () => {
     return (
         <>
             <Header />
-            <Container sx={{ border: "1px solid red", display: 'flex' }}>
+            <Container sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Navigate to="courses" replace />
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <img src={image} alt="Image" />
@@ -55,7 +55,7 @@ const Teach = () => {
                     </ListItem>
                 </List>
             </Box>
-            <Box sx={{flexGrow: 1}}>
+            <Box sx={{flexGrow: 1, ml: 4}}>
                 <Outlet />
             </Box>
         </Container>

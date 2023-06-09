@@ -9,12 +9,21 @@ export const userApi = createApi({
     }),
 
     endpoints: build => ({
-        registration: build.mutation<UserReg, UserReg>({
+        registration: build.mutation<any, UserReg>({
             query: (userRegData: UserReg) => ({
                 url: `api/v1/auth/register`,
                 method: 'POST',
                 body: userRegData,
-            })
+            }),
+            async onQueryStarted(id, {dispatch, queryFulfilled}) {
+                try {
+                    const {data} = await queryFulfilled;
+                    dispatch(setAuthStatus(true))
+                    localStorage.setItem("token", `Bearer ${data.token}`);
+                } catch (err) {
+                    dispatch(setAuthStatus(false))
+                }
+            },
         }),
         login: build.mutation<any, UserAuth>({
             query: (userAuthData: UserAuth) => ({

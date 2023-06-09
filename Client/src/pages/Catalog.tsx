@@ -3,7 +3,6 @@ import cat from '../images/cat.jpg'
 import Grid from '@mui/material/Grid';
 import Header from '../components/Header';
 import { useLoadCardsQuery } from "../store/CourseCard/courseCardApi";
-import { CourseCardType } from "../types/CourseCardTypes";
 import CourseCard from "../components/CourseCard";
 import React from "react";
 
