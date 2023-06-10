@@ -28,7 +28,7 @@ const pagesRoutes = [
     },
     {
         name: 'Преподавание',
-        path: '/teach'
+        path: '/teach/courses'
     }
 ]
 

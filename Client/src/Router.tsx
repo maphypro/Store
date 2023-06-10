@@ -5,7 +5,8 @@ import Learn from "./pages/Learn";
 import Teach from "./pages/Teach/Teach";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-import CourseCreate from "./pages/Teach/CourseCreate";
+import CourseCreate from "./pages/Teach/CoursesList";
+import NewCourse from "./pages/Teach/NewCourse";
 
 const router = createBrowserRouter([
     {
@@ -34,11 +35,15 @@ const router = createBrowserRouter([
             },
             {
                 path: 'courses/new',
-                element: <div>KEKW</div>
+                element: <NewCourse />
             },
             {
                 path: 'lessons',
                 element: <CourseCreate />
+            },
+            {
+                path: 'lessons/new',
+                element: <CourseCreate/>
             },
             {
                 path: 'mailing',
