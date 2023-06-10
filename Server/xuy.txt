@@ -1,1 +1,241 @@
-xuy
+POST - регистрация (доступен всем)
+http://localhost:5002/register
+
+Данные Запроса
+
+String firstName
+String lastName
+String email
+String password
+String confirmPassword
+
+Тело Запрос
+{
+    "firstName": "",
+    "lastName": "",
+    "email": "",
+    "password": "",
+    "confirmPassword": ""
+}
+
+Ответ
+
+String token
+
+{
+    "token": ""
+}
+
+////////////////////////////////
+POST - аутентификация (доступен всем)
+http://localhost:5002/authenticate
+
+Данные запроса
+
+String email
+String password
+
+Тело запроса
+{
+    "email": "",
+    "password": ""
+}
+
+Ответ
+
+String token
+
+{
+    "token": ""
+}
+
+////////////////////////////////
+GET - получение всех курсов (доступен всем)
+http://localhost:5002/main/courses
+
+Данные запроса
+
+-
+
+Тело запроса
+
+-
+
+Ответ
+
+Long id
+String title
+Integer memberCount
+Integer price
+Integer courseTime
+String image
+String video
+String description
+
+List:
+    {
+        "id": 1,
+        "title": "",
+        "memberCount": null,
+        "price": null,
+        "courseTime": null,
+        "image": null,
+        "video": null,
+        "description": null
+    }
+
+////////////////////////////////
+GET - выводит пользователя для редактирования (доступен зарегистрированным)
+http://localhost:5002/user/update
+
+Данные запроса
+
+-
+
+Тело запроса
+
+-
+
+Ответ
+
+String firstName;
+String lastName;
+String email;
+
+{
+    "firstName": "",
+    "lastName": "",
+    "email": ""
+}
+
+////////////////////////////////
+POST - изменение данных пользователя (доступен зарегистрированным)
+http://localhost:5002/user/update
+
+Данные запроса
+
+String firstName
+String lastName
+String email
+
+Тело запроса
+
+{
+    "firstName": "",
+    "lastName": "",
+    "email": ""
+}
+
+Ответ
+
+String token
+
+{
+    "token": ""
+}
+
+////////////////////////////////
+GET - добавляет создателя курсов (доступен зарегистрированным)
+http://localhost:5002/user/creator
+
+Данные запроса
+
+-
+
+Тело запроса
+
+-
+
+Ответ
+* информация, если создался или не создался
+String message
+
+{
+    "message": ""
+}
+
+////////////////////////////////
+POST - создание пустого курса (доступен зарегистрированным)
+http://localhost:5002/home/user/create/new_course
+
+Данные запроса
+
+String title
+
+Тело запроса
+
+{
+    "title": ""
+}
+
+Ответ
+
+Long id
+String title
+String firstName
+String lastName
+
+{
+    "id": 1,
+    "title": "",
+    "firstName": "",
+    "lastName": ""
+}
+
+////////////////////////////////
+POST - создание "заполненого" курса (доступен зарегистрированным)
+http://localhost:5002/course/add_course
+
+Данные запроса
+
+KEY - request
+(CONTENT TYPE: application/json)
+VALUE:
+    String title;
+    Integer memberCount;
+    Integer price;
+    Integer courseTime;
+    String description;
+
+KEY - image
+VALUE: MultipartFile
+
+KEY - video
+VALUE: MultipartFile
+
+Тело запроса
+
+KEY - request
+(CONTENT TYPE: application/json)
+VALUE:
+    {
+        "title":"",
+        "memberCount": 0,
+        "price": 0,
+        "courseTime": 0,
+        "description": ""
+    }
+KEY - image
+VALUE - file
+
+KEY - video
+VALUE - file
+
+
+Ответ
+
+String title
+Integer memberCount
+Integer price
+Integer courseTime
+String description
+
+{
+    "title": "",
+    "memberCount": 0,
+    "price": 0,
+    "courseTime": 0,
+    "description": ""
+}
+
+////////////////////////////////
