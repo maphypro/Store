@@ -6,6 +6,7 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import Header from "../../components/Header";
+import AddSharpIcon from '@mui/icons-material/AddSharp';
 
 const Teach = () => {
     return (
@@ -67,7 +68,7 @@ const Teach = () => {
                                 style={{ textDecoration: 'none', color: 'inherit', width: '100%' }}>
                                 <ListItemButton>
                                     <ListItemIcon>
-                                        <EmailOutlinedIcon />
+                                        <AddSharpIcon />
                                     </ListItemIcon>
                                     <ListItemText>
                                         Новый урок
@@ -76,7 +77,6 @@ const Teach = () => {
                             </Link>
                         </ListItem>
                     </List>
-
                 </Box>
                 <Box sx={{ flexGrow: 1, ml: 4 }}>
                     <Outlet />

@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { createCourse } from './courseCreateSlice';
+import { redirect } from 'react-router-dom';
 
 export const courseCreateApi = createApi({
     reducerPath: 'courseCreateApi',
@@ -22,12 +23,10 @@ export const courseCreateApi = createApi({
             }),
             async onQueryStarted(id, {dispatch, queryFulfilled}) {
                 try {
-                    const {data} = await queryFulfilled; //get {title, course_id}
+                    const {data} = await queryFulfilled; //get {title, id}
                     dispatch(createCourse(data));
-                    //redirect on course/:course_id/syllabus
-                    //window.history.pushState({},'','/course')
                 } catch(e) {
-                    console.log('')
+                    console.log('error')
                 }
             },
         })

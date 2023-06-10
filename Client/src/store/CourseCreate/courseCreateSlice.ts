@@ -13,9 +13,8 @@ const courseCreateSlice = createSlice({
     initialState,
     reducers: {
         createCourse: (state, action) => {
-            //state.id = action.payload.course_id,
             state.title = action.payload.title
-            
+            state.id = action.payload.id
         }
     }
 })
