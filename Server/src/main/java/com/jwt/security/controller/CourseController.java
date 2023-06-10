@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-@RequestMapping("/home/user/create")
+@RequestMapping("/course")
 @RequiredArgsConstructor
 public class CourseController {
 
     private final CourseService courseService;
 
-    @PostMapping("/course")
+    @PostMapping("/add_course")
     public ResponseEntity<CourseRequest> addCourse(
             @AuthenticationPrincipal User user,
             @RequestParam("request") String jsonRequest,

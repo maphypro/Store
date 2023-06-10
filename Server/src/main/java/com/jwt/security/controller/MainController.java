@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/home")
+@RequestMapping("/main")
 @RequiredArgsConstructor
 public class MainController {
 
