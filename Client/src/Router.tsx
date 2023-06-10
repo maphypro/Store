@@ -1,12 +1,13 @@
 import {Navigate, createBrowserRouter} from "react-router-dom";
 import Catalog from "./pages/Catalog";
-import Course from "./pages/Course";
+import Course from "./pages/Course/Course";
 import Learn from "./pages/Learn";
 import Teach from "./pages/Teach/Teach";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import CourseCreate from "./pages/Teach/CoursesList";
 import NewCourse from "./pages/Teach/NewCourse";
+import Syllabus from "./pages/Course/Syllabus";
 
 const router = createBrowserRouter([
     {
@@ -20,6 +21,28 @@ const router = createBrowserRouter([
     {
         path: "/course/:id",
         element: <Course/>,
+        children: [
+            {
+                path: 'syllabus',
+                element: <Syllabus />
+            },
+            {
+                path: 'info',
+                element: <Syllabus />
+            },
+            {
+                path: 'checklist',
+                element: <Syllabus />
+            },
+            {
+                path: 'edit-info',
+                element: <Syllabus />
+            },
+            {
+                path: 'edit-syllabus',
+                element: <Syllabus />
+            }
+        ]
     },
     {
         path: "/learn",

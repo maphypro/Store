@@ -16,7 +16,7 @@ export default function CourseCreateInitial() {
     }
 
     if (data && 'id' in data) {
-        navigate(`/course/${data.id}`);
+        navigate(`/course/${data.id}/syllabus`);
     }
 
     return (

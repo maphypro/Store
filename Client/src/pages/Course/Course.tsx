@@ -3,7 +3,7 @@ import { Box, Button, Collapse, Container, List, ListItemButton, ListItemIcon, L
 import AddSharpIcon from '@mui/icons-material/AddSharp';
 import { useState } from 'react';
 import { Outlet, useOutletContext, useParams } from 'react-router-dom';
-
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 type CourseTypeProps = {
     id: number,
     title: string
@@ -24,7 +24,7 @@ const Course = () => {
     };
 
     return (
-        <Container>
+        <Container sx={{display:'flex'}}>
             <Box sx={{ maxWidth: .2, display: 'flex', flexDirection: 'column', alignItems: 'flex-start'  }}>
                 <Box>
                     {id}
@@ -33,45 +33,38 @@ const Course = () => {
 
                 <Button sx={{ my: 3, pl: 2, pr: 2, textTransform: 'inherit', border: '1px solid green', borderRadius: '5px', color: 'green', textDecoration: 'none' }}>
                     <Typography variant="body1">
-                        + Новый курс
+                        Опубликовать
                     </Typography>
                 </Button>
                 <List
                     sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
                     component="nav"
                 >
-                    <ListItemButton>
-                        <ListItemIcon>
-                            <AddSharpIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Sent mail" />
-                    </ListItemButton>
-                    <ListItemButton>
-                        <ListItemIcon>
-                            <AddSharpIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Drafts" />
-                    </ListItemButton>
+
                     <ListItemButton onClick={handleClick}>
                         <ListItemIcon>
-                            <AddSharpIcon />
+                            <MenuBookIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Inbox" />
+                        <ListItemText primary="Курс" />
                         {open ? <ExpandLess /> : <ExpandMore />}
                     </ListItemButton>
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding>
                             <ListItemButton sx={{ pl: 4 }}>
-                                <ListItemIcon>
-                                    <StarBorder />
-                                </ListItemIcon>
-                                <ListItemText primary="Starred" />
+
+                                <ListItemText primary="Описание" />
+                            </ListItemButton>
+                            <ListItemButton sx={{ pl: 4 }}>
+                                <ListItemText primary="Содержание" />
+                            </ListItemButton>
+                            <ListItemButton sx={{ pl: 4 }}>
+                                <ListItemText primary="Чек-лист" />
                             </ListItemButton>
                         </List>
                     </Collapse>
                 </List>
             </Box>
-            <Box>
+            <Box sx={{flexGrow: 1}}>
                 <Outlet /> 
             </Box>
         </Container>
