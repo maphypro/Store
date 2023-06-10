@@ -184,7 +184,7 @@ String lastName
 
 ////////////////////////////////
 POST - создание "заполненого" курса (доступен зарегистрированным)
-http://localhost:5002/course/course
+http://localhost:5002/course/add_course
 
 Данные запроса
 
