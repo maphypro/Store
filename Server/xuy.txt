@@ -156,7 +156,7 @@ String message
 
 ////////////////////////////////
 POST - создание пустого курса (доступен зарегистрированным)
-http://localhost:5002/home/user/create/new_course
+http://localhost:5002/course/new_course
 
 Данные запроса
 
