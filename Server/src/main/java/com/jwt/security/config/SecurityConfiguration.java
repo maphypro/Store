@@ -30,7 +30,7 @@ public class SecurityConfiguration {
                 .csrf().disable()
                 .authorizeRequests()
                 .requestMatchers("/register", "/authenticate").permitAll()
-                .requestMatchers("/main/courses").permitAll()
+                .requestMatchers("/main/courses", "/course/categories").permitAll()
                 .requestMatchers("/api/demo").permitAll()
                 .requestMatchers("/img/**").permitAll()
                 .anyRequest().authenticated()

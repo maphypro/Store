@@ -1,6 +1,7 @@
 package com.jwt.security.Entity.course.repository;
 
 import com.jwt.security.Entity.course.Course;
+import com.jwt.security.Entity.user.CourseCreator;
 import com.jwt.security.Entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -5,13 +5,16 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jwt.security.Entity.course.Categories;
 import com.jwt.security.Entity.course.Course;
+import com.jwt.security.Entity.course.Lesson;
+import com.jwt.security.Entity.course.Modules;
 import com.jwt.security.Entity.course.repository.CategoriesRepository;
 import com.jwt.security.Entity.course.repository.CourseRepository;
+import com.jwt.security.Entity.course.repository.LessonRepository;
+import com.jwt.security.Entity.course.repository.ModulesRepository;
 import com.jwt.security.Entity.user.User;
 import com.jwt.security.Entity.user.repository.UserRepository;
-import com.jwt.security.requestResponse.CourseRequest;
-import com.jwt.security.requestResponse.CourseResponse;
-import com.jwt.security.requestResponse.NewCourseResponse;
+import com.jwt.security.requestResponse.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,23 +25,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CourseService {
 
 
     private final CourseRepository courseRepository;
-    private final UserRepository userRepository;
+    private final ModulesRepository modulesRepository;
+    private final LessonRepository lessonRepository;
     private final CategoriesRepository categoriesRepository;
+    private final UserRepository userRepository;
+
 
     private final UserService userService;
     private final JwtService jwtService;
-
-    public CourseService(CourseRepository courseRepository, UserRepository userRepository, CategoriesRepository categoriesRepository, UserService userService, JwtService jwtService) {
-        this.courseRepository = courseRepository;
-        this.userRepository = userRepository;
-        this.categoriesRepository = categoriesRepository;
-        this.userService = userService;
-        this.jwtService = jwtService;
-    }
 
     public CourseRequest addCourse(CourseRequest request, MultipartFile image, MultipartFile video, User user) {
 
@@ -102,5 +101,102 @@ public class CourseService {
         }
 
         return new ResponseEntity<>(courseResponses, HttpStatus.OK);
+    }
+
+    public List<ModulesResponse> addModule(AddModuleRequest request) {
+        long courseId = request.getCourseId();
+        List<ModuleRequest> moduleRequests = request.getModules();
+
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new IllegalArgumentException("Course not found"));
+
+        for (ModuleRequest moduleRequest : moduleRequests) {
+            Modules modules = new Modules();
+            modules.setModuleNumber(moduleRequest.getModuleNumber());
+            modules.setName(moduleRequest.getName());
+            modules.setCourse(course);
+            modulesRepository.save(modules);
+        }
+        List<Modules> ListModules = modulesRepository.findAllByCourseId(courseId);
+
+        List<ModulesResponse> ListModulesResponses = new ArrayList<>();
+        for (Modules modules : ListModules) {
+            ModulesResponse modulesResponse = new ModulesResponse();
+            modulesResponse.setId(modules.getId());
+            modulesResponse.setModulesNumber(modules.getModuleNumber());
+            modulesResponse.setName(modules.getName());
+            ListModulesResponses.add(modulesResponse);
+        }
+        return ListModulesResponses;
+    }
+    public List<ModulesResponse> getModules(Long id){
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Course not found"));
+        List<Modules> ListModules = modulesRepository.findAllByCourseId(course.getId());
+
+        List<ModulesResponse> ListModulesResponses = new ArrayList<>();
+        for (Modules modules : ListModules) {
+            ModulesResponse modulesResponse = new ModulesResponse();
+            modulesResponse.setId(modules.getId());
+            modulesResponse.setModulesNumber(modules.getModuleNumber());
+            modulesResponse.setName(modules.getName());
+            ListModulesResponses.add(modulesResponse);
+        }
+        return ListModulesResponses;
+    }
+    public List<LessonResponse> addLesson(AddLessonRequest request) {
+        long lessonId = request.getLessonId();
+        List<LessonRequest> lessonRequests = request.getLessons();
+
+        Modules modules = modulesRepository.findById(lessonId)
+                .orElseThrow(() -> new IllegalArgumentException("Module not found"));
+
+        for (LessonRequest lessonRequest : lessonRequests) {
+            Lesson lesson = new Lesson();
+            lesson.setLessonNumber(lessonRequest.getLessonNumber());
+            lesson.setName(lessonRequest.getName());
+            lesson.setModules(modules);
+            lessonRepository.save(lesson);
+        }
+        List<Lesson> ListModules = lessonRepository.findAllByModulesId(lessonId);
+
+        List<LessonResponse> ListModulesResponses = new ArrayList<>();
+        for (Lesson lesson : ListModules) {
+            LessonResponse lessonResponse = new LessonResponse();
+            lessonResponse.setId(lesson.getId());
+            lessonResponse.setLessonNumber(lesson.getLessonNumber());
+            lessonResponse.setName(lesson.getName());
+            ListModulesResponses.add(lessonResponse);
+        }
+        return ListModulesResponses;
+    }
+
+    public List<LessonResponse> getLesson(Long idCourse, Long idModules){
+        Course course = courseRepository.findById(idCourse)
+                .orElseThrow(() -> new IllegalArgumentException("Course not found"));
+        Modules modules = modulesRepository.findById(idModules)
+                .orElseThrow(() -> new IllegalArgumentException("Module not found"));
+        List<Lesson> ListModules = lessonRepository.findAllByModulesId(modules.getId());
+
+        List<LessonResponse> ListModulesResponses = new ArrayList<>();
+        for (Lesson lesson : ListModules) {
+            LessonResponse lessonResponse = new LessonResponse();
+            lessonResponse.setId(lesson.getId());
+            lessonResponse.setLessonNumber(lesson.getLessonNumber());
+            lessonResponse.setName(lesson.getName());
+            ListModulesResponses.add(lessonResponse);
+        }
+        return ListModulesResponses;
+    }
+    public List<CategoriesResponse> getCategories() {
+        List<Categories> categoriesResponseList = categoriesRepository.findAll();
+        List<CategoriesResponse> categoriesResponseArrayList = new ArrayList<>();
+        for (Categories categories : categoriesResponseList) {
+            CategoriesResponse categoriesResponse = new CategoriesResponse();
+            categoriesResponse.setId(categories.getId());
+            categoriesResponse.setName(categories.getName());
+            categoriesResponseArrayList.add(categoriesResponse);
+        }
+        return categoriesResponseArrayList;
     }
 }

@@ -4,19 +4,17 @@ package com.jwt.security.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jwt.security.Entity.user.User;
-import com.jwt.security.requestResponse.CourseRequest;
-import com.jwt.security.requestResponse.NewCourseResponse;
+import com.jwt.security.requestResponse.*;
 import com.jwt.security.service.CourseService;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/course")
@@ -55,5 +53,48 @@ public class CourseController {
         }
     }
 
+    @PostMapping("/add_modules")
+    public ResponseEntity<List<ModulesResponse>> addModules(
+            @AuthenticationPrincipal User user,
+            @RequestBody AddModuleRequest request
+    ) {
 
+        return ResponseEntity.ok(courseService.addModule(request));
+    }
+
+    @PostMapping("/add_lessons")
+    public ResponseEntity<List<LessonResponse>> addLesson(
+            @AuthenticationPrincipal User user,
+            @RequestBody AddLessonRequest request
+    ) {
+
+        return ResponseEntity.ok(courseService.addLesson(request));
+    }
+
+    @GetMapping("/categories")
+    public ResponseEntity<List<CategoriesResponse>> getCategories(){
+
+        return ResponseEntity.ok(courseService.getCategories());
+    }
+
+    @GetMapping("/get_modules")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<ModulesResponse>> getModules(
+            @AuthenticationPrincipal User user,
+            @RequestParam Long id
+    ) {
+        //Long id = Long.parseLong(idRequest);
+        return ResponseEntity.ok(courseService.getModules(id));
+    }
+
+    @GetMapping("/get_lessons")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<LessonResponse>> getLessons(
+            @AuthenticationPrincipal User user,
+            @RequestParam Long idcourse,
+            @RequestParam Long idmodules
+    ) {
+        //Long id = Long.parseLong(idRequest);
+        return ResponseEntity.ok(courseService.getLesson(idcourse,idmodules));
+    }
 }

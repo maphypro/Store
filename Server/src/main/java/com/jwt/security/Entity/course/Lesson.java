@@ -25,7 +25,7 @@ public class Lesson {
 
     @ManyToOne
     @JoinColumn(name = "module_id")
-    private Modules module;
+    private Modules modules;
 
 
 }
