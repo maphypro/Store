@@ -6,25 +6,25 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import Grid from '@mui/material/Grid';
 
 type CourseCardProps = {
-    title: string,
-    author: string,
-    image: any,
-    price: number | string,
-    rating: number,
-    studentsCount: number,
-    courseTime: number
+    title?: string,
+    author?: string,
+    image?: any,
+    price?: number | string,
+    rating?: number,
+    studentsCount?: number,
+    courseTime?: number
 
 }
 
 type InfoProps = {
-    rating: number,
-    studentsCount: number,
-    courseTime: number
+    rating?: number,
+    studentsCount?: number,
+    courseTime?: number
 
 }
 
 type HeaderProps = {
-    title: string,
+    title?: string,
     image: any
 }
 

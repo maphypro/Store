@@ -1,15 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReduces from './User/userSlice'
-import courseCardReducer from './Course/courseCardSlice'
-import courseCreateReducer from './Course/courseCreateSlice'
+import courseReducer from './Course/courseSlice'
 import { userApi } from "./User/userApi";
 import { courseApi } from "./Course/courseApi";
 
 const store = configureStore({
     reducer: {
         userReduces,
-        courseCardReducer,
-        courseCreateReducer,
+        courseReducer,
         [userApi.reducerPath]: userApi.reducer,
         [courseApi.reducerPath]: courseApi.reducer
     },

@@ -1,8 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { createCourse } from './courseCreateSlice';
-import { redirect } from 'react-router-dom';
-import { CourseCardType } from '../../types/CourseCardTypes';
-import { loadCourseCards } from './courseCardSlice';
+import { createCourse, loadCourseCards } from './courseSlice';
+import { CourseType } from '../../types/CourseTypes';
 
 export const courseApi = createApi({
     reducerPath: 'courseApi',
@@ -17,7 +15,7 @@ export const courseApi = createApi({
         }
     }),
     endpoints: build => ({
-        loadCards: build.query<CourseCardType[], void>({
+        loadCards: build.query<CourseType[], void>({
             query: () => `api/demo`,
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
@@ -30,12 +28,12 @@ export const courseApi = createApi({
                 }
             }
         }),
-        loadOneCard: build.query<CourseCardType, void>({
+        loadOneCard: build.query<CourseType, void>({
             query: (id) => `api/demo/${id}`
         }),
-        createEmptyCourse: build.mutation<any, any>({
-            query: (title: any) => ({
-                url: '/home/user/create/new_course',
+        createEmptyCourse: build.mutation<CourseType, string>({
+            query: (title: string) => ({
+                url: '/course/new_course',
                 method: 'POST',
                 body: {title: title},
             }),
@@ -48,7 +46,7 @@ export const courseApi = createApi({
                 }
             },
         }),
-        loadCoursesList: build.query<any, any>({
+        loadCoursesList: build.query<CourseType[], number>({
             query: (id: number) => `/main/courses`
         })
     })

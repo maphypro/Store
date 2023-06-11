@@ -13,7 +13,7 @@ export const userApi = createApi({
     endpoints: build => ({
         registration: build.mutation<any, UserReg>({
             query: (userRegData: UserReg) => ({
-                url: `api/v1/auth/register`,
+                url: `register`,
                 method: 'POST',
                 body: userRegData,
             }),
@@ -29,7 +29,7 @@ export const userApi = createApi({
         }),
         login: build.mutation<any, UserAuth>({
             query: (userAuthData: UserAuth) => ({
-                url: `api/v1/auth/authenticate`,
+                url: `authenticate`,
                 method: 'POST',
                 body: userAuthData
             }),

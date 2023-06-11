@@ -17,8 +17,6 @@ const Course = () => {
     const {id} = useParams();
 
 
-
-
     const handleClick = () => {
         setOpen(!open);
     };

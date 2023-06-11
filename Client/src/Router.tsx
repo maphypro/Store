@@ -5,7 +5,7 @@ import Learn from "./pages/Learn";
 import Teach from "./pages/Teach/Teach";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-import CourseCreate from "./pages/Teach/CoursesList";
+import CoursesList from "./pages/Teach/CoursesList";
 import NewCourse from "./pages/Teach/NewCourse";
 import Syllabus from "./pages/Course/Syllabus";
 
@@ -54,7 +54,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: 'courses',
-                element: <CourseCreate />,
+                element: <CoursesList />,
             },
             {
                 path: 'courses/new',
@@ -62,15 +62,15 @@ const router = createBrowserRouter([
             },
             {
                 path: 'lessons',
-                element: <CourseCreate />
+                element: <CoursesList />
             },
             {
                 path: 'lessons/new',
-                element: <CourseCreate/>
+                element: <CoursesList/>
             },
             {
                 path: 'mailing',
-                element: <CourseCreate />
+                element: <CoursesList />
             },
         ]
     },
