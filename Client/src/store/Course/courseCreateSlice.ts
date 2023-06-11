@@ -3,7 +3,12 @@ import { createSlice } from '@reduxjs/toolkit'
 import { CourseCreateType } from '../../types/CourseCreateTypes'
 
 
-const initialState: CourseCreateType = {
+type CoursesList = {
+    avatar?: string,
+    title: string
+}
+
+const initialState: Partial<CourseCreateType> & { coursesList?: CoursesList[] } = {
     id: -1,
     title: '-1'
 }

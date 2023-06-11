@@ -1,6 +1,6 @@
 import { Container, TextField, Button, Typography, Box } from "@mui/material"
 import { useState } from "react"
-import { useCreateEmptyCourseMutation } from "../store/CourseCreate/courseCreateApi";
+import { useCreateEmptyCourseMutation } from "../store/Course/courseApi";
 import { useNavigate } from "react-router-dom";
 
 export default function CourseCreateInitial() {

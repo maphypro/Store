@@ -8,5 +8,5 @@ export type CourseCreateType = {
     forWhom?: string,
     initialRequirements?: string,
     howIsTheTraining?: string,
-    whatAreYouGretting?: string
+    whatAreYouGretting?: string,
 }

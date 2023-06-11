@@ -1,7 +1,7 @@
 import { Box, Container, Typography } from '@mui/material';
 import React from 'react'
 import CourseCreateInitial from '../../components/CourseCreateInitial';
-import { useCreateEmptyCourseMutation } from '../../store/CourseCreate/courseCreateApi';
+import { useCreateEmptyCourseMutation } from '../../store/Course/courseApi';
 
 export default function NewCourse() {
 

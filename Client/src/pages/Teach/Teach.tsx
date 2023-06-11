@@ -7,8 +7,15 @@ import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutl
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import Header from "../../components/Header";
 import AddSharpIcon from '@mui/icons-material/AddSharp';
+import { useEffect } from "react";
 
 const Teach = () => {
+
+    //load courses list
+    useEffect(() => {
+           
+    }) 
+
     return (
         <>
             <Header />

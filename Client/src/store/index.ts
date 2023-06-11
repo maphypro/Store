@@ -1,10 +1,9 @@
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import userReduces from './User/userSlice'
-import courseCardReducer from './CourseCard/courseCardSlice'
-import courseCreateReducer from './CourseCreate/courseCreateSlice'
+import courseCardReducer from './Course/courseCardSlice'
+import courseCreateReducer from './Course/courseCreateSlice'
 import { userApi } from "./User/userApi";
-import { courseCardApi } from "./CourseCard/courseCardApi";
-import { courseCreateApi } from "./CourseCreate/courseCreateApi";
+import { courseApi } from "./Course/courseApi";
 
 const store = configureStore({
     reducer: {
@@ -12,13 +11,11 @@ const store = configureStore({
         courseCardReducer,
         courseCreateReducer,
         [userApi.reducerPath]: userApi.reducer,
-        [courseCardApi.reducerPath]: courseCardApi.reducer,
-        [courseCreateApi.reducerPath]: courseCreateApi.reducer
+        [courseApi.reducerPath]: courseApi.reducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware()
         .concat(userApi.middleware)
-        .concat(courseCardApi.middleware)
-        .concat(courseCreateApi.middleware)
+        .concat(courseApi.middleware)
 })
 
 export default store;

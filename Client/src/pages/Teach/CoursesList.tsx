@@ -1,8 +1,8 @@
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import { Link, Outlet } from "react-router-dom";
 import { useAppDispatch } from "../../hook";
-import { createCourse } from "../../store/CourseCreate/courseCreateSlice";
-import { useCreateEmptyCourseMutation } from "../../store/CourseCreate/courseCreateApi";
+import { createCourse } from "../../store/Course/courseCreateSlice";
+import { useCreateEmptyCourseMutation } from "../../store/Course/courseApi";
 import CourseCreateInitial from "../../components/CourseCreateInitial";
 
 

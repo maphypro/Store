@@ -2,7 +2,7 @@ import {Container} from "@mui/material";
 import cat from '../images/cat.jpg'
 import Grid from '@mui/material/Grid';
 import Header from '../components/Header';
-import { useLoadCardsQuery } from "../store/CourseCard/courseCardApi";
+import { useLoadCardsQuery } from "../store/Course/courseApi";
 import CourseCard from "../components/CourseCard";
 import React from "react";
 
