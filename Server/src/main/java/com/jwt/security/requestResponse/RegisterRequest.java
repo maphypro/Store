@@ -23,6 +23,6 @@ public class RegisterRequest {
 
     private String password;
 
-
+    private String role;
     private String confirmPassword;
 }
