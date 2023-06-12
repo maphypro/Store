@@ -38,7 +38,8 @@ export const userApi = createApi({
                 try {
                     const {data} = await queryFulfilled;
                     dispatch(setAuthStatus(true))
-                    localStorage.setItem("token", `Bearer ${data.token}`);
+                    localStorage.setItem("token", `Bearer ${data.accessToken}`);
+                    localStorage.setItem("refresh_token", `Bearer ${data.refreshToken}`);
                 } catch (err) {
                     dispatch(setAuthStatus(false))
                 }
