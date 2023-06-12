@@ -21,6 +21,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final CourseCreatorRepository courseCreatorRepository;
     private final JwtService jwtService;
+    private final AuthenticationService authenticationService;
 
     public GetUserResponse getUser(User user){
         GetUserResponse updateUserResponse = new GetUserResponse();
@@ -38,8 +39,10 @@ public class UserService {
         userRepository.save(user);
 
         var jwtToken = jwtService.generateToken(user);
+        var refreshToken = jwtService.generateRefreshToken(user);
         return AuthenticationResponse.builder()
-                .token(jwtToken)
+                .accessToken(jwtToken)
+                .refreshToken(refreshToken)
                 .build();
     }
     public Message saveUserCreator(User user) {
