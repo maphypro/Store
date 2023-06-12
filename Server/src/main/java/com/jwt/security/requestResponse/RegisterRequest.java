@@ -1,6 +1,7 @@
 package com.jwt.security.requestResponse;
 
 
+import com.jwt.security.Entity.user.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +24,7 @@ public class RegisterRequest {
 
     private String password;
 
+    private String role;
 
     private String confirmPassword;
 }

@@ -2,6 +2,7 @@ package com.jwt.security.Entity.user;
 
 
 import com.jwt.security.Entity.course.Course;
+import com.jwt.security.Entity.token.Token;
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -41,9 +42,8 @@ public class User implements UserDetails {
 
     private String password;
 
-    @ManyToOne
     @Enumerated(EnumType.STRING)
-    private Roles role;
+    private Role role;
 
     @ManyToMany
     @JoinTable(
@@ -59,9 +59,12 @@ public class User implements UserDetails {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private CourseCreator courseCreator;
 
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.getRole()));
+        return role.getAuthorities();
     }
 
     @Override
@@ -76,7 +79,7 @@ public class User implements UserDetails {
 
 
     public String getRole() {
-        return role.getRole();
+        return role.name();
     }
     @Override
     public boolean isAccountNonExpired() {

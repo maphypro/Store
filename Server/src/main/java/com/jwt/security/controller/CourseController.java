@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jwt.security.Entity.user.User;
 import com.jwt.security.requestResponse.*;
 import com.jwt.security.service.CourseService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,12 +19,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/course")
 @RequiredArgsConstructor
+@Tag(name = "course")
 public class CourseController {
 
     private final CourseService courseService;
+
 
     @PostMapping("/add_course")
     public ResponseEntity<CourseRequest> addCourse(
