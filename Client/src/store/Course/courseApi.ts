@@ -1,19 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { createCourse, loadCourseCards, updateLoadedCourses } from './courseSlice';
 import { CourseType } from '../../types/CourseTypes';
+import { baseQueryWithReauth } from './baseQuery';
 
 export const courseApi = createApi({
     reducerPath: 'courseApi',
-    baseQuery: fetchBaseQuery({
-        baseUrl: 'http://localhost:5002/', credentials: "same-origin",
-        prepareHeaders: (headers) => {
-            const token = localStorage?.getItem('token');
-            if (token) {
-                headers.set('Authorization', token)
-            }
-            return headers;
-        }
-    }),
+    baseQuery: baseQueryWithReauth,
     endpoints: build => ({
         loadCards: build.query<CourseType[], void>({
             query: () => `api/demo`,
@@ -28,7 +20,7 @@ export const courseApi = createApi({
                 }
             }
         }),
-        loadOneCard: build.query<CourseType, void>({
+        loadOneCard: build.query<CourseType, number>({
             query: (id) => `api/demo/${id}`
         }),
         createEmptyCourse: build.mutation<CourseType, string>({
