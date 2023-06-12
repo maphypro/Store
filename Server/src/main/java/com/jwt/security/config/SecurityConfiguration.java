@@ -17,11 +17,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
-import static org.springframework.http.HttpMethod.GET;
-import static com.jwt.security.Entity.user.Role.ADMIN;
-import static com.jwt.security.Entity.user.Role.USER;
-import static com.jwt.security.Entity.user.Role.MANAGER;
-
 @Configuration
 @EnableWebSecurity
 

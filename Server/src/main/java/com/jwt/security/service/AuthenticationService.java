@@ -39,7 +39,7 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(RegisterRequest request) {
         try {
-
+            Role role = Role.valueOf(request.getRole());
             Optional<Roles> rolesOptional = roleRepository.findByRole("ADMIN");
             Roles roles = rolesOptional.orElse(null);
             var user = User.builder()
@@ -47,10 +47,10 @@ public class AuthenticationService {
                     .lastname(request.getLastName())
                     .email(request.getEmail())
                     .password(passwordEncoder.encode(request.getPassword()))
-                    .role(Role.USER)
+                    .role(role)
                     .build();
             repository.save(user);
-
+            System.out.println(user.getRole());
             var savedUser = repository.save(user);
             var jwtToken = jwtService.generateToken(user);
             var refreshToken = jwtService.generateRefreshToken(user);
