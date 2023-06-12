@@ -15,13 +15,14 @@ export const userApi = createApi({
             query: (userRegData: UserReg) => ({
                 url: `register`,
                 method: 'POST',
-                body: userRegData,
+                body: {...userRegData, role: 'USER'},
             }),
             async onQueryStarted(id, {dispatch, queryFulfilled}) {
                 try {
                     const {data} = await queryFulfilled;
                     dispatch(setAuthStatus(true))
-                    localStorage.setItem("token", `Bearer ${data.token}`);
+                    localStorage.setItem("token", `Bearer ${data.accessToken}`);
+                    localStorage.setItem("refresh_token", `Bearer ${data.refreshToken}`);
                 } catch (err) {
                     dispatch(setAuthStatus(false))
                 }
