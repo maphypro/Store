@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { createCourse, loadCourseCards } from './courseSlice';
+import { createCourse, loadCourseCards, updateLoadedCourses } from './courseSlice';
 import { CourseType } from '../../types/CourseTypes';
 
 export const courseApi = createApi({
@@ -39,7 +39,7 @@ export const courseApi = createApi({
             }),
             async onQueryStarted(id, {dispatch, queryFulfilled}) {
                 try {
-                    const {data} = await queryFulfilled; //get {title, id}
+                    const {data} = await queryFulfilled; 
                     dispatch(createCourse(data));
                 } catch(e) {
                     console.log('error')
@@ -47,9 +47,18 @@ export const courseApi = createApi({
             },
         }),
         loadCoursesList: build.query<CourseType[], number>({
-            query: (id: number) => `/main/courses`
+            query: (id: number) => `/main/courses`,
+            async onQueryStarted(id, {dispatch, queryFulfilled}) {
+                try {
+                    const {data} = await queryFulfilled
+                    dispatch(updateLoadedCourses(data))
+                }
+                catch (e) {
+                    console.log('cannot load courses')
+                }
+            }
         })
     })
 });
 
-export const {useCreateEmptyCourseMutation, useLoadCardsQuery} = courseApi;
+export const {useCreateEmptyCourseMutation, useLoadCardsQuery, useLoadCoursesListQuery} = courseApi;

@@ -1,5 +1,6 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit'
 import { CourseType } from '../../types/CourseTypes'
+import { access } from 'fs'
 
 type StateType = {
     id: number,
@@ -20,8 +21,10 @@ const courseSlice = createSlice({
     initialState,
     reducers: {
         createCourse: (state, action: PayloadAction<CourseType>) => {
-            state.title = action.payload.title
-            state.id = action.payload.id
+            state.ownerCourses = [...state.ownerCourses, action.payload]
+        },
+        updateLoadedCourses: (state, action: PayloadAction<CourseType[]>) => {
+            state.ownerCourses = action.payload
         },
         loadCourseCards(state, action: PayloadAction<CourseType[]>) {
             state.cards = action.payload
@@ -29,6 +32,6 @@ const courseSlice = createSlice({
     }
 })
 
-export const {createCourse, loadCourseCards} = courseSlice.actions;
+export const {createCourse, loadCourseCards, updateLoadedCourses} = courseSlice.actions;
 
 export default courseSlice.reducer;
