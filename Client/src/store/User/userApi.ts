@@ -59,9 +59,10 @@ export const userApi = createApi({
                         }
                     }
                 ),
-                onQueryStarted(id, {queryFulfilled}) {
+                onQueryStarted(id, {dispatch, queryFulfilled}) {
                     localStorage.removeItem('token')
                     localStorage.removeItem('refresh_token')
+                    dispatch(setAuthStatus(false))
                 }
             }
         ),
