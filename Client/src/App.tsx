@@ -20,6 +20,7 @@ function App() {
     if (error && 'status' in error) {
 
         setTimeout(() => {
+            if (error.status === 400)
             checkAuth();
         }, 201)
 
