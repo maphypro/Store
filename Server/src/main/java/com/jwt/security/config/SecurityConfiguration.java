@@ -50,6 +50,7 @@ public class SecurityConfiguration {
                 .requestMatchers("/main/courses", "/course/categories").permitAll()
                 .requestMatchers("/api/demo").permitAll()
                 .requestMatchers("/img/**").permitAll()
+                .requestMatchers("/refresh-token").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
