@@ -81,8 +81,9 @@ export const userApi = createApi({
                     localStorage.setItem("token", `Bearer ${data.accessToken}`);
                     localStorage.setItem("refresh_token", `Bearer ${data.refreshToken}`);
                 } catch (err) {
+                    
                     dispatch(setAuthStatus(false))
-                    console.log('Не авторизован')
+                    console.log(err)
                 }
             }
         })

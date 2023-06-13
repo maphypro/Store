@@ -1,7 +1,7 @@
 import './App.css';
 import {RouterProvider} from "react-router-dom";
 import router from "./Router";
-import {CssBaseline} from "@mui/material";
+import {Box, CssBaseline} from "@mui/material";
 import { useEffect } from 'react';
 import { useCheckAuthMutation } from './store/User/userApi';
 import { useAppSelector } from './hook';
@@ -17,6 +17,14 @@ function App() {
         checkAuth();
     }, [])
 
+    if (error && 'status' in error) {
+
+        setTimeout(() => {
+            checkAuth();
+        }, 201)
+
+        return <Box>{JSON.stringify(error.data)}</Box> 
+    }
 
     return (
         <div className="App">
