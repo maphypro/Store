@@ -5,6 +5,7 @@ package com.jwt.security.controller;
 import com.jwt.security.Entity.course.Course;
 import com.jwt.security.Entity.user.User;
 import com.jwt.security.demo.Arr;
+import com.jwt.security.exception.YourCustomException;
 import com.jwt.security.requestResponse.CourseResponse;
 import com.jwt.security.requestResponse.NewCourseResponse;
 import com.jwt.security.service.CourseService;
@@ -15,6 +16,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -42,6 +44,23 @@ public class MainController {
     @GetMapping("/courses")
     public ResponseEntity<List<CourseResponse>> newCourse(
     ){
+
         return courseService.allCourse();
     }
+
+    @GetMapping("/pop")
+    public String get() {
+        String path = "/api/v1/management";
+        // Проверка пути контроллера
+        if (!isValidPath(path)) {
+            throw new YourCustomException("Неправильный путь контроллера");
+        }
+        return "GET:: management controller";
+    }
+
+    private boolean isValidPath(String path) {
+        List<String> validPaths = Arrays.asList("/main/pop", "/api/v1/management/{id}");
+        return validPaths.contains(path);
+    }
+
 }
