@@ -15,6 +15,7 @@ import CameraIcon from '@mui/icons-material/Camera';
 import { Divider, TextField } from "@mui/material";
 import { useAppSelector } from '../hook';
 import { Link } from 'react-router-dom';
+import { useLazyLogoutQuery, useLoginMutation } from '../store/User/userApi';
 
 
 const pagesRoutes = [
@@ -47,6 +48,7 @@ function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
+
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -61,6 +63,15 @@ function ResponsiveAppBar() {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+
+    const handleLogoutClick = () => {
+        logout();
+        handleCloseUserMenu();
+    }
+
+
+    const [logout, { data, isLoading, error }] = useLazyLogoutQuery()
+
 
     const isAuth: boolean = useAppSelector(state => state.userReduces.isAuth)
 
@@ -185,7 +196,7 @@ function ResponsiveAppBar() {
                                             return (
                                                 <>
                                                     <Divider />
-                                                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                                                    <MenuItem key={setting} onClick={handleLogoutClick}>
                                                         <Typography textAlign="center">{setting}</Typography>
                                                     </MenuItem>
                                                 </>

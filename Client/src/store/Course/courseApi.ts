@@ -54,7 +54,7 @@ export const courseApi = createApi({
             query: (arg) => {
                 const {id} = arg;
                 return {
-                    url: `courses/get_modules`,
+                    url: `course/get_modules`,
                     params: {id}
                 }
             },

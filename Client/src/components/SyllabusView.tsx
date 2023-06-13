@@ -2,19 +2,22 @@ import { Box, List, ListItem } from "@mui/material";
 import SyllabusViewModule from "./SyllabusViewModule";
 import SyllabusViewLesson from "./SyllabusViewLesson";
 
+const ModuleStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    paddingLeft: '0px'
+}
+
+const LessonStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    paddingLeft: '64px'
+}
+
+
 export default function SyllabusView() {
 
-    const ModuleStyle = {
-        display: 'flex',
-        flexDirection: 'column',
-        paddingLeft: '0px'
-    }
-
-    const LessonStyle = {
-        display: 'flex',
-        flexDirection: 'column',
-        paddingLeft: '64px'
-    }
+    
 
     return (
         <Box >

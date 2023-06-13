@@ -3,6 +3,10 @@ import { UserReg, UserAuth } from '../../types/UserTypes'
 import { setAuthStatus } from './userSlice';
 
 
+type checkAuthType = {
+    accessToken: string,
+    refreshToken: string
+}
 
 export const userApi = createApi({
     reducerPath: 'userApi',
@@ -15,11 +19,11 @@ export const userApi = createApi({
             query: (userRegData: UserReg) => ({
                 url: `register`,
                 method: 'POST',
-                body: {...userRegData, role: 'USER'},
+                body: { ...userRegData, role: 'USER' },
             }),
-            async onQueryStarted(id, {dispatch, queryFulfilled}) {
+            async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
-                    const {data} = await queryFulfilled;
+                    const { data } = await queryFulfilled;
                     dispatch(setAuthStatus(true))
                     localStorage.setItem("token", `Bearer ${data.accessToken}`);
                     localStorage.setItem("refresh_token", `Bearer ${data.refreshToken}`);
@@ -34,9 +38,9 @@ export const userApi = createApi({
                 method: 'POST',
                 body: userAuthData
             }),
-            async onQueryStarted(id, {dispatch, queryFulfilled}) {
+            async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
-                    const {data} = await queryFulfilled;
+                    const { data } = await queryFulfilled;
                     dispatch(setAuthStatus(true))
                     localStorage.setItem("token", `Bearer ${data.accessToken}`);
                     localStorage.setItem("refresh_token", `Bearer ${data.refreshToken}`);
@@ -44,11 +48,46 @@ export const userApi = createApi({
                     dispatch(setAuthStatus(false))
                 }
             },
-        
-            
+        }),
+        logout: build.query<void, void>(
+            {
+                query: () => (
+                    {
+                        url: `api/v1/auth/logout`,
+                        headers: {
+                            Authorization: localStorage.getItem('token') || ''
+                        }
+                    }
+                ),
+                onQueryStarted(id, {queryFulfilled}) {
+                    localStorage.removeItem('token')
+                    localStorage.removeItem('refresh_token')
+                }
+            }
+        ),
+        checkAuth: build.mutation<checkAuthType, void>({
+            query: () => ({
+                url: '/refresh-token',
+                headers: {
+                    Authorization: localStorage.getItem('token') || '',
+                    ContentLength: "0"
+                },
+                method: 'POST'
+            }),
+            async onQueryStarted(arg, {dispatch, queryFulfilled}) {
+                try {
+                    const {data} = await queryFulfilled;
+                    dispatch(setAuthStatus(true))
+                    localStorage.setItem("token", `Bearer ${data.accessToken}`);
+                    localStorage.setItem("refresh_token", `Bearer ${data.refreshToken}`);
+                } catch (err) {
+                    dispatch(setAuthStatus(false))
+                    console.log('Не авторизован')
+                }
+            }
         })
     })
 }
 );
 
-export const { useRegistrationMutation, useLoginMutation } = userApi;
+export const { useRegistrationMutation, useLoginMutation, useLazyLogoutQuery, useCheckAuthMutation } = userApi;
