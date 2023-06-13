@@ -19,8 +19,9 @@ function App() {
 
     if (error && 'status' in error) {
 
+        console.log(error.status)
         setTimeout(() => {
-            if (error.status === 400)
+            if (error.data === 'Произошла ошибка: 400 Rate limit exceeded')
             checkAuth();
         }, 201)
 
