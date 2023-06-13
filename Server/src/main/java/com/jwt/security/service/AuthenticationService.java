@@ -9,6 +9,7 @@ import com.jwt.security.Entity.user.Roles;
 import com.jwt.security.Entity.user.User;
 import com.jwt.security.Entity.user.repository.RoleRepository;
 import com.jwt.security.Entity.user.repository.UserRepository;
+import com.jwt.security.config.RateLimited;
 import com.jwt.security.exception.YourCustomException;
 import com.jwt.security.requestResponse.AuthenticationRequest;
 import com.jwt.security.requestResponse.AuthenticationResponse;
@@ -111,6 +112,7 @@ public class AuthenticationService {
         tokenRepository.saveAll(validUserTokens);
     }
 
+    @RateLimited(value = "myMethod", limit = 1, duration = 1)
     public void refreshToken(
             HttpServletRequest request,
             HttpServletResponse response
@@ -128,11 +130,12 @@ public class AuthenticationService {
                     .orElseThrow();
             if (jwtService.isTokenValid(refreshToken, user)) {
                 var accessToken = jwtService.generateToken(user);
+                var _refreshToken = jwtService.generateRefreshToken(user);
                 revokeAllUserTokens(user);
                 saveUserToken(user, accessToken);
                 var authResponse = AuthenticationResponse.builder()
                         .accessToken(accessToken)
-                        .refreshToken(refreshToken)
+                        .refreshToken(_refreshToken)
                         .build();
                 new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
             }

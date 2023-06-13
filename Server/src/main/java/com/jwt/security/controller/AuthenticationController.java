@@ -1,5 +1,7 @@
 package com.jwt.security.controller;
 
+import com.jwt.security.config.RateLimited;
+import com.jwt.security.exception.YourCustomException;
 import com.jwt.security.requestResponse.AuthenticationRequest;
 import com.jwt.security.requestResponse.AuthenticationResponse;
 import com.jwt.security.requestResponse.RegisterRequest;
@@ -40,6 +42,16 @@ public class AuthenticationController {
             HttpServletRequest request,
             HttpServletResponse response
     ) throws IOException {
-        service.refreshToken(request, response);
+        try {
+            service.refreshToken(request, response);
+        } catch (RuntimeException ex) {
+            // Обработка ошибки лимита запросов
+            // Например, возвращаем ошибку с соответствующим HTTP-статусом
+            throw new YourCustomException(HttpServletResponse.SC_BAD_REQUEST+ " Rate limit exceeded");
+        } catch (Exception ex) {
+            // Обработка других исключений, если необходимо
+            // Например, возвращаем ошибку с соответствующим HTTP-статусом
+            throw new YourCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR + " Internal server error");
+        }
     }
 }
