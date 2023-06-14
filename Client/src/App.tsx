@@ -1,6 +1,6 @@
 import './App.css';
 import {RouterProvider} from "react-router-dom";
-import router from "./Router";
+import router from "./Router/Router";
 import {Box, CssBaseline} from "@mui/material";
 import { useEffect } from 'react';
 import { useCheckAuthMutation } from './store/User/userApi';

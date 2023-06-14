@@ -1,13 +1,13 @@
 import {Navigate, createBrowserRouter} from "react-router-dom";
-import Catalog from "./pages/Catalog";
-import Course from "./pages/Course/Course";
-import Learn from "./pages/Learn";
-import Teach from "./pages/Teach/Teach";
-import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
-import CoursesList from "./pages/Teach/CoursesList";
-import NewCourse from "./pages/Teach/NewCourse";
-import Syllabus from "./pages/Course/Syllabus";
+import Catalog from "../pages/Catalog";
+import Course from "../pages/Course/Course";
+import Learn from "../pages/Learn";
+import Teach from "../pages/Teach/Teach";
+import SignIn from "../pages/SignIn";
+import SignUp from "../pages/SignUp";
+import CoursesList from "../pages/Teach/CoursesList";
+import NewCourse from "../pages/Teach/NewCourse";
+import Syllabus from "../pages/Course/Syllabus";
 
 const router = createBrowserRouter([
     {

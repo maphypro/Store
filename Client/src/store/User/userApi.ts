@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { UserReg, UserAuth } from '../../types/UserTypes'
-import { setAuthStatus } from './userSlice';
+import { setUser, defaultUserState } from './userSlice';
+import jwt_decode from 'jwt-decode';
 
 
 type checkAuthType = {
@@ -24,11 +25,18 @@ export const userApi = createApi({
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
                     const { data } = await queryFulfilled;
-                    dispatch(setAuthStatus(true))
+                    const decoded_token: any = jwt_decode(data.accessToken)
+                    dispatch(setUser(
+                        {
+                            email: decoded_token.sub,
+                            role: decoded_token.role,
+                            isAuth: true
+                        }
+                    ))
                     localStorage.setItem("token", `Bearer ${data.accessToken}`);
                     localStorage.setItem("refresh_token", `Bearer ${data.refreshToken}`);
                 } catch (err) {
-                    dispatch(setAuthStatus(false))
+                    dispatch(setUser(defaultUserState))
                 }
             },
         }),
@@ -41,11 +49,18 @@ export const userApi = createApi({
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
                     const { data } = await queryFulfilled;
-                    dispatch(setAuthStatus(true))
+                    const decoded_token: any = jwt_decode(data.accessToken)
+                    dispatch(setUser(
+                        {
+                            email: decoded_token.sub,
+                            role: decoded_token.role,
+                            isAuth: true
+                        }
+                    ))
                     localStorage.setItem("token", `Bearer ${data.accessToken}`);
                     localStorage.setItem("refresh_token", `Bearer ${data.refreshToken}`);
                 } catch (err) {
-                    dispatch(setAuthStatus(false))
+                    dispatch(setUser(defaultUserState))
                 }
             },
         }),
@@ -59,10 +74,10 @@ export const userApi = createApi({
                         }
                     }
                 ),
-                onQueryStarted(id, {dispatch, queryFulfilled}) {
+                onQueryStarted(id, { dispatch, queryFulfilled }) {
                     localStorage.removeItem('token')
                     localStorage.removeItem('refresh_token')
-                    dispatch(setAuthStatus(false))
+                    dispatch(setUser(defaultUserState))
                 }
             }
         ),
@@ -75,15 +90,23 @@ export const userApi = createApi({
                 },
                 method: 'POST'
             }),
-            async onQueryStarted(arg, {dispatch, queryFulfilled}) {
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
                 try {
-                    const {data} = await queryFulfilled;
-                    dispatch(setAuthStatus(true))
+                    const { data } = await queryFulfilled;
+
+                    const decoded_token: any = jwt_decode(data.accessToken)
+                    dispatch(setUser(
+                        {
+                            email: decoded_token.sub,
+                            role: decoded_token.role,
+                            isAuth: true
+                        }
+                    ))
                     localStorage.setItem("token", `Bearer ${data.accessToken}`);
                     localStorage.setItem("refresh_token", `Bearer ${data.refreshToken}`);
                 } catch (err) {
-                    
-                    dispatch(setAuthStatus(false))
+
+                    dispatch(setUser(defaultUserState))
                     console.log(err)
                 }
             }
