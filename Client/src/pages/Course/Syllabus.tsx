@@ -1,7 +1,7 @@
 import { Box, Button, Container, Typography } from "@mui/material";
 import SyllabusView from "../../components/SyllabusView";
 import { useLoadModulesQuery } from "../../store/Course/courseApi";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { ModuleType } from "../../types/CourseTypes";
 import { useAppSelector } from "../../hook";
 
@@ -32,9 +32,11 @@ export default function Syllabus() {
             </Typography>
           </Box>
       }
-      <Button>
-        Редактировать содержание
-      </Button>
+      <Link to='../edit-syllabus'>
+        <Button>
+          Редактировать содержание
+        </Button>
+      </Link>
     </Container>
   )
 }

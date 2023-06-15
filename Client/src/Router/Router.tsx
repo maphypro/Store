@@ -10,6 +10,7 @@ import NewCourse from "../pages/Teach/NewCourse";
 import Syllabus from "../pages/Course/Syllabus";
 import ProtectedRoute from "./ProtectedRoute";
 import { useAppSelector } from "../hook";
+import EditSyllabus from "../pages/Course/EditSyllabus";
 
 export default function Router() {
 
@@ -50,7 +51,7 @@ export default function Router() {
                 },
                 {
                     path: 'edit-syllabus',
-                    element: <ProtectedRoute user={user}> <Syllabus /> </ProtectedRoute>
+                    element: <ProtectedRoute user={user}> <EditSyllabus /> </ProtectedRoute>
                 }
             ]
         },
