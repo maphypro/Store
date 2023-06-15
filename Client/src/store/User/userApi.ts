@@ -1,13 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { UserReg, UserAuth } from '../../types/UserTypes'
+import { UserRegType, UserAuthType, CheckAuthType } from '../../types/UserTypes'
 import { setUser, defaultUserState } from './userSlice';
 import jwt_decode from 'jwt-decode';
 
 
-type checkAuthType = {
-    accessToken: string,
-    refreshToken: string
-}
+
 
 export const userApi = createApi({
     reducerPath: 'userApi',
@@ -16,8 +13,8 @@ export const userApi = createApi({
     }),
 
     endpoints: build => ({
-        registration: build.mutation<any, UserReg>({
-            query: (userRegData: UserReg) => ({
+        registration: build.mutation<any, UserRegType>({
+            query: (userRegData: UserRegType) => ({
                 url: `register`,
                 method: 'POST',
                 body: { ...userRegData, role: 'USER' },
@@ -40,8 +37,8 @@ export const userApi = createApi({
                 }
             },
         }),
-        login: build.mutation<any, UserAuth>({
-            query: (userAuthData: UserAuth) => ({
+        login: build.mutation<any, UserAuthType>({
+            query: (userAuthData: UserAuthType) => ({
                 url: `authenticate`,
                 method: 'POST',
                 body: userAuthData
@@ -81,7 +78,7 @@ export const userApi = createApi({
                 }
             }
         ),
-        checkAuth: build.mutation<checkAuthType, void>({
+        checkAuth: build.mutation<CheckAuthType, void>({
             query: () => ({
                 url: '/refresh-token',
                 headers: {

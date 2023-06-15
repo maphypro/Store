@@ -1,6 +1,7 @@
 import { Box, List, ListItem } from "@mui/material";
 import SyllabusViewModule from "./SyllabusViewModule";
 import SyllabusViewLesson from "./SyllabusViewLesson";
+import { useLoadModulesQuery } from "../store/Course/courseApi";
 
 const ModuleStyle = {
     display: 'flex',
@@ -16,7 +17,6 @@ const LessonStyle = {
 
 
 export default function SyllabusView() {
-
     
 
     return (

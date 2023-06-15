@@ -23,7 +23,7 @@ export type ModuleType = {
     id: number,
     title: string,
     description?: string,
-    lessons: LessonType[] | null 
+    lessons?: LessonType[] | null 
 }
 
 export type LessonType = {

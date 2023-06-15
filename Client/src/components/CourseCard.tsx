@@ -60,7 +60,7 @@ const Info = ({rating, studentsCount, courseTime}:InfoProps) => {
 };
 
 const Header = ({title, image}: HeaderProps) => {
-    console.log(image)
+
     return (
         <Box sx={{ display: 'flex', flexDirection: 'row'}}>
             <Typography variant={'h6'} sx={ { wordWrap: 'break-word' } } maxWidth={.5}>

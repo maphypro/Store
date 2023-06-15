@@ -5,6 +5,7 @@ import {Box, CssBaseline} from "@mui/material";
 import { useEffect } from 'react';
 import { useCheckAuthMutation } from './store/User/userApi';
 import { useAppSelector } from './hook';
+import Router from './Router/Router';
 
 
 function App() {
@@ -31,7 +32,7 @@ function App() {
     return (
         <div className="App">
             <CssBaseline/>
-            <RouterProvider router={router} />
+            <Router />
         </div>
     );
 }

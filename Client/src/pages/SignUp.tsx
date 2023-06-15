@@ -2,7 +2,7 @@ import { Box, Button, Container, FormControl, TextField, Typography } from "@mui
 import { useForm, SubmitHandler } from "react-hook-form";
 import CameraIcon from '@mui/icons-material/Camera';
 import { useRegistrationMutation } from "../store/User/userApi";
-import { UserReg } from "../types/UserTypes";
+import { UserRegType } from "../types/UserTypes";
 import { Navigate } from "react-router-dom";
 
 
@@ -23,7 +23,7 @@ export default function SignUp() {
 
 
     const onSubmit: SubmitHandler<Inputs> = data => {
-        const values: UserReg = getValues();
+        const values: UserRegType = getValues();
         trigger(values)
         reset();
     };

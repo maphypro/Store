@@ -12,7 +12,7 @@ export const courseApi = createApi({
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
                     const { data } = await queryFulfilled;
-                    console.log('kek')
+                    
                     dispatch(loadCourseCards(data))
                 }
                 catch (e) {

@@ -1,4 +1,4 @@
-export type UserReg =  {
+export type UserRegType =  {
     firstName: string,
     lastName: string,
     email: string,
@@ -7,8 +7,12 @@ export type UserReg =  {
 }
 
 
-export type UserAuth =  {
+export type UserAuthType =  {
     email: string,
     password: string
 }
 
+export type CheckAuthType = {
+    accessToken: string,
+    refreshToken: string
+}
