@@ -102,4 +102,23 @@ public class CourseController {
         //Long id = Long.parseLong(idRequest);
         return ResponseEntity.ok(courseService.getLesson(idcourse,idmodules));
     }
+
+    @PostMapping("/add_comment")
+    public ResponseEntity<CommentResponse> addComment(
+            @AuthenticationPrincipal User user,
+            @RequestBody CommentRequest commentRequest
+    ){
+
+        return ResponseEntity.ok(courseService.addComment(commentRequest,user));
+    }
+
+    @GetMapping("/get_comments")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<CommentResponse>> getLessons(
+            @AuthenticationPrincipal User user,
+            @RequestParam Long idLesson
+    ) {
+        //Long id = Long.parseLong(idRequest);
+        return ResponseEntity.ok(courseService.getComments(idLesson));
+    }
 }

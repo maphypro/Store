@@ -11,6 +11,8 @@ import com.jwt.security.Entity.course.repository.CategoriesRepository;
 import com.jwt.security.Entity.course.repository.CourseRepository;
 import com.jwt.security.Entity.course.repository.LessonRepository;
 import com.jwt.security.Entity.course.repository.ModulesRepository;
+import com.jwt.security.Entity.text.Comment;
+import com.jwt.security.Entity.text.repository.CommnetRepository;
 import com.jwt.security.Entity.user.User;
 import com.jwt.security.Entity.user.repository.UserRepository;
 import com.jwt.security.requestResponse.*;
@@ -35,6 +37,7 @@ public class CourseService {
     private final CategoriesRepository categoriesRepository;
     private final UserRepository userRepository;
 
+    private final CommnetRepository commnetRepository;
 
     private final UserService userService;
     private final JwtService jwtService;
@@ -47,6 +50,7 @@ public class CourseService {
     }
 
     public NewCourseResponse newCourse(String request, User user) throws Exception {
+        Long courseId;
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(request);
         String title = jsonNode.get("title").asText();
@@ -55,13 +59,12 @@ public class CourseService {
         course.setTitle(title);
         course.setCourseCreator(user.getCourseCreator());
         try {
-            courseRepository.save(course);
+            courseId = courseRepository.save(course).getId();
         } catch (DataIntegrityViolationException ex) {
             throw new DataIntegrityViolationException("Такой курс уже есть");
         }
-        course = courseRepository.findByTitle(course.getTitle()).orElseThrow();
         userService.saveUserCreator(user);
-        return new NewCourseResponse(course.getId(), course.getTitle(), user.getFirstname(), user.getLastname());
+        return new NewCourseResponse(courseId, course.getTitle(), user.getFirstname(), user.getLastname());
     }
 
     public Course generateCourse(CourseRequest request, MultipartFile image, MultipartFile video, User user) {
@@ -106,7 +109,7 @@ public class CourseService {
     public List<ModulesResponse> addModule(AddModuleRequest request) {
         long courseId = request.getCourseId();
         List<ModuleRequest> moduleRequests = request.getModules();
-
+        List<ModulesResponse> ListModulesResponses = new ArrayList<>();
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new IllegalArgumentException("Course not found"));
 
@@ -115,18 +118,23 @@ public class CourseService {
             modules.setModuleNumber(moduleRequest.getModuleNumber());
             modules.setName(moduleRequest.getName());
             modules.setCourse(course);
-            modulesRepository.save(modules);
-        }
-        List<Modules> ListModules = modulesRepository.findAllByCourseId(courseId);
-
-        List<ModulesResponse> ListModulesResponses = new ArrayList<>();
-        for (Modules modules : ListModules) {
+            Long moduleId = modulesRepository.save(modules).getId();
             ModulesResponse modulesResponse = new ModulesResponse();
             modulesResponse.setId(modules.getId());
             modulesResponse.setModulesNumber(modules.getModuleNumber());
             modulesResponse.setName(modules.getName());
             ListModulesResponses.add(modulesResponse);
         }
+//        List<Modules> ListModules = modulesRepository.findAllByCourseId(courseId);
+//
+//        List<ModulesResponse> ListModulesResponses = new ArrayList<>();
+//        for (Modules modules : ListModules) {
+//            ModulesResponse modulesResponse = new ModulesResponse();
+//            modulesResponse.setId(modules.getId());
+//            modulesResponse.setModulesNumber(modules.getModuleNumber());
+//            modulesResponse.setName(modules.getName());
+//            ListModulesResponses.add(modulesResponse);
+//        }
         return ListModulesResponses;
     }
     public List<ModulesResponse> getModules(Long id){
@@ -145,10 +153,10 @@ public class CourseService {
         return ListModulesResponses;
     }
     public List<LessonResponse> addLesson(AddLessonRequest request) {
-        long lessonId = request.getLessonId();
+        long moduleId = request.getLessonId();
         List<LessonRequest> lessonRequests = request.getLessons();
-
-        Modules modules = modulesRepository.findById(lessonId)
+        List<LessonResponse> ListModulesResponses = new ArrayList<>();
+        Modules modules = modulesRepository.findById(moduleId)
                 .orElseThrow(() -> new IllegalArgumentException("Module not found"));
 
         for (LessonRequest lessonRequest : lessonRequests) {
@@ -156,18 +164,23 @@ public class CourseService {
             lesson.setLessonNumber(lessonRequest.getLessonNumber());
             lesson.setName(lessonRequest.getName());
             lesson.setModules(modules);
-            lessonRepository.save(lesson);
-        }
-        List<Lesson> ListModules = lessonRepository.findAllByModulesId(lessonId);
-
-        List<LessonResponse> ListModulesResponses = new ArrayList<>();
-        for (Lesson lesson : ListModules) {
+            Long lessonId = lessonRepository.save(lesson).getId();
             LessonResponse lessonResponse = new LessonResponse();
-            lessonResponse.setId(lesson.getId());
+            lessonResponse.setId(lessonId);
             lessonResponse.setLessonNumber(lesson.getLessonNumber());
             lessonResponse.setName(lesson.getName());
             ListModulesResponses.add(lessonResponse);
         }
+//        List<Lesson> ListModules = lessonRepository.findAllByModulesId(lessonId);
+//
+//        List<LessonResponse> ListModulesResponses = new ArrayList<>();
+//        for (Lesson lesson : ListModules) {
+//            LessonResponse lessonResponse = new LessonResponse();
+//            lessonResponse.setId(lesson.getId());
+//            lessonResponse.setLessonNumber(lesson.getLessonNumber());
+//            lessonResponse.setName(lesson.getName());
+//            ListModulesResponses.add(lessonResponse);
+//        }
         return ListModulesResponses;
     }
 
@@ -187,6 +200,39 @@ public class CourseService {
             ListModulesResponses.add(lessonResponse);
         }
         return ListModulesResponses;
+    }
+
+    public CommentResponse addComment(CommentRequest commentRequest, User user){
+        Lesson lesson = lessonRepository.findById(commentRequest.getLessonId()).orElseThrow();
+        Comment comment = new Comment();
+        comment.setLesson(lesson);
+        comment.setUser(user);
+        comment.setText(commentRequest.getText());
+        Long commentId = commnetRepository.save(comment).getId();
+
+        CommentResponse commentResponse = new CommentResponse();
+        commentResponse.setId(commentId);
+        commentResponse.setText(commentRequest.getText());
+        commentResponse.setLessonId(lesson.getId());
+        commentResponse.setUserId(user.getId());
+        commentResponse.setUserName(user.getFirstname());
+
+        return commentResponse;
+    }
+
+    public List<CommentResponse> getComments(Long lessonId){
+        List<Comment> commentList = commnetRepository.findByLessonId(lessonId);
+        List<CommentResponse> commentResponses = new ArrayList<>();
+        for(Comment comment : commentList){
+            CommentResponse commentResponse = new CommentResponse();
+            commentResponse.setId(comment.getId());
+            commentResponse.setText(comment.getText());
+            commentResponse.setLessonId(comment.getLesson().getId());
+            commentResponse.setUserId(comment.getUser().getId());
+            commentResponse.setUserName(comment.getUser().getFirstname());
+            commentResponses.add(commentResponse);
+        }
+        return commentResponses;
     }
     public List<CategoriesResponse> getCategories() {
         List<Categories> categoriesResponseList = categoriesRepository.findAll();

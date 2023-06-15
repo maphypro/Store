@@ -1,5 +1,6 @@
 package com.jwt.security.service;
 
+import com.jwt.security.Entity.token.TokenRepository;
 import com.jwt.security.Entity.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -13,11 +14,11 @@ import org.springframework.stereotype.Service;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
 @Service
+
 public class JwtService {
 
     @Value("${application.security.jwt.secret-key}")
@@ -26,6 +27,11 @@ public class JwtService {
     private long jwtExpiration;
     @Value("${application.security.jwt.refresh-token.expiration}")
     private long refreshExpiration;
+
+    private final TokenRepository tokenRepository;
+    public JwtService(TokenRepository tokenRepository) {
+        this.tokenRepository = tokenRepository;
+    }
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -71,9 +77,11 @@ public class JwtService {
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token) && !isTokenRevoked(token);
     }
-
+    public boolean isTokenRevoked(String token) {
+        return tokenRepository.existsRevokedToken(token); // Проверка отозванного токена
+    }
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
