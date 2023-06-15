@@ -35,8 +35,8 @@ public class SecurityApplication {
 			System.out.println("Admin token: " + service.register(admin).getAccessToken());
 
 			var manager = RegisterRequest.builder()
-					.firstName("Admin")
-					.lastName("Admin")
+					.firstName("Manager")
+					.lastName("Manager")
 					.email("manager@mail.com")
 					.password("password")
 					.role(MANAGER.name())
