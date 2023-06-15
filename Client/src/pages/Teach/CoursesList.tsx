@@ -4,6 +4,7 @@ import CourseCreateInitial from "../../components/CourseCreateInitial";
 import { useAppSelector } from "../../hook";
 import { useEffect } from "react";
 import { useLoadCoursesListQuery } from "../../store/Course/courseApi";
+import CourseListItem from "../../components/CourseListItem";
 
 
 const CoursesList = () => {
@@ -47,7 +48,7 @@ const CoursesList = () => {
                         return (
                             <ListItem>
                                 <ListItemText>
-                                    {course.title}
+                                    <CourseListItem course={course}/>
                                 </ListItemText>
                             </ListItem>
                         )

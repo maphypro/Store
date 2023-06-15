@@ -12,14 +12,14 @@ export const courseApi = createApi({
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
                     const { data } = await queryFulfilled;
-                    
+
                     dispatch(loadCourseCards(data))
                 }
                 catch (e) {
                     console.log('Не судьба')
                 }
             }
-        }),
+        }),   
         loadOneCard: build.query<CourseType, number>({
             query: (id) => `api/demo/${id}`
         }),

@@ -82,7 +82,7 @@ export const userApi = createApi({
             query: () => ({
                 url: '/refresh-token',
                 headers: {
-                    Authorization: localStorage.getItem('token') || '',
+                    Authorization: localStorage.getItem('refresh_token') || '',
                     ContentLength: "0"
                 },
                 method: 'POST'
