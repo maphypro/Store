@@ -58,6 +58,15 @@ public class CourseController {
         }
     }
 
+    @GetMapping("/creator_courses")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<CourseResponse>> allCourseCreator(
+            @AuthenticationPrincipal User user
+    ){
+
+        return courseService.allCourseCreator(user);
+    }
+
     @PostMapping("/add_modules")
     public ResponseEntity<List<ModulesResponse>> addModules(
             @AuthenticationPrincipal User user,
