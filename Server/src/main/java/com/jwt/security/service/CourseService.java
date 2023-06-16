@@ -54,6 +54,8 @@ public class CourseService {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(request);
         String title = jsonNode.get("title").asText();
+        
+        userService.saveUserCreator(user);
 
         Course course = new Course();
         course.setTitle(title);
@@ -63,7 +65,7 @@ public class CourseService {
         } catch (DataIntegrityViolationException ex) {
             throw new DataIntegrityViolationException("Такой курс уже есть");
         }
-        userService.saveUserCreator(user);
+
         return new NewCourseResponse(courseId, course.getTitle(), user.getFirstname(), user.getLastname());
     }
 
@@ -106,6 +108,25 @@ public class CourseService {
         return new ResponseEntity<>(courseResponses, HttpStatus.OK);
     }
 
+    public ResponseEntity<List<CourseResponse>> allCourseCreator(User user){
+        List<Course> courses = courseRepository.findByCourseCreatorId(user.getCourseCreator().getId());
+        List<CourseResponse> courseResponses = new ArrayList<>();
+        for (Course course : courses) {
+            CourseResponse courseResponse = new CourseResponse();
+            courseResponse.setId(course.getId());
+            courseResponse.setTitle(course.getTitle());
+            courseResponse.setMemberCount(course.getMemberCount());
+            courseResponse.setPrice(course.getPrice());
+            courseResponse.setCourseTime(course.getCourseTime());
+            courseResponse.setImage(course.getImage());
+            courseResponse.setVideo(course.getVideo());
+            courseResponse.setDescription(course.getDescription());
+
+            courseResponses.add(courseResponse);
+        }
+        return new ResponseEntity<>(courseResponses, HttpStatus.OK);
+    }
+
     public List<ModulesResponse> addModule(AddModuleRequest request) {
         long courseId = request.getCourseId();
         List<ModuleRequest> moduleRequests = request.getModules();
@@ -125,16 +146,6 @@ public class CourseService {
             modulesResponse.setName(modules.getName());
             ListModulesResponses.add(modulesResponse);
         }
-//        List<Modules> ListModules = modulesRepository.findAllByCourseId(courseId);
-//
-//        List<ModulesResponse> ListModulesResponses = new ArrayList<>();
-//        for (Modules modules : ListModules) {
-//            ModulesResponse modulesResponse = new ModulesResponse();
-//            modulesResponse.setId(modules.getId());
-//            modulesResponse.setModulesNumber(modules.getModuleNumber());
-//            modulesResponse.setName(modules.getName());
-//            ListModulesResponses.add(modulesResponse);
-//        }
         return ListModulesResponses;
     }
     public List<ModulesResponse> getModules(Long id){
@@ -171,16 +182,7 @@ public class CourseService {
             lessonResponse.setName(lesson.getName());
             ListModulesResponses.add(lessonResponse);
         }
-//        List<Lesson> ListModules = lessonRepository.findAllByModulesId(lessonId);
-//
-//        List<LessonResponse> ListModulesResponses = new ArrayList<>();
-//        for (Lesson lesson : ListModules) {
-//            LessonResponse lessonResponse = new LessonResponse();
-//            lessonResponse.setId(lesson.getId());
-//            lessonResponse.setLessonNumber(lesson.getLessonNumber());
-//            lessonResponse.setName(lesson.getName());
-//            ListModulesResponses.add(lessonResponse);
-//        }
+
         return ListModulesResponses;
     }
 
