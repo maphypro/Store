@@ -72,7 +72,6 @@ public class CourseController {
             @AuthenticationPrincipal User user,
             @RequestBody AddModuleRequest request
     ) {
-
         return ResponseEntity.ok(courseService.addModule(request));
     }
 
