@@ -23,6 +23,7 @@ public class Modules {
     private Integer moduleNumber;
 
     private String name;
+    private String description;
 
     @ManyToOne
     @JoinColumn(name = "course_id")
