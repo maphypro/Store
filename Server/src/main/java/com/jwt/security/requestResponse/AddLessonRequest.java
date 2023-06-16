@@ -13,6 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 public class AddLessonRequest {
 
-    private long lessonId;
+    private long moduleId;
     private List<LessonRequest> lessons;
 }

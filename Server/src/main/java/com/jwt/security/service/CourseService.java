@@ -139,7 +139,7 @@ public class CourseService {
         return ListModulesResponses;
     }
     public List<LessonResponse> addLesson(AddLessonRequest request) {
-        long moduleId = request.getLessonId();
+        long moduleId = request.getModuleId();
         List<LessonRequest> lessonRequests = request.getLessons();
         List<LessonResponse> ListModulesResponses = new ArrayList<>();
         Modules modules = modulesRepository.findById(moduleId)
