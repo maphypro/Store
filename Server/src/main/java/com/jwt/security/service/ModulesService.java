@@ -38,7 +38,9 @@ public class ModulesService {
             modules.setCourse(course);
             Long moduleId = modulesRepository.save(modules).getId();
             listModulesResponses.add(modulesResponse(modules, moduleId));
+            course.getModules().add(modules);
         }
+        courseRepository.save(course);
         return listModulesResponses;
     }
 
@@ -73,7 +75,6 @@ public class ModulesService {
     public List<ModulesResponse> updateModules(AddModuleRequest request) {
         long courseId = request.getCourseId();
         List<ModuleRequest> moduleRequests = request.getModules();
-
         // Получение всех модулей для обновления, связанных с указанным courseId
         List<Modules> modulesToUpdate = modulesRepository.findByCourseId(courseId);
 

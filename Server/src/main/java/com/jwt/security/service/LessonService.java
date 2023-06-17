@@ -34,8 +34,9 @@ public class LessonService {
             lesson.setModules(modules);
             Long lessonId = lessonRepository.save(lesson).getId();
             ListModulesResponses.add(lessonResponse(lesson, lessonId));
+            modules.getLessons().add(lesson);
         }
-
+        modulesRepository.save(modules);
         return ListModulesResponses;
     }
 
@@ -63,5 +64,52 @@ public class LessonService {
         lessonResponse.setModuleId(lesson.getModules().getId());
 
         return lessonResponse;
+    }
+
+    public void updateLessons(AddLessonRequest request) {
+        long moduleId = request.getModuleId();
+        List<LessonRequest> lessons = request.getLessons();
+
+        Modules module = modulesRepository.findById(moduleId).orElseThrow();
+        Lesson lesson;
+        for (LessonRequest lessonRequest : lessons) {
+            Long lessonId = lessonRequest.getId();
+            String name = lessonRequest.getName();
+
+            if (lessonId != null) {
+                lesson = lessonRepository.findById(lessonId).orElseThrow();
+                lesson.setName(name);
+                // Связать урок с соответствующим модулем и курсом, если необходимо
+                lesson.setModules(module);
+            } else {
+                lesson = new Lesson();
+                lesson.setName(name);
+                // Связать урок с соответствующим модулем и курсом, если необходимо
+                lesson.setModules(module);
+                module.getLessons().add(lesson);
+            }
+            lessonRepository.save(lesson);
+        }
+        modulesRepository.save(module);
+    }
+
+    public void deleteLessons(AddLessonRequest request) {
+        long moduleId = request.getModuleId();
+        List<LessonRequest> lessons = request.getLessons();
+
+        Modules module = modulesRepository.findById(moduleId).orElseThrow();
+
+        for (LessonRequest lessonRequest : lessons) {
+            Long lessonId = lessonRequest.getId();
+
+            if (lessonId != null) {
+                Lesson lesson = lessonRepository.findById(lessonId).orElseThrow();
+                // Удаление связанных записей с уроком, если необходимо
+//                lesson.getComments().removeAll();
+                lessonRepository.delete(lesson);
+            }
+        }
+
+        modulesRepository.save(module);
     }
 }

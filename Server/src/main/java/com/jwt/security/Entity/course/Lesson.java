@@ -1,10 +1,13 @@
 package com.jwt.security.Entity.course;
 
+import com.jwt.security.Entity.text.Comment;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -27,5 +30,6 @@ public class Lesson {
     @JoinColumn(name = "module_id")
     private Modules modules;
 
-
+    @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
 }
