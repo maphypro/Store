@@ -11,6 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LessonRequest {
 
-    private Integer lessonNumber;
     private String name;
 }
