@@ -107,6 +107,7 @@ public class LessonService {
                 // Удаление связанных записей с уроком, если необходимо
 //                lesson.getComments().removeAll();
                 lessonRepository.delete(lesson);
+                module.getLessons().remove(lesson);
             }
         }
 
