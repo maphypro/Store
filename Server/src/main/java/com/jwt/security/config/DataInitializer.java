@@ -51,7 +51,7 @@ public class DataInitializer implements ApplicationRunner {
             categories.setName("analitic");
             categoriesRepository.save(categories);
         }
-        if (userRepository.existsByEmail("admin@mail.com")) {
+        if (!userRepository.existsByEmail("admin@mail.com")) {
             var admin = RegisterRequest.builder()
                     .firstName("Admin")
                     .lastName("Admin")
@@ -60,8 +60,7 @@ public class DataInitializer implements ApplicationRunner {
                     .build();
             System.out.println("Admin token: " + service.register(admin).getAccessToken());
         }
-
-        if (userRepository.existsByEmail("manager@mail.com")) {
+        if (!userRepository.existsByEmail("manager@mail.com")) {
             var manager = RegisterRequest.builder()
                     .firstName("Manager")
                     .lastName("Manager")

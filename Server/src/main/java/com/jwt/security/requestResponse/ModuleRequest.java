@@ -11,6 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ModuleRequest {
+
+    private Long id;
+    private Integer moduleNumber;
     private String name;
     private String description;
 }

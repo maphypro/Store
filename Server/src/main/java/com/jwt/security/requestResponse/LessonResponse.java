@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class LessonResponse {
 
     private Long id;
+    private Long moduleId;
     private Integer lessonNumber;
     private String name;
 }
