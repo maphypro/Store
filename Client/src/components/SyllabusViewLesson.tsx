@@ -1,6 +1,10 @@
+import { Box } from "@mui/material";
+import { LessonType } from "../types/CourseTypes";
 
-export default function SyllabusViewLesson() {
+export default function SyllabusViewLesson({ lesson }: { lesson: LessonType }) {
   return (
-    <div>SyllabusViewLesson</div>
+    <Box>
+      {lesson.title}
+    </Box>
   )
 }

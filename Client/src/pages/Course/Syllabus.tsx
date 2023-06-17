@@ -2,7 +2,6 @@ import { Box, Button, Container, Typography } from "@mui/material";
 import SyllabusView from "../../components/SyllabusView";
 import { useLoadModulesQuery } from "../../store/Course/courseApi";
 import { Link, useParams } from "react-router-dom";
-import { ModuleType } from "../../types/CourseTypes";
 import { useAppSelector } from "../../hook";
 
 export default function Syllabus() {

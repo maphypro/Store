@@ -19,7 +19,7 @@ export const courseApi = createApi({
                     console.log('Не судьба')
                 }
             }
-        }),   
+        }),
         loadOneCard: build.query<CourseType, number>({
             query: (id) => `api/demo/${id}`
         }),
@@ -27,22 +27,22 @@ export const courseApi = createApi({
             query: (title: string) => ({
                 url: '/course/new_course',
                 method: 'POST',
-                body: {title: title},
+                body: { title: title },
             }),
-            async onQueryStarted(id, {dispatch, queryFulfilled}) {
+            async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
-                    const {data} = await queryFulfilled; 
+                    const { data } = await queryFulfilled;
                     dispatch(createCourse(data));
-                } catch(e) {
+                } catch (e) {
                     console.log('error')
                 }
             },
         }),
         loadCoursesList: build.query<CourseType[], number>({
             query: (id: number) => `/main/courses`,
-            async onQueryStarted(id, {dispatch, queryFulfilled}) {
+            async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
-                    const {data} = await queryFulfilled
+                    const { data } = await queryFulfilled
                     dispatch(updateLoadedCourses(data))
                 }
                 catch (e) {
@@ -50,24 +50,37 @@ export const courseApi = createApi({
                 }
             }
         }),
-        loadModules: build.query<ModuleType[], {id: number}>({
+        loadModules: build.query<ModuleType[], { id: number }>({
             query: (arg) => {
-                const {id} = arg;
+                const { id } = arg;
                 return {
                     url: `course/get_modules`,
-                    params: {id}
+                    params: { id }
                 }
             },
-            async onQueryStarted(id, {dispatch, queryFulfilled}) {
+            async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
-                    const {data} = await queryFulfilled;
+                    const { data } = await queryFulfilled;
                     dispatch(loadModulesForCourse(data));
                 } catch (e) {
                     console.log('Cannot load modules')
                 }
             }
+        }),
+        addModules: build.mutation<any, any>({
+            query: ({ courseId, modules }: { courseId: number, modules: Array<string> }) => {
+                return {
+                    url: 'course/add_modules',
+                    method: 'POST',
+                    body: {
+                        courseId,
+                        modules
+                    }
+                }
+            },
+
         })
     })
 });
 
-export const {useCreateEmptyCourseMutation, useLoadCardsQuery, useLoadCoursesListQuery, useLoadModulesQuery} = courseApi;
+export const { useCreateEmptyCourseMutation, useLoadCardsQuery, useLoadCoursesListQuery, useLoadModulesQuery } = courseApi;

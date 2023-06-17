@@ -1,6 +1,6 @@
 export type CourseType = {
-    id: number,
-    title: string,
+    id?: number,
+    title?: string,
     image?: string,
     video?: string,
     description?: string,
@@ -20,16 +20,18 @@ export type CourseType = {
 }
 
 export type ModuleType = {
-    id: number,
-    title: string,
+    id?: number,
+    title?: string,
     description?: string,
+    moduleNumber: number,
     lessons?: LessonType[] | null 
 }
 
 export type LessonType = {
-    id: number,
-    title: string,
-    steps: StepType[] | null
+    id?: number,
+    title?: string,
+    lessonNumber?: number,
+    steps?: StepType[] | null
 }
 
 export type StepType = {
