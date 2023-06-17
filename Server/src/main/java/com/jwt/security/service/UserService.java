@@ -5,6 +5,7 @@ import com.jwt.security.Entity.user.CourseCreator;
 import com.jwt.security.Entity.user.User;
 import com.jwt.security.Entity.user.repository.CourseCreatorRepository;
 import com.jwt.security.Entity.user.repository.UserRepository;
+import com.jwt.security.exception.YourCustomException;
 import com.jwt.security.requestResponse.AuthenticationResponse;
 import com.jwt.security.requestResponse.GetUserResponse;
 import com.jwt.security.requestResponse.Message;
@@ -45,7 +46,7 @@ public class UserService {
                 .refreshToken(refreshToken)
                 .build();
     }
-    public Message saveUserCreator(User user) {
+    public User saveUserCreator(User user) {
         try {
             Optional<User> existingUser = userRepository.findById(user.getId());
             if (existingUser != null) {
@@ -57,9 +58,9 @@ public class UserService {
                 courseCreatorRepository.save(courseCreator);
                 userRepository.save(existingUser.get());
             }
+            return existingUser.get();
         } catch (DataIntegrityViolationException e) {
-            return new Message("You are the creator");
+            throw  new YourCustomException("You are the creator");
         }
-        return new Message("Successfull");
     }
 }

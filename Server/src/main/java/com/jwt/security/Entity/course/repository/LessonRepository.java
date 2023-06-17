@@ -18,4 +18,11 @@ public interface LessonRepository extends JpaRepository<Lesson, Long> {
 
     @Query("SELECT l FROM Lesson l JOIN l.modules m JOIN m.course c WHERE c.id = :courseId")
     List<Lesson> findAllLessonsWithCourse(@Param("courseId") Long courseId);
+
+    @Query("SELECT l FROM Lesson l JOIN l.modules m JOIN m.course c JOIN c.courseCreator cc " +
+            "WHERE m.id = :modulesId AND cc.id = :creatorId")
+    List<Lesson> findLessonsByCourseIdAndCreatorId(
+            @Param("modulesId") Long modulesId,
+            @Param("creatorId") Long creatorId
+    );
 }

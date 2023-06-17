@@ -47,7 +47,7 @@ public class Course {
     @OneToOne(mappedBy = "course", cascade = CascadeType.ALL)
     private CourseDescription courseDescription;
 
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Modules> modules;
 
-
-    // Остальные поля, геттеры/сеттеры
 }
