@@ -16,12 +16,12 @@ export type CourseType = {
     studentsCount?: number,
     shortDescription?: string,
     about?: string,
-    courseProgram?: ModuleType[]
+    courseProgram: ModuleType[]
 }
 
 export type ModuleType = {
     id?: number,
-    title?: string,
+    name?: string,
     description?: string,
     moduleNumber: number,
     lessons?: LessonType[] | null 

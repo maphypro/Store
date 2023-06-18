@@ -55,6 +55,7 @@ export default function SyllabusEdit() {
     )
   }
 
+
   return (
     <Box sx={{ w: 1 }} >
       {
@@ -62,8 +63,7 @@ export default function SyllabusEdit() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'flex-start',
-            width: 1,
-
+            w: 1,
           }}>
 
             {

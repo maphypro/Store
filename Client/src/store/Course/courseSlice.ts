@@ -25,8 +25,9 @@ const initialState: StateType = {
     //          if modulesPreparedToChange already contain that module then jush change it into array
     //    2.2. otherwise change title/description in modulesPreparedToSave
     // 3) clicket button "delete"
-    //    3.1. module exsist in modulesPreparedToSave -> just remove module from there
-    //    3.2. module exsist in modulesPreparedToChange -> move module to modulesPreparedToDelete
+    //    3.1. module exist in modulesPreparedToSave -> just remove module from there
+    //    3.2. module exist in modulesPreparedToChange -> move module to modulesPreparedToDelete and remove from other array
+    //    3.3. module exist in courseProgram -> move module to modulesPreparedToDelete and remove from other array
     // How to enumerate modules? 
     // on delete action need to iterate over the arrays course.courseProgram and modulesPreparedToSave and reenumerate
     // modules
@@ -49,16 +50,29 @@ const courseSlice = createSlice({
         loadCourseCards(state, action: PayloadAction<CourseType[]>) {
             state.cards = action.payload
         },
-        loadModulesForCourse: (state, action: PayloadAction<ModuleType[]>) => {
-            action.payload.forEach(module_ => {
-                state.ownerCourses.push(module_)
+        loadModulesForCourse: (state, action: PayloadAction<{ courseId: number, modules: ModuleType[] }>) => {
+
+            const { courseId } = action.payload;
+            const { modules } = action.payload;
+
+            state.ownerCourses = state.ownerCourses.map(course => {
+                if (course.id === courseId) {
+                    course.courseProgram = [];
+                    modules.forEach(module_ => {
+                        course.courseProgram.push(module_)
+                    });
+                    return course;
+                }
+                return course;
             })
+
         },
+        
         createNewModulePreparedToSave: (state, action: PayloadAction<{ courseId: number }>) => {
             const { courseId } = action.payload;
             const moduleNumber = state.modulesPreparedToSave.length +
                 (state.ownerCourses.find(course => course.id === courseId)?.courseProgram?.length || 0);
-            const emptyModule: ModuleType = { moduleNumber: moduleNumber, title: `Новый модуль ${moduleNumber}` }
+            const emptyModule: ModuleType = { id: 0, moduleNumber: moduleNumber, name: `Новый модуль ${moduleNumber}` }
             state.modulesPreparedToSave.push(emptyModule)
         },
         changeModule: (state, action: PayloadAction<{
@@ -70,7 +84,6 @@ const courseSlice = createSlice({
             const { description } = action.payload;
             let courseProgram = state.ownerCourses.find(course => course.id === courseId)?.courseProgram;
             let isChangingModuleSaved = false;
-            console.log(courseProgram)
             if (courseProgram) {
                 courseProgram.forEach(module_ => {
                     if (module_.moduleNumber === moduleNumber) {
@@ -79,35 +92,69 @@ const courseSlice = createSlice({
                         let alreadyExist = false;
                         state.modulesPreparedToChange.forEach(modulePrepToChange => {
                             if (modulePrepToChange.moduleNumber === moduleNumber) {
-                                console.log('module exist in modulesPreparedToChange')
                                 alreadyExist = true;
                                 // just change values
-                                modulePrepToChange.title = title;
+                                modulePrepToChange.name = title;
                                 modulePrepToChange.description = description;
                             }
                         })
                         if (!alreadyExist) {
                             // add and change
-                            console.log('module not exist in modulesPreparedToChange')
                             const moduleCopy = module_;
                             moduleCopy.description = description;
-                            moduleCopy.title = title;
+                            moduleCopy.name = title;
                             state.modulesPreparedToChange.push(moduleCopy)
                         }
                     }
                 })
             }
-            console.log(isChangingModuleSaved)
             if (!isChangingModuleSaved) {
-                console.log('changing module not saved')
                 state.modulesPreparedToSave.forEach(module_ => {
                     console.log(moduleNumber)
                     if (module_.moduleNumber === moduleNumber) {
-                        console.log('YES')
-                        module_.title = title; 
+                        module_.name = title;
                         module_.description = description;
                     }
                 })
+            }
+        },
+        deleteModule: (state, action: PayloadAction<{ courseId: number, moduleNumber: number }>) => {
+            const { courseId } = action.payload;
+            const { moduleNumber } = action.payload;
+            let isModuleExistInCourseProgram = false;
+            const course = state.ownerCourses.find(course => courseId === course.id);
+            if (course && course.courseProgram) {
+                course.courseProgram.forEach(module_ => {
+                    if (module_.moduleNumber === moduleNumber) {
+                        isModuleExistInCourseProgram = true;
+                        state.modulesPreparedToDelete.push(module_)
+                    }
+                })
+            }
+            if (isModuleExistInCourseProgram) {
+                state.ownerCourses.find(course => courseId === course.id)?.courseProgram?.
+                    filter(module_ => module_.moduleNumber !== moduleNumber)
+            }
+            else {
+                //Module does not exist in courseProgram -> 
+                //module may exist in modulesPreparedToSave and modulesPreparedToChange
+                let moduleNeedToBeDeleted: ModuleType | null = null;
+                //check modulesPreparedToSave
+                state.modulesPreparedToSave =
+                    state.modulesPreparedToSave.filter(module_ => module_.moduleNumber !== moduleNumber)
+
+                //check modulesPreparedToChange
+                state.modulesPreparedToChange.forEach(module_ => {
+                    if (module_.moduleNumber === moduleNumber) {
+                        moduleNeedToBeDeleted = module_;
+                    }
+                })
+                state.modulesPreparedToChange =
+                    state.modulesPreparedToChange.filter(module_ => module_.moduleNumber !== moduleNumber)
+
+                if (moduleNeedToBeDeleted) {
+                    state.modulesPreparedToDelete.push(moduleNeedToBeDeleted)
+                }
             }
         }
     }

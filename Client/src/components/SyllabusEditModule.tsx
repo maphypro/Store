@@ -6,7 +6,7 @@ import { changeModule } from "../store/Course/courseSlice";
 
 export default function SyllabusEditModule({module_, courseId}: {module_: ModuleType, courseId: number}) {
 
-    const [title, setTitle] = useState(module_.title)
+    const [title, setTitle] = useState(module_.name)
 
     const [description, setDescription] = useState(module_.description)
 

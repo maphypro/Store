@@ -12,6 +12,8 @@ export default function Syllabus() {
 
   useLoadModulesQuery({ id: course_id });
 
+  console.log('Syllabus rerender')
+
   const courses = useAppSelector(state => state.courseReducer.ownerCourses);
   const active_course = courses.find(course => course.id === course_id);
   const modules = active_course?.courseProgram

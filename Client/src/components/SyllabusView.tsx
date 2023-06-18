@@ -6,9 +6,8 @@ import { useAppSelector } from "../hook";
 import { useParams } from "react-router-dom";
 
 const ModuleStyle = {
-    display: 'flex',
-    flexDirection: 'column',
-    paddingLeft: '0px'
+
+
 }
 
 const LessonStyle = {
@@ -31,12 +30,10 @@ export default function SyllabusView() {
     return (
         <Box >
             <List sx={{
-                border: '1px solid red',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'flex-start',
                 width: '100%',
-                maxWidth: '200px'
             }}>
                 {
                     modules?.map(module_ => {
