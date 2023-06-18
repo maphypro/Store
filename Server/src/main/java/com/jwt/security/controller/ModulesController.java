@@ -4,6 +4,7 @@ import com.jwt.security.Entity.user.User;
 import com.jwt.security.requestResponse.AddModuleRequest;
 import com.jwt.security.requestResponse.Message;
 import com.jwt.security.requestResponse.ModulesResponse;
+import com.jwt.security.requestResponse.UpdateDeleteRequest;
 import com.jwt.security.service.CourseService;
 import com.jwt.security.service.ModulesService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -64,7 +65,7 @@ public class ModulesController {
     @PostMapping("/update_modules")
     public ResponseEntity<List<ModulesResponse>> updateModules(
             @AuthenticationPrincipal User user,
-            @RequestBody AddModuleRequest request
+            @RequestBody UpdateDeleteRequest request
     ) {
         return ResponseEntity.ok(modulesService.updateModules(request));
     }
@@ -72,7 +73,7 @@ public class ModulesController {
     @PostMapping("/delete_modules")
     public ResponseEntity<Message> deleteModules(
             @AuthenticationPrincipal User user,
-            @RequestBody AddModuleRequest request
+            @RequestBody UpdateDeleteRequest request
     ) {
         return ResponseEntity.ok(modulesService.deleteModules(request));
     }

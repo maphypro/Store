@@ -6,10 +6,7 @@ import com.jwt.security.Entity.course.repository.CourseRepository;
 import com.jwt.security.Entity.course.repository.ModulesRepository;
 import com.jwt.security.Entity.user.User;
 import com.jwt.security.exception.YourCustomException;
-import com.jwt.security.requestResponse.AddModuleRequest;
-import com.jwt.security.requestResponse.Message;
-import com.jwt.security.requestResponse.ModulesRequest;
-import com.jwt.security.requestResponse.ModulesResponse;
+import com.jwt.security.requestResponse.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,11 +22,11 @@ public class ModulesService {
 
     public List<ModulesResponse> addModule(AddModuleRequest request) {
         long courseId = request.getCourseId();
-        List<ModulesRequest> moduleRequests = request.getModules();
+        List<AddModulesRequest> moduleRequests = request.getModules();
         List<ModulesResponse> listModulesResponses = new ArrayList<>();
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new YourCustomException("Course not found"));
-        for (ModulesRequest moduleRequest : moduleRequests) {
+        for (AddModulesRequest moduleRequest : moduleRequests) {
             Modules modules = new Modules();
             modules.setModuleNumber(moduleRequest.getModulesNumber());
             modules.setName(moduleRequest.getName());
@@ -71,7 +68,7 @@ public class ModulesService {
         return modulesResponse;
     }
 
-    public List<ModulesResponse> updateModules(AddModuleRequest request) {
+    public List<ModulesResponse> updateModules(UpdateDeleteRequest request) {
         long courseId = request.getCourseId();
         List<ModulesRequest> moduleRequests = request.getModules();
         // Получение всех модулей для обновления, связанных с указанным courseId
@@ -104,7 +101,7 @@ public class ModulesService {
         return listModulesResponses;
     }
 
-    public Message deleteModules(AddModuleRequest request){
+    public Message deleteModules(UpdateDeleteRequest request){
         long courseId = request.getCourseId();
         List<ModulesRequest> moduleRequests = request.getModules();
 
