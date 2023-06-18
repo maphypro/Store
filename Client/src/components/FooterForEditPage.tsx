@@ -24,14 +24,14 @@ export default function FooterForEditPage() {
         return {
             name: module_.name,
             description: module_.description,
-            moduleNumber: module_.moduleNumber
+            modulesNumber: module_.modulesNumber
         }
     })
 
     const [addModules, {data, error, isLoading}] = useAddModulesMutation();
 
     const handleSaveModules = () => {
-        addModules({courseId: 1, modules: modules});
+        addModules({courseId: course_id, modules: modules});
         load({id: course_id})
     }
 

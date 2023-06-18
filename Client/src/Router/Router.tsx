@@ -1,4 +1,4 @@
-import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Navigate, RouterProvider, createBrowserRouter, useParams } from "react-router-dom";
 import Catalog from "../pages/Catalog";
 import Course from "../pages/Course/Course";
 import Learn from "../pages/Learn";
@@ -15,6 +15,8 @@ import EditSyllabus from "../pages/Course/EditSyllabus";
 export default function Router() {
 
     const user = useAppSelector(state => state.userReduces)
+
+
 
     const router = createBrowserRouter([
         {

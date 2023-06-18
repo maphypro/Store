@@ -72,7 +72,7 @@ const courseSlice = createSlice({
             const { courseId } = action.payload;
             const moduleNumber = state.modulesPreparedToSave.length +
                 (state.ownerCourses.find(course => course.id === courseId)?.courseProgram?.length || 0);
-            const emptyModule: ModuleType = { id: 0, moduleNumber: moduleNumber, name: `Новый модуль ${moduleNumber}` }
+            const emptyModule: ModuleType = { id: 0, modulesNumber: moduleNumber, name: `Новый модуль ${moduleNumber}` }
             state.modulesPreparedToSave.push(emptyModule)
         },
         changeModule: (state, action: PayloadAction<{
@@ -86,12 +86,12 @@ const courseSlice = createSlice({
             let isChangingModuleSaved = false;
             if (courseProgram) {
                 courseProgram.forEach(module_ => {
-                    if (module_.moduleNumber === moduleNumber) {
+                    if (module_.modulesNumber === moduleNumber) {
                         // add module to modulesPreparedToChange if not exists
                         isChangingModuleSaved = true;
                         let alreadyExist = false;
                         state.modulesPreparedToChange.forEach(modulePrepToChange => {
-                            if (modulePrepToChange.moduleNumber === moduleNumber) {
+                            if (modulePrepToChange.modulesNumber === moduleNumber) {
                                 alreadyExist = true;
                                 // just change values
                                 modulePrepToChange.name = title;
@@ -111,7 +111,7 @@ const courseSlice = createSlice({
             if (!isChangingModuleSaved) {
                 state.modulesPreparedToSave.forEach(module_ => {
                     console.log(moduleNumber)
-                    if (module_.moduleNumber === moduleNumber) {
+                    if (module_.modulesNumber === moduleNumber) {
                         module_.name = title;
                         module_.description = description;
                     }
@@ -125,7 +125,7 @@ const courseSlice = createSlice({
             const course = state.ownerCourses.find(course => courseId === course.id);
             if (course && course.courseProgram) {
                 course.courseProgram.forEach(module_ => {
-                    if (module_.moduleNumber === moduleNumber) {
+                    if (module_.modulesNumber === moduleNumber) {
                         isModuleExistInCourseProgram = true;
                         state.modulesPreparedToDelete.push(module_)
                     }
@@ -133,7 +133,7 @@ const courseSlice = createSlice({
             }
             if (isModuleExistInCourseProgram) {
                 state.ownerCourses.find(course => courseId === course.id)?.courseProgram?.
-                    filter(module_ => module_.moduleNumber !== moduleNumber)
+                    filter(module_ => module_.modulesNumber !== moduleNumber)
             }
             else {
                 //Module does not exist in courseProgram -> 
@@ -141,16 +141,16 @@ const courseSlice = createSlice({
                 let moduleNeedToBeDeleted: ModuleType | null = null;
                 //check modulesPreparedToSave
                 state.modulesPreparedToSave =
-                    state.modulesPreparedToSave.filter(module_ => module_.moduleNumber !== moduleNumber)
+                    state.modulesPreparedToSave.filter(module_ => module_.modulesNumber !== moduleNumber)
 
                 //check modulesPreparedToChange
                 state.modulesPreparedToChange.forEach(module_ => {
-                    if (module_.moduleNumber === moduleNumber) {
+                    if (module_.modulesNumber === moduleNumber) {
                         moduleNeedToBeDeleted = module_;
                     }
                 })
                 state.modulesPreparedToChange =
-                    state.modulesPreparedToChange.filter(module_ => module_.moduleNumber !== moduleNumber)
+                    state.modulesPreparedToChange.filter(module_ => module_.modulesNumber !== moduleNumber)
 
                 if (moduleNeedToBeDeleted) {
                     state.modulesPreparedToDelete.push(moduleNeedToBeDeleted)
