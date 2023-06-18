@@ -29,10 +29,9 @@ public class ModulesService {
         List<ModulesResponse> listModulesResponses = new ArrayList<>();
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new YourCustomException("Course not found"));
-        int i = 0;
         for (ModuleRequest moduleRequest : moduleRequests) {
             Modules modules = new Modules();
-            modules.setModuleNumber(i++);
+            modules.setModuleNumber(moduleRequest.getModuleNumber());
             modules.setName(moduleRequest.getName());
             modules.setDescription(moduleRequest.getDescription());
             modules.setCourse(course);

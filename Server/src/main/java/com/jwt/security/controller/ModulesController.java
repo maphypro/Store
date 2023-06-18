@@ -6,7 +6,14 @@ import com.jwt.security.requestResponse.Message;
 import com.jwt.security.requestResponse.ModulesResponse;
 import com.jwt.security.service.CourseService;
 import com.jwt.security.service.ModulesService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +30,20 @@ public class ModulesController {
     private final ModulesService modulesService;
 
     @PostMapping("/add_modules")
+    @Operation(
+            summary = "Добавить модули",
+            description = "Добавляет новые модули к указанному курсу"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "модули добавлены",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = ModulesResponse.class)))
+                    })
+    })
     public ResponseEntity<List<ModulesResponse>> addModules(
             @AuthenticationPrincipal User user,
             @RequestBody AddModuleRequest request

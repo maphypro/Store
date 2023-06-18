@@ -1,5 +1,7 @@
 package com.jwt.security.requestResponse;
 
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +14,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddModuleRequest {
-    private long courseId;
-    private List<ModuleRequest> modules;
 
+    @Schema(description = "Идентификатор курса")
+    private long courseId;
+
+    @Schema(description = "Список модулей для добавления")
+    private List<ModuleRequest> modules;
 }
