@@ -11,10 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ModulesRequest {
-
-    @Schema(description = "Идентификатор модуля", required = true)
-    private Long id;
+public class AddModulesRequest {
 
     @Schema(description = "Номер модуля", required = true)
     private Integer modulesNumber;
