@@ -1,7 +1,6 @@
 package com.jwt.security.requestResponse;
 
 
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,13 +11,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ModuleRequest {
+public class ModulesRequest {
 
-    @Schema(description = "Идентификатор модуля", required = false)
+    @Schema(description = "Идентификатор модуля", required = false, hidden = true)
     private Long id;
 
     @Schema(description = "Номер модуля", required = true)
-    private Integer moduleNumber;
+    private Integer modulesNumber;
 
     @Schema(description = "Название модуля", required = true)
     private String name;

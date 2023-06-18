@@ -8,7 +8,7 @@ import com.jwt.security.Entity.user.User;
 import com.jwt.security.exception.YourCustomException;
 import com.jwt.security.requestResponse.AddModuleRequest;
 import com.jwt.security.requestResponse.Message;
-import com.jwt.security.requestResponse.ModuleRequest;
+import com.jwt.security.requestResponse.ModulesRequest;
 import com.jwt.security.requestResponse.ModulesResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,13 +25,13 @@ public class ModulesService {
 
     public List<ModulesResponse> addModule(AddModuleRequest request) {
         long courseId = request.getCourseId();
-        List<ModuleRequest> moduleRequests = request.getModules();
+        List<ModulesRequest> moduleRequests = request.getModules();
         List<ModulesResponse> listModulesResponses = new ArrayList<>();
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new YourCustomException("Course not found"));
-        for (ModuleRequest moduleRequest : moduleRequests) {
+        for (ModulesRequest moduleRequest : moduleRequests) {
             Modules modules = new Modules();
-            modules.setModuleNumber(moduleRequest.getModuleNumber());
+            modules.setModuleNumber(moduleRequest.getModulesNumber());
             modules.setName(moduleRequest.getName());
             modules.setDescription(moduleRequest.getDescription());
             modules.setCourse(course);
@@ -73,14 +73,14 @@ public class ModulesService {
 
     public List<ModulesResponse> updateModules(AddModuleRequest request) {
         long courseId = request.getCourseId();
-        List<ModuleRequest> moduleRequests = request.getModules();
+        List<ModulesRequest> moduleRequests = request.getModules();
         // Получение всех модулей для обновления, связанных с указанным courseId
         List<Modules> modulesToUpdate = modulesRepository.findByCourseId(courseId);
 
         List<ModulesResponse> listModulesResponses = new ArrayList<>();
 
         // Обновление каждого модуля
-        for (ModuleRequest moduleRequest : moduleRequests) {
+        for (ModulesRequest moduleRequest : moduleRequests) {
             Long moduleRequestId = moduleRequest.getId();
 
             // Поиск модуля для обновления по moduleRequestId и courseId
@@ -94,7 +94,7 @@ public class ModulesService {
                 // Применение изменений из ModuleRequest
                 modules.setName(moduleRequest.getName());
                 modules.setDescription(moduleRequest.getDescription());
-                modules.setModuleNumber(moduleRequest.getModuleNumber());
+                modules.setModuleNumber(moduleRequest.getModulesNumber());
 
                 // Сохранение обновленного модуля
                 modulesRepository.save(modules);
@@ -106,12 +106,12 @@ public class ModulesService {
 
     public Message deleteModules(AddModuleRequest request){
         long courseId = request.getCourseId();
-        List<ModuleRequest> moduleRequests = request.getModules();
+        List<ModulesRequest> moduleRequests = request.getModules();
 
         // Получение всех модулей для удаления, связанных с указанным courseId
         List<Modules> modulesToUpdate = modulesRepository.findByCourseId(courseId);
 
-        for (ModuleRequest moduleRequest : moduleRequests) {
+        for (ModulesRequest moduleRequest : moduleRequests) {
             Long moduleRequestId = moduleRequest.getId();
 
             // Поиск модуля для удаления по moduleRequestId и courseId
