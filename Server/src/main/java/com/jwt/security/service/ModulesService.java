@@ -10,9 +10,8 @@ import com.jwt.security.requestResponse.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,9 +31,14 @@ public class ModulesService {
             modules.setName(moduleRequest.getName());
             modules.setDescription(moduleRequest.getDescription());
             modules.setCourse(course);
-            Long moduleId = modulesRepository.save(modules).getId();
-            listModulesResponses.add(modulesResponse(modules, moduleId));
+            
             course.getModules().add(modules);
+        }
+        // Сохранение всех модулей в базе данных
+        List<Modules> savedModules = modulesRepository.saveAll(course.getModules());
+
+        for (Modules savedModule : savedModules) {
+            listModulesResponses.add(modulesResponse(savedModule, savedModule.getId()));
         }
         courseRepository.save(course);
         return listModulesResponses;
@@ -71,58 +75,86 @@ public class ModulesService {
     public List<ModulesResponse> updateModules(UpdateDeleteRequest request) {
         long courseId = request.getCourseId();
         List<ModulesRequest> moduleRequests = request.getModules();
-        // Получение всех модулей для обновления, связанных с указанным courseId
-        List<Modules> modulesToUpdate = modulesRepository.findByCourseId(courseId);
 
+        // Получение курса по courseId или выброс исключения, если курс не найден
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new YourCustomException("Course not found"));
+
+        // Список для хранения ответов с информацией об обновленных модулях
         List<ModulesResponse> listModulesResponses = new ArrayList<>();
+
+        // Получение списка идентификаторов модулей, присутствующих в текущем запросе
+        List<Long> moduleRequestIds = moduleRequests.stream()
+                .map(ModulesRequest::getId)
+                .collect(Collectors.toList());
+
+        // Получение списка модулей, которые нужно удалить
+        List<Modules> modulesToDelete = course.getModules().stream()
+                .filter(module -> !moduleRequestIds.contains(module.getId()))
+                .collect(Collectors.toList());
+
+        // Удаление модулей из списка модулей курса
+        course.getModules().removeAll(modulesToDelete);
+
+        // Удаление модулей, которые отсутствуют в текущем запросе, из базы данных
+        modulesRepository.deleteAll(modulesToDelete);
 
         // Обновление каждого модуля
         for (ModulesRequest moduleRequest : moduleRequests) {
             Long moduleRequestId = moduleRequest.getId();
 
-            // Поиск модуля для обновления по moduleRequestId и courseId
-            Optional<Modules> optionalModule = modulesToUpdate.stream()
+            // Поиск модуля для обновления по moduleRequestId
+            Modules modules = course.getModules().stream()
                     .filter(module -> module.getId().equals(moduleRequestId))
-                    .findFirst();
+                    .findFirst()
+                    .orElseGet(Modules::new);
 
-            if (optionalModule.isPresent()) {
-                Modules modules = optionalModule.get();
+            // Применение изменений из ModuleRequest
+            modules.setCourse(course);
+            modules.setName(moduleRequest.getName());
+            modules.setDescription(moduleRequest.getDescription());
+            modules.setModuleNumber(moduleRequest.getModulesNumber());
 
-                // Применение изменений из ModuleRequest
-                modules.setName(moduleRequest.getName());
-                modules.setDescription(moduleRequest.getDescription());
-                modules.setModuleNumber(moduleRequest.getModulesNumber());
-
-                // Сохранение обновленного модуля
-                modulesRepository.save(modules);
-                listModulesResponses.add(modulesResponse(modules, modules.getId()));
+            // Добавление модуля в список модулей курса и список для обновления
+            if (!course.getModules().contains(modules)) {
+                course.getModules().add(modules);
+                //modulesToUpdate.add(modules);
             }
         }
+
+        // Сохранение всех модулей в базе данных
+        List<Modules> savedModules = modulesRepository.saveAll(course.getModules());
+
+        // Создание объектов ModulesResponse и добавление их в список
+        for (Modules savedModule : savedModules) {
+            listModulesResponses.add(modulesResponse(savedModule, savedModule.getId()));
+        }
+
+        // Сохранение обновленного курса
+        courseRepository.save(course);
+
+        // Возвращение списка с информацией об обновленных модулях
         return listModulesResponses;
     }
 
-    public Message deleteModules(UpdateDeleteRequest request){
+    public Message deleteModules(UpdateDeleteRequest request) {
         long courseId = request.getCourseId();
         List<ModulesRequest> moduleRequests = request.getModules();
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new YourCustomException("Course not found"));
+        // Получение списка идентификаторов модулей, присутствующих в текущем запросе
+        List<Long> moduleRequestIds = moduleRequests.stream()
+                .map(ModulesRequest::getId)
+                .collect(Collectors.toList());
+        // Получение списка модулей, которые нужно удалить
+        List<Modules> modulesToDelete = course.getModules().stream()
+                .filter(module -> !moduleRequestIds.contains(module.getId()))
+                .collect(Collectors.toList());
+        // Удаление модулей из списка модулей курса
+        course.getModules().removeAll(modulesToDelete);
 
-        // Получение всех модулей для удаления, связанных с указанным courseId
-        List<Modules> modulesToUpdate = modulesRepository.findByCourseId(courseId);
-
-        for (ModulesRequest moduleRequest : moduleRequests) {
-            Long moduleRequestId = moduleRequest.getId();
-
-            // Поиск модуля для удаления по moduleRequestId и courseId
-            Optional<Modules> optionalModule = modulesToUpdate.stream()
-                    .filter(module -> module.getId().equals(moduleRequestId))
-                    .findFirst();
-
-            if (optionalModule.isPresent()) {
-                Modules modules = optionalModule.get();
-
-                // удаление модуля
-                modulesRepository.delete(modules);
-            }
-        }
+        // Удаление модулей, которые отсутствуют в текущем запросе, из базы данных
+        modulesRepository.deleteAll(modulesToDelete);
         return new Message("delete");
     }
 }
