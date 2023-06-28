@@ -28,6 +28,7 @@ public class ModulesService {
                 .orElseThrow(() -> new YourCustomException("Course not found"));
         for (AddModulesRequest moduleRequest : moduleRequests) {
             Modules modules = new Modules();
+            System.out.println(moduleRequest.getModulesNumber());
             modules.setModuleNumber(moduleRequest.getModulesNumber());
             modules.setName(moduleRequest.getName());
             modules.setDescription(moduleRequest.getDescription());
@@ -114,7 +115,8 @@ public class ModulesService {
     public Message deleteModules(UpdateDeleteRequest request){
         long courseId = request.getCourseId();
         List<ModulesRequest> moduleRequests = request.getModules();
-
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new YourCustomException("Course not found"));
         // Получение всех модулей для удаления, связанных с указанным courseId
         List<Modules> modulesToUpdate = modulesRepository.findByCourseId(courseId);
 
@@ -131,6 +133,8 @@ public class ModulesService {
 
                 // удаление модуля
                 modulesRepository.delete(modules);
+                course.getModules().remove(modules);
+                courseRepository.save(course);
             }
         }
         return new Message("delete");
