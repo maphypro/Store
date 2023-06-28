@@ -71,6 +71,8 @@ public class ModulesService {
     public List<ModulesResponse> updateModules(UpdateDeleteRequest request) {
         long courseId = request.getCourseId();
         List<ModulesRequest> moduleRequests = request.getModules();
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new YourCustomException("Course not found"));
         // Получение всех модулей для обновления, связанных с указанным courseId
         List<Modules> modulesToUpdate = modulesRepository.findByCourseId(courseId);
 
@@ -84,7 +86,6 @@ public class ModulesService {
             Optional<Modules> optionalModule = modulesToUpdate.stream()
                     .filter(module -> module.getId().equals(moduleRequestId))
                     .findFirst();
-
             if (optionalModule.isPresent()) {
                 Modules modules = optionalModule.get();
 
@@ -96,6 +97,15 @@ public class ModulesService {
                 // Сохранение обновленного модуля
                 modulesRepository.save(modules);
                 listModulesResponses.add(modulesResponse(modules, modules.getId()));
+            }
+            else {
+                Modules modules = new Modules();
+                modules.setName(moduleRequest.getName());
+                modules.setDescription(moduleRequest.getDescription());
+                modules.setModuleNumber(moduleRequest.getModulesNumber());
+                modules.setCourse(course);
+                long modulesId = modulesRepository.save(modules).getId();
+                listModulesResponses.add(modulesResponse(modules, modulesId));
             }
         }
         return listModulesResponses;
