@@ -1,6 +1,5 @@
 import { ExpandLess, ExpandMore, StarBorder } from '@mui/icons-material';
 import { Box, Button, Collapse, Container, List, ListItemButton, ListItemIcon, ListItemText, ListSubheader, Typography } from '@mui/material';
-import AddSharpIcon from '@mui/icons-material/AddSharp';
 import { useEffect, useState } from 'react';
 import { Outlet, useOutletContext, useParams } from 'react-router-dom';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
@@ -21,12 +20,10 @@ const Course = () => {
 
     const [activeCourse, setActiveCourse] = useState<CourseType | undefined>();
 
-    //const activeCourse = courses.find(course => course.id === id)
-
     useEffect(() => {
         setActiveCourse(courses.find(course => course.id === course_id))
-        console.log(activeCourse)
-
+       // console.log(activeCourse)
+        
     })
 
 

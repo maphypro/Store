@@ -20,10 +20,11 @@ export type CourseType = {
 }
 
 export type ModuleType = {
-    id?: number,
-    name?: string,
-    description?: string,
+    id: number | null,
+    name: string | null,
+    description: string | null,
     modulesNumber: number,
+    client_id: number,
     lessons?: LessonType[] | null 
 }
 

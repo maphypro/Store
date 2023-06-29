@@ -3,6 +3,7 @@ import SyllabusView from "../../components/SyllabusView";
 import { useLoadModulesQuery } from "../../store/Course/courseApi";
 import { Link, useParams } from "react-router-dom";
 import { useAppSelector } from "../../hook";
+import { useEffect, useState } from "react";
 
 export default function Syllabus() {
 
@@ -12,7 +13,15 @@ export default function Syllabus() {
 
   useLoadModulesQuery({ id: course_id });
 
-  console.log('Syllabus rerender')
+  const [state, setState] = useState(0);
+
+
+  useEffect(() => {
+
+    console.log(`Syllabus rerender ${state}`)
+    //setState(prev => prev + 1)
+
+  })
 
   const courses = useAppSelector(state => state.courseReducer.ownerCourses);
   const active_course = courses.find(course => course.id === course_id);

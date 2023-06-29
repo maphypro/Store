@@ -62,17 +62,17 @@ export const courseApi = createApi({
                 try {
                     const { data } = await queryFulfilled;
 
-                    dispatch(loadModulesForCourse({ courseId: id.id, modules: data }));
+                    dispatch(loadModulesForCourse({ modules: data }));
                 } catch (e) {
                     console.log(e);
                     console.log('Cannot load modules')
                 }
             }
         }),
-        addModules: build.mutation<any, { courseId: number, modules: ModuleType[] }>({
+        updateActualModules: build.mutation<any, { courseId: number, modules: ModuleType[] }>({
             query: ({ courseId, modules }: { courseId: number, modules: ModuleType[] }) => {
                 return {
-                    url: 'modules/add_modules',
+                    url: 'modules/update_modules',
                     method: 'POST',
                     body: {
                         courseId,
@@ -81,9 +81,9 @@ export const courseApi = createApi({
                 }
             },
             async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-                await queryFulfilled;
+                const { data } = await queryFulfilled;
+                
             }
-
         })
     })
 });
@@ -92,5 +92,5 @@ export const { useCreateEmptyCourseMutation,
     useLoadCardsQuery,
     useLoadCoursesListQuery,
     useLoadModulesQuery,
-    useAddModulesMutation,
+    useUpdateActualModulesMutation,
     useLazyLoadModulesQuery } = courseApi;

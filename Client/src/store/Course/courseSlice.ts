@@ -1,15 +1,16 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { CourseType, ModuleType } from '../../types/CourseTypes'
+import uniqueRandom from 'unique-random'
+import {enumerateModules} from '../../utils/enumerateModules'
 
 type StateType = {
     id: number,
     title: string,
     cards: CourseType[],
     ownerCourses: CourseType[],
-    modulesPreparedToSave: ModuleType[],
-    modulesPreparedToChange: ModuleType[],
-    modulesPreparedToDelete: ModuleType[],
-    enumSequence: Number[]
+    actualModules: ModuleType[],
+    modulesForExchange: ModuleType[],
+    needToRerender: number
 }
 
 const initialState: StateType = {
@@ -17,24 +18,9 @@ const initialState: StateType = {
     title: '',
     cards: [],
     ownerCourses: [],
-    enumSequence: [],
-    //how to fill array below:
-    // 1) clicked button "Новый модуль" -> add module to modulesPreparedToSave
-    // 2) title or description changed:
-    //    2.1. if module exist in course.courseProgram then add module to modulesPreparedToChange.
-    //          if modulesPreparedToChange already contain that module then jush change it into array
-    //    2.2. otherwise change title/description in modulesPreparedToSave
-    // 3) clicket button "delete"
-    //    3.1. module exist in modulesPreparedToSave -> just remove module from there
-    //    3.2. module exist in modulesPreparedToChange -> move module to modulesPreparedToDelete and remove from other array
-    //    3.3. module exist in courseProgram -> move module to modulesPreparedToDelete and remove from other array
-    // How to enumerate modules? 
-    // on delete action need to iterate over the arrays course.courseProgram and modulesPreparedToSave and reenumerate
-    // modules
-    // on create action new module number  = courseProgram.length + modulesPreparedToSave.length
-    modulesPreparedToSave: [], // New unsaved modules
-    modulesPreparedToChange: [], // Already existing modules
-    modulesPreparedToDelete: [] // Already existing modules
+    actualModules: [],
+    modulesForExchange: [],
+    needToRerender: 0
 }
 
 const courseSlice = createSlice({
@@ -50,113 +36,42 @@ const courseSlice = createSlice({
         loadCourseCards(state, action: PayloadAction<CourseType[]>) {
             state.cards = action.payload
         },
-        loadModulesForCourse: (state, action: PayloadAction<{ courseId: number, modules: ModuleType[] }>) => {
+        loadModulesForCourse: (state, action: PayloadAction<{ modules: ModuleType[] }>) => {
 
-            const { courseId } = action.payload;
             const { modules } = action.payload;
 
-            state.ownerCourses = state.ownerCourses.map(course => {
-                if (course.id === courseId) {
-                    course.courseProgram = [];
-                    modules.forEach(module_ => {
-                        course.courseProgram.push(module_)
-                    });
-                    return course;
+            state.actualModules = modules;
+        },
+        initializeModulesForExchange: (state) => {
+            state.modulesForExchange = state.actualModules
+        },
+        createNewModule: (state) => {
+            const modulesNumber = state.modulesForExchange.length + 1;
+            const random = uniqueRandom(-10000, 0);
+            const newModule = {
+                id: -1,
+                client_id: random(),
+                name: `Новый модуль ${modulesNumber}`,
+                description: '',
+                modulesNumber: modulesNumber
+            } 
+            state.modulesForExchange.push(newModule)
+        },
+        deleteModule: (state, action: PayloadAction<{client_id: number}>) => {
+            const { client_id } = action.payload;
+            state.modulesForExchange = state.modulesForExchange.filter(module_ => module_.client_id !== client_id);
+            state.modulesForExchange = enumerateModules(state.modulesForExchange);
+            state.needToRerender++;
+        },
+        changeModule: (state, action: PayloadAction<{ client_id: number, title: string | null, description: string | null}>) => {
+            const { client_id, title, description } = action.payload;
+            state.modulesForExchange.forEach(module_ => {
+                if (module_.client_id === client_id) {
+                    module_.description = description ? description : module_.description;
+                    module_.name = title ? title : module_.name;
                 }
-                return course;
             })
-
         },
-        
-        createNewModulePreparedToSave: (state, action: PayloadAction<{ courseId: number }>) => {
-            const { courseId } = action.payload;
-            const moduleNumber = state.modulesPreparedToSave.length +
-                (state.ownerCourses.find(course => course.id === courseId)?.courseProgram?.length || 0);
-            const emptyModule: ModuleType = { id: 0, modulesNumber: moduleNumber, name: `Новый модуль ${moduleNumber}` }
-            state.modulesPreparedToSave.push(emptyModule)
-        },
-        changeModule: (state, action: PayloadAction<{
-            courseId: number, moduleNumber: number, title: string, description: string
-        }>) => {
-            const { courseId } = action.payload;
-            const { moduleNumber } = action.payload;
-            const { title } = action.payload;
-            const { description } = action.payload;
-            let courseProgram = state.ownerCourses.find(course => course.id === courseId)?.courseProgram;
-            let isChangingModuleSaved = false;
-            if (courseProgram) {
-                courseProgram.forEach(module_ => {
-                    if (module_.modulesNumber === moduleNumber) {
-                        // add module to modulesPreparedToChange if not exists
-                        isChangingModuleSaved = true;
-                        let alreadyExist = false;
-                        state.modulesPreparedToChange.forEach(modulePrepToChange => {
-                            if (modulePrepToChange.modulesNumber === moduleNumber) {
-                                alreadyExist = true;
-                                // just change values
-                                modulePrepToChange.name = title;
-                                modulePrepToChange.description = description;
-                            }
-                        })
-                        if (!alreadyExist) {
-                            // add and change
-                            const moduleCopy = module_;
-                            moduleCopy.description = description;
-                            moduleCopy.name = title;
-                            state.modulesPreparedToChange.push(moduleCopy)
-                        }
-                    }
-                })
-            }
-            if (!isChangingModuleSaved) {
-                state.modulesPreparedToSave.forEach(module_ => {
-                    console.log(moduleNumber)
-                    if (module_.modulesNumber === moduleNumber) {
-                        module_.name = title;
-                        module_.description = description;
-                    }
-                })
-            }
-        },
-        deleteModule: (state, action: PayloadAction<{ courseId: number, moduleNumber: number }>) => {
-            const { courseId } = action.payload;
-            const { moduleNumber } = action.payload;
-            let isModuleExistInCourseProgram = false;
-            const course = state.ownerCourses.find(course => courseId === course.id);
-            if (course && course.courseProgram) {
-                course.courseProgram.forEach(module_ => {
-                    if (module_.modulesNumber === moduleNumber) {
-                        isModuleExistInCourseProgram = true;
-                        state.modulesPreparedToDelete.push(module_)
-                    }
-                })
-            }
-            if (isModuleExistInCourseProgram) {
-                state.ownerCourses.find(course => courseId === course.id)?.courseProgram?.
-                    filter(module_ => module_.modulesNumber !== moduleNumber)
-            }
-            else {
-                //Module does not exist in courseProgram -> 
-                //module may exist in modulesPreparedToSave and modulesPreparedToChange
-                let moduleNeedToBeDeleted: ModuleType | null = null;
-                //check modulesPreparedToSave
-                state.modulesPreparedToSave =
-                    state.modulesPreparedToSave.filter(module_ => module_.modulesNumber !== moduleNumber)
-
-                //check modulesPreparedToChange
-                state.modulesPreparedToChange.forEach(module_ => {
-                    if (module_.modulesNumber === moduleNumber) {
-                        moduleNeedToBeDeleted = module_;
-                    }
-                })
-                state.modulesPreparedToChange =
-                    state.modulesPreparedToChange.filter(module_ => module_.modulesNumber !== moduleNumber)
-
-                if (moduleNeedToBeDeleted) {
-                    state.modulesPreparedToDelete.push(moduleNeedToBeDeleted)
-                }
-            }
-        }
     }
 })
 
@@ -165,8 +80,10 @@ export const {
     loadCourseCards,
     updateLoadedCourses,
     loadModulesForCourse,
-    createNewModulePreparedToSave,
-    changeModule
+    createNewModule,
+    changeModule,
+    deleteModule,
+    initializeModulesForExchange
 } = courseSlice.actions;
 
 export default courseSlice.reducer;

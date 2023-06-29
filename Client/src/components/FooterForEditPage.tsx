@@ -1,39 +1,23 @@
 import { Box, Button } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hook";
-import { useAddModulesMutation, useLazyLoadModulesQuery } from "../store/Course/courseApi";
-import { loadModulesForCourse } from "../store/Course/courseSlice";
+import { useUpdateActualModulesMutation } from "../store/Course/courseApi";
+import {  loadModulesForCourse } from "../store/Course/courseSlice";
 
 export default function FooterForEditPage() {
 
 
-    const {id} = useParams();
+    const { id } = useParams();
 
     let course_id: number = id ? +id : -1
-    
-    const [load, result, lastPromise] = useLazyLoadModulesQuery();
 
 
-    const modulesPreparedToSave = useAppSelector(state => state.courseReducer.modulesPreparedToSave);
+    const dispatch = useAppDispatch()
 
+    const modules = useAppSelector(state => state.courseReducer.modulesForExchange);
 
-    const dispatch = useAppDispatch();
+    const [updateActualModules, varsAdd] = useUpdateActualModulesMutation();
 
-
-    const modules = modulesPreparedToSave.map(module_ => {
-        return {
-            name: module_.name,
-            description: module_.description,
-            modulesNumber: module_.modulesNumber
-        }
-    })
-
-    const [addModules, {data, error, isLoading}] = useAddModulesMutation();
-
-    const handleSaveModules = () => {
-        addModules({courseId: course_id, modules: modules});
-        load({id: course_id})
-    }
 
     return (
         <Box sx={{
@@ -46,7 +30,7 @@ export default function FooterForEditPage() {
             bottom: 0, left: 0,
             p: 1, pr: 20,
         }}>
-            <Button variant="contained" onClick={handleSaveModules}>
+            <Button variant="contained" onClick={() => updateActualModules({courseId: course_id, modules: modules})}>
                 Сохранить
             </Button>
             <Button variant="contained" sx={{ ml: 2 }}>
