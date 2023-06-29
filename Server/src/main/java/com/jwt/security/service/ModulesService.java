@@ -31,7 +31,7 @@ public class ModulesService {
             modules.setName(moduleRequest.getName());
             modules.setDescription(moduleRequest.getDescription());
             modules.setCourse(course);
-            
+
             course.getModules().add(modules);
         }
         // Сохранение всех модулей в базе данных
@@ -103,28 +103,25 @@ public class ModulesService {
         for (ModulesRequest moduleRequest : moduleRequests) {
             Long moduleRequestId = moduleRequest.getId();
 
-            // Поиск модуля для обновления по moduleRequestId
             Modules modules = course.getModules().stream()
-                    .filter(module -> module.getId().equals(moduleRequestId))
+                    .filter(module -> Objects.equals(module.getId(), moduleRequestId) && module.getId() != null)
                     .findFirst()
                     .orElseGet(Modules::new);
 
-            // Применение изменений из ModuleRequest
             modules.setCourse(course);
             modules.setName(moduleRequest.getName());
+            System.out.println(modules.getName());
             modules.setDescription(moduleRequest.getDescription());
             modules.setModuleNumber(moduleRequest.getModulesNumber());
 
-            // Добавление модуля в список модулей курса и список для обновления
             if (!course.getModules().contains(modules)) {
                 course.getModules().add(modules);
-                //modulesToUpdate.add(modules);
             }
         }
-
+    System.out.println(course.getModules().size());
         // Сохранение всех модулей в базе данных
         List<Modules> savedModules = modulesRepository.saveAll(course.getModules());
-
+        System.out.println(savedModules.size());
         // Создание объектов ModulesResponse и добавление их в список
         for (Modules savedModule : savedModules) {
             listModulesResponses.add(modulesResponse(savedModule, savedModule.getId()));
@@ -148,7 +145,7 @@ public class ModulesService {
                 .collect(Collectors.toList());
         // Получение списка модулей, которые нужно удалить
         List<Modules> modulesToDelete = course.getModules().stream()
-                .filter(module -> !moduleRequestIds.contains(module.getId()))
+                .filter(module -> moduleRequestIds.contains(module.getId()))
                 .collect(Collectors.toList());
         // Удаление модулей из списка модулей курса
         course.getModules().removeAll(modulesToDelete);
