@@ -25,8 +25,7 @@ export default function SyllabusView() {
 
     const courses = useAppSelector(state => state.courseReducer.ownerCourses);
     const active_course = courses.find(course => course.id === course_id);
-    const modules = active_course?.courseProgram
-
+    const modules = useAppSelector(state => state.courseReducer.actualModules);
     return (
         <Box >
             <List sx={{
@@ -36,7 +35,7 @@ export default function SyllabusView() {
                 width: '100%',
             }}>
                 {
-                    modules?.map(module_ => {
+                    modules.map(module_ => {
                         return (
                             <ListItem sx={ModuleStyle}>
                                 <SyllabusViewModule module_={module_} />

@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { createCourse, loadCourseCards, loadModulesForCourse, updateLoadedCourses } from './courseSlice';
-import { CourseType, ModuleType } from '../../types/CourseTypes';
+import { createCourse, loadCourseCards, updateLoadedModulesForCourse, updateLoadedCourses, updateLoadedLessonsForCourse } from './courseSlice';
+import { CourseType, LessonType, ModuleType } from '../../types/CourseTypes';
 import { baseQueryWithReauth } from './baseQuery';
 
 export const courseApi = createApi({
@@ -62,7 +62,7 @@ export const courseApi = createApi({
                 try {
                     const { data } = await queryFulfilled;
 
-                    dispatch(loadModulesForCourse({ modules: data }));
+                    dispatch(updateLoadedModulesForCourse({ modules: data }));
                 } catch (e) {
                     console.log(e);
                     console.log('Cannot load modules')
@@ -82,11 +82,52 @@ export const courseApi = createApi({
             },
             async onQueryStarted(arg, { dispatch, queryFulfilled }) {
                 const { data } = await queryFulfilled;
-                
+                dispatch(updateLoadedModulesForCourse({ modules: data }));
+
             }
-        })
+        }),
+        loadLessons: build.query<LessonType[], number>({
+            query: (moduleId: number) => {
+                return {
+                    url: `lesson/get_lessons`,
+                    params: { idmodules: moduleId },
+                    method: 'GET'
+                }
+            },
+            async onQueryStarted(id, { dispatch, queryFulfilled }) {
+                try {
+                    const { data } = await queryFulfilled;
+
+                    dispatch(updateLoadedLessonsForCourse({ lessons: data }));
+                } catch (e) {
+                    console.log(e);
+                    console.log('Cannot load lessons')
+                }
+            }
+        }),
+        updateActualLessons: build.mutation<any, { courseId: number, lessons: ModuleType[] }>({
+            query: ({ courseId, lessons }: { courseId: number, lessons: ModuleType[] }) => {
+                return {
+                    url: 'modules/update_modules',
+                    method: 'POST',
+                    body: {
+                        courseId,
+                        lessons
+                    }
+                }
+            },
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                const { data } = await queryFulfilled;
+                dispatch(updateLoadedModulesForCourse({ modules: data }));
+
+            }
+        }),
     })
 });
+
+
+
+
 
 export const { useCreateEmptyCourseMutation,
     useLoadCardsQuery,

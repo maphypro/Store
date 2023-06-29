@@ -17,6 +17,8 @@ export default function SyllabusEdit() {
 
 
   const modulesForExchange = useAppSelector(state => state.courseReducer.modulesForExchange)
+  
+
   const needToRerender = useAppSelector(state => state.courseReducer.needToRerender)
 
 

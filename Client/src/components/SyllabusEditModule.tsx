@@ -24,7 +24,8 @@ export default function SyllabusEditModule({ module_, courseId }: { module_: Mod
     const handleCLickDeleteButton = () => {
         setAnchorEl(null);
         dispatch(deleteModule({
-            client_id: module_.client_id,
+            client_id: module_.code,
+            modulesNumber: module_.modulesNumber
         }))
     }
 
@@ -42,9 +43,10 @@ export default function SyllabusEditModule({ module_, courseId }: { module_: Mod
                             value={module_.name}
                             onChange={e => {
                                 dispatch(changeModule({
-                                    client_id: module_.client_id,
+                                    client_id: module_.code,
                                     title: e.target.value,
-                                    description: null
+                                    description: null,
+                                    modulesNumber: module_.modulesNumber
                                 }))
                             }}
                         >
@@ -81,9 +83,10 @@ export default function SyllabusEditModule({ module_, courseId }: { module_: Mod
                         value={module_.description}
                         onChange={e => {
                             dispatch(changeModule({
-                                client_id: module_.client_id,
+                                client_id: module_.code,
                                 title:  null,
-                                description: e.target.value
+                                description: e.target.value,
+                                modulesNumber: module_.modulesNumber
                             }))
                         }}
                     >

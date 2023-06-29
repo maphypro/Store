@@ -2,7 +2,6 @@ import { Box, Button } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hook";
 import { useUpdateActualModulesMutation } from "../store/Course/courseApi";
-import {  loadModulesForCourse } from "../store/Course/courseSlice";
 
 export default function FooterForEditPage() {
 

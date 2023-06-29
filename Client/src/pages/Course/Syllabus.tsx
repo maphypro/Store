@@ -25,7 +25,7 @@ export default function Syllabus() {
 
   const courses = useAppSelector(state => state.courseReducer.ownerCourses);
   const active_course = courses.find(course => course.id === course_id);
-  const modules = active_course?.courseProgram
+  const modules = useAppSelector(state => state.courseReducer.actualModules);
 
   return (
     <Container maxWidth='lg' sx={{ display: 'flex', flexDirection: 'column', w: '1000px' }}>

@@ -24,14 +24,16 @@ export type ModuleType = {
     name: string | null,
     description: string | null,
     modulesNumber: number,
-    client_id: number,
+    code: number,
     lessons?: LessonType[] | null 
 }
 
 export type LessonType = {
-    id?: number,
-    title?: string,
-    lessonNumber?: number,
+    id: number | null,
+    title: string | null,
+    lessonNumber: number,
+    code: number,
+    client_lesson_id: number,
     steps?: StepType[] | null
 }
 
