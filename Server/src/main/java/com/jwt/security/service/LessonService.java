@@ -30,7 +30,7 @@ public class LessonService {
         for (LessonRequest lessonRequest : lessonRequests) {
             Lesson lesson = new Lesson();
             lesson.setLessonNumber(i++);
-            lesson.setName(lessonRequest.getName());
+            lesson.setTitle(lessonRequest.getTitle());
             lesson.setModules(modules);
             Long lessonId = lessonRepository.save(lesson).getId();
             ListModulesResponses.add(lessonResponse(lesson, lessonId));
@@ -60,7 +60,7 @@ public class LessonService {
             lessonResponse.setId(id);
         }
         lessonResponse.setLessonNumber(lesson.getLessonNumber());
-        lessonResponse.setName(lesson.getName());
+        lessonResponse.setTitle(lesson.getTitle());
         lessonResponse.setModuleId(lesson.getModules().getId());
 
         return lessonResponse;
@@ -74,16 +74,16 @@ public class LessonService {
         Lesson lesson;
         for (LessonRequest lessonRequest : lessons) {
             Long lessonId = lessonRequest.getId();
-            String name = lessonRequest.getName();
+            String name = lessonRequest.getTitle();
 
             if (lessonId != null) {
                 lesson = lessonRepository.findById(lessonId).orElseThrow();
-                lesson.setName(name);
+                lesson.setTitle(name);
                 // Связать урок с соответствующим модулем и курсом, если необходимо
                 lesson.setModules(module);
             } else {
                 lesson = new Lesson();
-                lesson.setName(name);
+                lesson.setTitle(name);
                 // Связать урок с соответствующим модулем и курсом, если необходимо
                 lesson.setModules(module);
                 module.getLessons().add(lesson);

@@ -21,10 +21,10 @@ public class Modules {
     @GeneratedValue
     private Long id;
 
-    @JoinColumn(name = "module_namber")
+    @JoinColumn(name = "module_number")
     private Integer moduleNumber;
 
-    private String name;
+    private String title;
     private String description;
 
     @ManyToOne

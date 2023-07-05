@@ -17,11 +17,12 @@ public class ModulesRequest {
     private Long id;
 
     @Schema(description = "Номер модуля", required = true)
-    private Integer modulesNumber;
+    private Integer moduleNumber;
 
     @Schema(description = "Название модуля", required = true)
-    private String name;
+    private String title;
 
     @Schema(description = "Описание модуля", required = true)
     private String description;
+    private Integer code;
 }

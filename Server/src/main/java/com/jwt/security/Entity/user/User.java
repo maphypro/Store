@@ -5,10 +5,7 @@ import com.jwt.security.Entity.course.Course;
 import com.jwt.security.Entity.token.Token;
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.boot.context.config.Profiles;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @Builder
@@ -24,10 +22,12 @@ import java.util.List;
 @Entity
 @Table(name = "_user",
         uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue
+    @EqualsAndHashCode.Include
     private  Long id;
 
     private String firstname;
@@ -37,6 +37,7 @@ public class User implements UserDetails {
 
     @Nonnull
     @Column(name = "email", unique = true)
+    @EqualsAndHashCode.Include
     private String email;
 
 
@@ -62,6 +63,10 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
 
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(id, firstname, lastname, email, password, role,courses, profiles, courseCreator); // Используйте нужные поля для вычисления хэш-кода
+//    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return role.getAuthorities();

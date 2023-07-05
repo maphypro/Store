@@ -24,7 +24,7 @@ public class Lesson {
     @JoinColumn(name = "lesson_number")
     private Integer lessonNumber;
 
-    private String name;
+    private String title;
 
     @ManyToOne
     @JoinColumn(name = "module_id")
