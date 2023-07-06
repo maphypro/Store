@@ -12,5 +12,7 @@ import lombok.NoArgsConstructor;
 public class LessonRequest {
 
     private Long id;
-    private String name;
+    private String title;
+    private Integer lessonNumber;
+    private Integer code;
 }

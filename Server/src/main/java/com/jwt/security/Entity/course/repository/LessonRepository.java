@@ -25,4 +25,5 @@ public interface LessonRepository extends JpaRepository<Lesson, Long> {
             @Param("modulesId") Long modulesId,
             @Param("creatorId") Long creatorId
     );
+
 }

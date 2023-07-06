@@ -14,6 +14,6 @@ public class ModulesResponse {
 
     private Long id;
     private Integer modulesNumber;
-    private String name;
+    private String title;
     private String description;
 }

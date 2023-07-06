@@ -71,5 +71,24 @@ public class CourseController {
     }
 
 
+    @PostMapping("/save_course")
+    public ResponseEntity<String> saveCourse(@RequestBody FullCourseRequest course) {
+        // Вызов сервисного метода для сохранения курса
+        boolean saved = courseService.fullCourse(course);
+        if (saved) {
+            return ResponseEntity.ok("Курс успешно сохранен!");
+        } else {
+            return ResponseEntity.badRequest().body("Не удалось сохранить курс.");
+        }
+    }
 
+    @GetMapping("/get_full_course")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<FullCourseResponse> getModules(
+            @AuthenticationPrincipal User user,
+            @RequestParam Long id
+    ) {
+        //Long id = Long.parseLong(idRequest);
+        return ResponseEntity.ok(courseService.getFullCourse(id, user));
+    }
 }

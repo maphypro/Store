@@ -28,7 +28,7 @@ public class ModulesService {
         for (AddModulesRequest moduleRequest : moduleRequests) {
             Modules modules = new Modules();
             modules.setModuleNumber(moduleRequest.getModulesNumber());
-            modules.setName(moduleRequest.getName());
+            modules.setTitle(moduleRequest.getName());
             modules.setDescription(moduleRequest.getDescription());
             modules.setCourse(course);
 
@@ -66,7 +66,7 @@ public class ModulesService {
             modulesResponse.setId(id);
         }
         modulesResponse.setModulesNumber(modules.getModuleNumber());
-        modulesResponse.setName(modules.getName());
+        modulesResponse.setTitle(modules.getTitle());
         modulesResponse.setDescription(modules.getDescription());
 
         return modulesResponse;
@@ -109,10 +109,10 @@ public class ModulesService {
                     .orElseGet(Modules::new);
 
             modules.setCourse(course);
-            modules.setName(moduleRequest.getName());
-            System.out.println(modules.getName());
+            modules.setTitle(moduleRequest.getTitle());
+            System.out.println(modules.getTitle());
             modules.setDescription(moduleRequest.getDescription());
-            modules.setModuleNumber(moduleRequest.getModulesNumber());
+            modules.setModuleNumber(moduleRequest.getModuleNumber());
 
             if (!course.getModules().contains(modules)) {
                 course.getModules().add(modules);
