@@ -32,8 +32,10 @@ public class CourseService {
 
     private final CourseRepository courseRepository;
     private final ModulesRepository modulesRepository;
-
+    private final ModulesService modulesService;
     private final LessonRepository lessonRepository;
+    private final LessonService lessonService;
+
     private final CategoriesRepository categoriesRepository;
     private final UserRepository userRepository;
     private final UserService userService;
@@ -106,7 +108,7 @@ public class CourseService {
     }
 
 
-    public boolean fullCourse(FullCourseRequest request){
+    public FullCourseResponse fullCourse(FullCourseRequest request){
 
         long courseId = request.getCourseId();
         List<ModulesRequest> moduleRequests = request.getModules();
@@ -147,9 +149,9 @@ public class CourseService {
             // todo  доработать в случае чего
         }
         System.out.println("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj");
-        List<Modules> savedModules = modulesRepository.saveAll(course.getModules());
+        modulesRepository.saveAll(course.getModules());
         courseRepository.save(course);
-        return true;
+        return getFullCourse(courseId);
     }
 
     private void fullUpdateCourse(Modules module, ModulesRequest moduleRequest, List<LessonRequest> lessons, Course course) {
@@ -193,7 +195,7 @@ public class CourseService {
         module.getLessons().addAll(lessonsToSave);
     }
 
-    public FullCourseResponse getFullCourse(Long courseId, User user){
+    public FullCourseResponse getFullCourse(Long courseId){
         FullCourseResponse fullCourseResponse = new FullCourseResponse();
         // Получение курса по courseId или выброс исключения, если курс не найден
         Course course = courseRepository.findById(courseId)
@@ -201,23 +203,21 @@ public class CourseService {
         fullCourseResponse.setCourseId(courseId);
         List<ModulesResponse> modulesResponses = new ArrayList<>();
         List<LessonResponse> lessonResponses = new ArrayList<>();
+
         for(Modules modules : course.getModules()){
             ModulesResponse modulesResponse = new ModulesResponse();
             modulesResponse.setId(modules.getId());
-            System.out.println("moduleId: "+modules.getId());
             modulesResponse.setTitle(modules.getTitle());
             modulesResponse.setDescription(modules.getDescription());
-            modulesResponse.setModulesNumber(modules.getModuleNumber());
+            modulesResponse.setModuleNumber(modules.getModuleNumber());
             modulesResponses.add(modulesResponse);
-            for(Lesson lesson : modules.getLessons()){
-                LessonResponse lessonResponse = new LessonResponse();
-                lessonResponse.setId(lesson.getId());
-                lessonResponse.setTitle(lesson.getTitle());
-                lessonResponse.setModuleId(modules.getId());
-                lessonResponse.setLessonNumber(lesson.getLessonNumber());
-                lessonResponses.add(lessonResponse);
+
+            if(modules.getLessons().size() != 0){
+                lessonResponses.add(lessonService.changeLesson(modules));
             }
+
         }
+
         fullCourseResponse.setModules(modulesResponses);
         fullCourseResponse.setLessons(lessonResponses);
         return fullCourseResponse;

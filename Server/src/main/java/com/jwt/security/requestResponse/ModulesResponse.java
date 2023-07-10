@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class ModulesResponse {
 
     private Long id;
-    private Integer modulesNumber;
+    private Integer moduleNumber;
     private String title;
     private String description;
 }

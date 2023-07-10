@@ -21,14 +21,14 @@ public class ModulesService {
 
     public List<ModulesResponse> addModule(AddModuleRequest request) {
         long courseId = request.getCourseId();
-        List<AddModulesRequest> moduleRequests = request.getModules();
+        List<ModulesRequest> moduleRequests = request.getModules();
         List<ModulesResponse> listModulesResponses = new ArrayList<>();
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new YourCustomException("Course not found"));
-        for (AddModulesRequest moduleRequest : moduleRequests) {
+        for (ModulesRequest moduleRequest : moduleRequests) {
             Modules modules = new Modules();
-            modules.setModuleNumber(moduleRequest.getModulesNumber());
-            modules.setTitle(moduleRequest.getName());
+            modules.setModuleNumber(moduleRequest.getModuleNumber());
+            modules.setTitle(moduleRequest.getTitle());
             modules.setDescription(moduleRequest.getDescription());
             modules.setCourse(course);
 
@@ -65,7 +65,7 @@ public class ModulesService {
         } else {
             modulesResponse.setId(id);
         }
-        modulesResponse.setModulesNumber(modules.getModuleNumber());
+        modulesResponse.setModuleNumber(modules.getModuleNumber());
         modulesResponse.setTitle(modules.getTitle());
         modulesResponse.setDescription(modules.getDescription());
 
@@ -154,4 +154,5 @@ public class ModulesService {
         modulesRepository.deleteAll(modulesToDelete);
         return new Message("delete");
     }
+
 }

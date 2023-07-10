@@ -5,9 +5,7 @@ import com.jwt.security.Entity.token.Token;
 import com.jwt.security.Entity.token.TokenRepository;
 import com.jwt.security.Entity.token.TokenType;
 import com.jwt.security.Entity.user.Role;
-import com.jwt.security.Entity.user.Roles;
 import com.jwt.security.Entity.user.User;
-import com.jwt.security.Entity.user.repository.RoleRepository;
 import com.jwt.security.Entity.user.repository.UserRepository;
 import com.jwt.security.config.RateLimited;
 import com.jwt.security.exception.YourCustomException;
@@ -25,7 +23,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -36,13 +33,14 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    private final RoleRepository roleRepository;
+
 
     public AuthenticationResponse register(RegisterRequest request) {
         try {
-            Role role = Role.valueOf(request.getRole());
-            Optional<Roles> rolesOptional = roleRepository.findByRole("ADMIN");
-            Roles roles = rolesOptional.orElse(null);
+            Role role = null;
+            if(request.getRole().equals("ADMIN") || request.getRole().equals("MANAGER")){
+                role = Role.valueOf(request.getRole());
+            }
             var user = User.builder()
                     .firstname(request.getFirstName())
                     .lastname(request.getLastName())
