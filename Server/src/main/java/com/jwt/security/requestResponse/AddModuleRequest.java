@@ -19,5 +19,5 @@ public class AddModuleRequest {
     private long courseId;
 
     @Schema(description = "Список модулей для добавления")
-    private List<AddModulesRequest> modules;
+    private List<ModulesRequest> modules;
 }
