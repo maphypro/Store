@@ -22,11 +22,12 @@ public class Modules {
     private Long id;
 
     @JoinColumn(name = "module_number")
-    private Integer moduleNumber;
+    private Double moduleNumber;
 
     private String title;
     private String description;
 
+    private Integer code;
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;

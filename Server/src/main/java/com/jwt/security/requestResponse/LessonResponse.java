@@ -13,6 +13,7 @@ public class LessonResponse {
 
     private Long id;
     private Long moduleId;
-    private Integer lessonNumber;
+    private Double lessonNumber;
     private String title;
+    private Integer code;
 }
