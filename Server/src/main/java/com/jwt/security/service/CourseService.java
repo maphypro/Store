@@ -108,92 +108,62 @@ public class CourseService {
     }
 
 
-    public FullCourseResponse fullCourse(FullCourseRequest request){
-
+    public FullCourseResponse fullCourse(FullCourseRequest request) {
         long courseId = request.getCourseId();
-        List<ModulesRequest> moduleRequests = request.getModules();
-
-        // Получение курса по courseId или выброс исключения, если курс не найден
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new YourCustomException("Course not found"));
+        course.getModules().removeAll(course.getModules());
+        course.setModules(modulesService.updateModules(course, request.getModules()));
+        System.out.println(course.getModules().size()+ " <=====");
+        lessonService.updateLessons(course, request.getLessons());
 
-        // Получение списка идентификаторов модулей, присутствующих в текущем запросе
-        List<Long> moduleRequestIds = moduleRequests.stream()
-                .map(ModulesRequest::getId)
-                .collect(Collectors.toList());
-
-        // Получение списка модулей, которые нужно удалить
-        List<Modules> modulesToDelete = course.getModules().stream()
-                .filter(module -> !moduleRequestIds.contains(module.getId()))
-                .collect(Collectors.toList());
-
-        // Удаление модулей из списка модулей курса
-        course.getModules().removeAll(modulesToDelete);
-
-        // Удаление модулей, которые отсутствуют в текущем запросе, из базы данных
-        modulesRepository.deleteAll(modulesToDelete);
-
-
-        // Обновление каждого модуля
-        for (ModulesRequest moduleRequest : moduleRequests) {
-            Long moduleRequestId = moduleRequest.getId();
-
-            Modules modules = course.getModules().stream()
-                    .filter(module -> Objects.equals(module.getId(), moduleRequestId) && module.getId() != null)
-                    .findFirst()
-                    .orElseGet(Modules::new);
-            if (modules.getLessons() == null) {
-                modules.setLessons(new ArrayList<>());
-            }
-            fullUpdateCourse(modules, moduleRequest, request.getLessons(), course);
-            // todo  доработать в случае чего
-        }
         modulesRepository.saveAll(course.getModules());
         courseRepository.save(course);
+
         return getFullCourse(courseId);
     }
 
-    private void fullUpdateCourse(Modules module, ModulesRequest moduleRequest, List<LessonRequest> lessons, Course course) {
-        module.setTitle(moduleRequest.getTitle());
-        module.setDescription(moduleRequest.getDescription());
-        module.setModuleNumber(moduleRequest.getModuleNumber());
-        module.setCourse(course);
-        module.setCode(moduleRequest.getCode());
-        if (!course.getModules().contains(module)) {
-            course.getModules().add(module);
-        }
-        //modulesRepository.save(module);
-        List<Lesson> lessonsToSave = new ArrayList<>();
-        List<LessonRequest> lessonsToRemove = new ArrayList<>();
-
-        for (LessonRequest lessonRequest : lessons) {
-            if (lessonRequest.getCode().equals(moduleRequest.getCode())) {
-                Long lessonRequestId = lessonRequest.getId();
-
-                Lesson lesson = module.getLessons().stream()
-                        .filter(l -> Objects.equals(l.getId(), lessonRequestId) && l.getId() != null)
-                        .findFirst()
-                        .orElseGet(Lesson::new);
-
-                lesson.setTitle(lessonRequest.getTitle());
-                lesson.setModules(module);
-                lesson.setLessonNumber(lessonRequest.getLessonNumber());
-                lesson.setCode(lessonRequest.getCode());
-                lessonsToSave.add(lesson);
-                lessonsToRemove.add(lessonRequest);
-            }
-        }
-
-        module.getLessons().removeIf(lesson -> !lessonsToSave.contains(lesson));
-        lessons.removeAll(lessonsToRemove);
-
-        lessonRepository.deleteAll(module.getLessons().stream()
-                .filter(l -> !lessonsToSave.contains(l))
-                .collect(Collectors.toList()));
-
-        lessonRepository.saveAll(lessonsToSave);
-        module.getLessons().addAll(lessonsToSave);
-    }
+//    private void fullUpdateCourse(Modules module, ModulesRequest moduleRequest, List<LessonRequest> lessons, Course course) {
+//        module.setTitle(moduleRequest.getTitle());
+//        module.setDescription(moduleRequest.getDescription());
+//        module.setModuleNumber(moduleRequest.getModuleNumber());
+//        module.setCourse(course);
+//        module.setCode(moduleRequest.getCode());
+//        if (!course.getModules().contains(module)) {
+//            course.getModules().add(module);
+//        }
+//        //modulesRepository.save(module);
+//        List<Lesson> lessonsToSave = new ArrayList<>();
+//        List<LessonRequest> lessonsToRemove = new ArrayList<>();
+//
+//        for (LessonRequest lessonRequest : lessons) {
+//            if (lessonRequest.getCode().equals(moduleRequest.getCode())) {
+//                Long lessonRequestId = lessonRequest.getId();
+//
+//                Lesson lesson = module.getLessons().stream()
+//                        .filter(l -> Objects.equals(l.getId(), lessonRequestId) && l.getId() != null)
+//                        .findFirst()
+//                        .orElseGet(Lesson::new);
+//
+//                lesson.setTitle(lessonRequest.getTitle());
+//                lesson.setModules(module);
+//                lesson.setLessonNumber(lessonRequest.getLessonNumber());
+//                lesson.setCode(lessonRequest.getCode());
+//                lessonsToSave.add(lesson);
+//                lessonsToRemove.add(lessonRequest);
+//            }
+//        }
+//
+//        module.getLessons().removeIf(lesson -> !lessonsToSave.contains(lesson));
+//        lessons.removeAll(lessonsToRemove);
+//
+//        lessonRepository.deleteAll(module.getLessons().stream()
+//                .filter(l -> !lessonsToSave.contains(l))
+//                .collect(Collectors.toList()));
+//
+//        lessonRepository.saveAll(lessonsToSave);
+//        module.getLessons().addAll(lessonsToSave);
+//    }
 
     public FullCourseResponse getFullCourse(Long courseId){
         FullCourseResponse fullCourseResponse = new FullCourseResponse();
@@ -221,6 +191,7 @@ public class CourseService {
                     lessonResponse.setModuleId(modules.getId());
                     lessonResponse.setLessonNumber(lesson.getLessonNumber());
                     lessonResponse.setCode(lesson.getCode());
+                    lessonResponse.setStatus("");
                     lessonResponses.add(lessonResponse);
                 }
             }
