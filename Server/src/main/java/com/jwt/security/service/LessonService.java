@@ -118,6 +118,7 @@ public class LessonService {
                     lesson.setTitle(lessonRequest.getTitle());
                     // Связать урок с соответствующим модулем и курсом, если необходимо
                     lesson.setModules(module);
+                    lesson.setLessonNumber(lessonRequest.getLessonNumber());
                     lesson.setCode(lessonRequest.getCode());
                     lessonsToSave.add(lesson);
                     lessonsToRemove.add(lessonRequest);
