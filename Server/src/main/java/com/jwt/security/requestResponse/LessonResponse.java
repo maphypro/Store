@@ -16,4 +16,5 @@ public class LessonResponse {
     private Double lessonNumber;
     private String title;
     private Integer code;
+    private String status;
 }

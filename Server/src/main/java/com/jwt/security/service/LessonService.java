@@ -1,5 +1,6 @@
 package com.jwt.security.service;
 
+import com.jwt.security.Entity.course.Course;
 import com.jwt.security.Entity.course.Lesson;
 import com.jwt.security.Entity.course.Modules;
 import com.jwt.security.Entity.course.repository.LessonRepository;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -96,6 +99,41 @@ public class LessonService {
         modulesRepository.save(module);
     }
 
+    public void updateLessons(Course course, List<LessonRequest> lessonRequests) {
+        // Создание списка уроков, которые будут удалены
+        List<LessonRequest> lessonsToRemove = new ArrayList<>();
+
+        for (Modules module : course.getModules()) {
+            List<Lesson> lessonsToSave = new ArrayList<>();
+
+            for (LessonRequest lessonRequest : lessonRequests) {
+                if (lessonRequest.getCode().equals(module.getCode())) {
+                    Lesson lesson = module.getLessons().stream()
+                            .filter(l -> Objects.equals(l.getId(), lessonRequest.getId()))
+                            .findFirst()
+                            .orElseGet(Lesson::new);
+
+                    // Обновление свойств урока
+                    // ...
+                    lesson.setTitle(lessonRequest.getTitle());
+                    // Связать урок с соответствующим модулем и курсом, если необходимо
+                    lesson.setModules(module);
+                    lesson.setCode(lessonRequest.getCode());
+                    lessonsToSave.add(lesson);
+                    lessonsToRemove.add(lessonRequest);
+                }
+            }
+
+            module.getLessons().retainAll(lessonsToSave);
+            lessonRepository.deleteAll(module.getLessons().stream()
+                    .filter(l -> !lessonsToSave.contains(l))
+                    .collect(Collectors.toList()));
+            lessonRepository.saveAll(lessonsToSave);
+            module.getLessons().addAll(lessonsToSave);
+        }
+
+        lessonRequests.removeAll(lessonsToRemove);
+    }
     public void deleteLessons(AddLessonRequest request) {
         long moduleId = request.getModuleId();
         List<LessonRequest> lessons = request.getLessons();

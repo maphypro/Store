@@ -157,4 +157,35 @@ public class ModulesService {
         return new Message("delete");
     }
 
+    public List<Modules> updateModules(Course course, List<ModulesRequest> moduleRequests) {
+        List<Modules> modulesToDelete = course.getModules().stream()
+                .filter(module -> moduleRequests.stream().noneMatch(mr -> Objects.equals(mr.getId(), module.getId())))
+                .collect(Collectors.toList());
+
+        course.getModules().removeAll(modulesToDelete);
+        modulesRepository.deleteAll(modulesToDelete);
+
+        for (ModulesRequest moduleRequest : moduleRequests) {
+            Long moduleRequestId = moduleRequest.getId();
+            Modules modules = course.getModules().stream()
+                    .filter(module -> Objects.equals(module.getId(), moduleRequestId) && module.getId() != null)
+                    .findFirst()
+                    .orElseGet(Modules::new);
+
+            // Обновление свойств модуля
+            // ...
+            modules.setTitle(moduleRequest.getTitle());
+            modules.setDescription(moduleRequest.getDescription());
+            modules.setModuleNumber(moduleRequest.getModuleNumber());
+            modules.setCourse(course);
+            modules.setCode(moduleRequest.getCode());
+            if (modules.getLessons() == null) {
+                modules.setLessons(new ArrayList<>());
+            }
+            if (!course.getModules().contains(modules)) {
+                course.getModules().add(modules);
+            }
+        }
+        return course.getModules();
+    }
 }
