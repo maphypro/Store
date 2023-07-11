@@ -1,6 +1,6 @@
 import { Box, Button, Container, Typography } from "@mui/material";
 import SyllabusView from "../../components/SyllabusView";
-import { useLoadModulesQuery } from "../../store/Course/courseApi";
+import { useLazyLoadFullCourseQuery, useLoadFullCourseQuery, useLoadModulesQuery } from "../../store/Course/courseApi";
 import { Link, useParams } from "react-router-dom";
 import { useAppSelector } from "../../hook";
 import { useEffect, useState } from "react";
@@ -11,20 +11,15 @@ export default function Syllabus() {
 
   let course_id: number = id ? +id : -1
 
-  useLoadModulesQuery({ id: course_id });
+  console.log('Syllabus')
+  //useLoadFullCourseQuery(course_id);
 
-  const [state, setState] = useState(0);
-
+  const [loadFullCourse] = useLazyLoadFullCourseQuery()
 
   useEffect(() => {
+    loadFullCourse(course_id)
+  }, [course_id])
 
-    console.log(`Syllabus rerender ${state}`)
-    //setState(prev => prev + 1)
-
-  })
-
-  const courses = useAppSelector(state => state.courseReducer.ownerCourses);
-  const active_course = courses.find(course => course.id === course_id);
   const modules = useAppSelector(state => state.courseReducer.actualModules);
 
   return (

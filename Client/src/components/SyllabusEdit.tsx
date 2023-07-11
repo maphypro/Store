@@ -17,7 +17,7 @@ export default function SyllabusEdit() {
 
 
   const modulesForExchange = useAppSelector(state => state.courseReducer.modulesForExchange)
-  
+  const lessonsForExchange = useAppSelector(state => state.courseReducer.lessonsForExchange)
 
   const needToRerender = useAppSelector(state => state.courseReducer.needToRerender)
 
@@ -26,9 +26,6 @@ export default function SyllabusEdit() {
     dispatch(createNewModule())
   }
 
-  useEffect(() => {
-    console.log('SyllabusEdit')
-  })
 
 
   if (modulesForExchange.length === 0) {
@@ -59,29 +56,49 @@ export default function SyllabusEdit() {
           {
             modulesForExchange.map(module_ => {
               return (
-                <ListItem sx={{ mb: 3, w: 1 }}>
+                <ListItem sx={{
+                  mb: 3, w: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}>
                   <SyllabusEditModule module_={module_} courseId={course_id} />
-                  <List>
+                  <List sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    flexGrow: 2,
+                    border: '0px solid blue',
+                    minWidth: '100%'
+                  }}>
                     {
-                      module_.lessons?.map(lesson => {
-                        return (
-                          <ListItem>
-                            <SyllabusEditLesson />
-                          </ListItem>
-                        )
+                      lessonsForExchange.map(lesson => {
+                        if (module_.code === lesson.code) {
+                          return (
+                            <ListItem sx={{ flexGrow: 4 }}>
+                              <SyllabusEditLesson
+                                lesson={lesson}
+                                courseId={course_id}
+                                status={lesson.status}
+                                code={lesson.code} />
+                            </ListItem>
+                          )
+                        }
                       })
+
                     }
+                    <ListItem sx={{}}>
+                      <SyllabusEditLesson lesson={null} courseId={course_id} status={'NEW'} code={module_.code} />
+                    </ListItem>
                   </List>
                 </ListItem>
               )
             })
           }
-        </List>
+        </List >
       }
       <Button variant="contained" sx={{ ml: 2 }} onClick={handleCreateNewModule}>
         Новый модуль
       </Button>
-    </Box>
+    </Box >
   )
 }
 

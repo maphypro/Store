@@ -21,9 +21,9 @@ export type CourseType = {
 
 export type ModuleType = {
     id: number | null,
-    name: string | null,
+    title: string | null,
     description: string | null,
-    modulesNumber: number,
+    moduleNumber: number,
     code: number,
     lessons?: LessonType[] | null 
 }
@@ -33,6 +33,7 @@ export type LessonType = {
     title: string | null,
     lessonNumber: number,
     code: number,
+    status: string,
     client_lesson_id: number,
     steps?: StepType[] | null
 }

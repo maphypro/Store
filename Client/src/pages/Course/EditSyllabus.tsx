@@ -3,7 +3,7 @@ import FooterForEditPage from "../../components/FooterForEditPage";
 import SyllabusEdit from "../../components/SyllabusEdit";
 import { useAppDispatch, useAppSelector } from "../../hook";
 import { useEffect } from "react";
-import { initializeModulesForExchange } from "../../store/Course/courseSlice";
+import { initializeModulesForExchange, initializeLessonsForExchange } from "../../store/Course/courseSlice";
 
 export default function EditSyllabus() {
 
@@ -12,7 +12,7 @@ export default function EditSyllabus() {
 
   useEffect(() => {
     dispatch(initializeModulesForExchange());
-    console.log('EditSyllabus')
+    dispatch(initializeLessonsForExchange());
   }, [])
 
   return (

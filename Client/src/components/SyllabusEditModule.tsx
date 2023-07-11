@@ -25,14 +25,14 @@ export default function SyllabusEditModule({ module_, courseId }: { module_: Mod
         setAnchorEl(null);
         dispatch(deleteModule({
             client_id: module_.code,
-            modulesNumber: module_.modulesNumber
+            modulesNumber: module_.moduleNumber
         }))
     }
 
     return (
         <Paper sx={{ display: 'flex', flexDirection: 'row', minWidth: '100%', p: 2 }}>
             <Box sx={{ h: 1, mr: 2, }}>
-                {module_.modulesNumber}
+                {module_.moduleNumber}
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
                 <Box sx={{ display: 'flex', flexDirection: 'row' }}>
@@ -40,13 +40,13 @@ export default function SyllabusEditModule({ module_, courseId }: { module_: Mod
                         <TextField
                             variant='outlined'
                             label="Название модуля"
-                            value={module_.name}
+                            value={module_.title}
                             onChange={e => {
                                 dispatch(changeModule({
                                     client_id: module_.code,
                                     title: e.target.value,
                                     description: null,
-                                    modulesNumber: module_.modulesNumber
+                                    modulesNumber: module_.moduleNumber
                                 }))
                             }}
                         >
@@ -64,7 +64,6 @@ export default function SyllabusEditModule({ module_, courseId }: { module_: Mod
                         <MoreVertIcon />
                     </IconButton>
                     <Menu
-
                         anchorEl={anchorEl}
                         open={open}
                         onClose={handleClose}
@@ -86,7 +85,7 @@ export default function SyllabusEditModule({ module_, courseId }: { module_: Mod
                                 client_id: module_.code,
                                 title:  null,
                                 description: e.target.value,
-                                modulesNumber: module_.modulesNumber
+                                modulesNumber: module_.moduleNumber
                             }))
                         }}
                     >

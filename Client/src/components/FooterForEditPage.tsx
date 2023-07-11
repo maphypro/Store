@@ -1,7 +1,7 @@
 import { Box, Button } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hook";
-import { useUpdateActualModulesMutation } from "../store/Course/courseApi";
+import { useUpdateActualCourseMutation } from "../store/Course/courseApi";
 
 export default function FooterForEditPage() {
 
@@ -14,8 +14,10 @@ export default function FooterForEditPage() {
     const dispatch = useAppDispatch()
 
     const modules = useAppSelector(state => state.courseReducer.modulesForExchange);
+    const lessons = useAppSelector(state => state.courseReducer.lessonsForExchange);
 
-    const [updateActualModules, varsAdd] = useUpdateActualModulesMutation();
+
+    const [updateActualCourse, varsAdd] = useUpdateActualCourseMutation();
 
 
     return (
@@ -29,7 +31,9 @@ export default function FooterForEditPage() {
             bottom: 0, left: 0,
             p: 1, pr: 20,
         }}>
-            <Button variant="contained" onClick={() => updateActualModules({courseId: course_id, modules: modules})}>
+            <Button variant="contained" onClick={() =>
+                updateActualCourse({ courseId: course_id, modules: modules, lessons: lessons })
+            }>
                 Сохранить
             </Button>
             <Button variant="contained" sx={{ ml: 2 }}>

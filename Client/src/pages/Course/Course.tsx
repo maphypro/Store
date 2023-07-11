@@ -5,13 +5,15 @@ import { Outlet, useOutletContext, useParams } from 'react-router-dom';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import Header from '../../components/Header';
 import { CourseType } from '../../types/CourseTypes';
-import { useAppSelector } from '../../hook';
+import { useAppDispatch, useAppSelector } from '../../hook';
+import { clearActualCourse } from '../../store/Course/courseSlice';
 
 
 const Course = () => {
 
 
     const [open, setOpen] = useState(true);
+    const dispatch = useAppDispatch();
 
     const { id } = useParams();
     let course_id: number = id ? +id : -1
@@ -22,9 +24,11 @@ const Course = () => {
 
     useEffect(() => {
         setActiveCourse(courses.find(course => course.id === course_id))
-       // console.log(activeCourse)
-        
     })
+
+    useEffect(() => {
+        dispatch(clearActualCourse())
+    }, [course_id])
 
 
     

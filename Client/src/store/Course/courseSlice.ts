@@ -46,7 +46,7 @@ const courseSlice = createSlice({
 
             let modulesForSorting = [...modules]
 
-            modulesForSorting = modulesForSorting.sort((a, b) => a.modulesNumber - b.modulesNumber);
+            modulesForSorting = modulesForSorting.sort((a, b) => a.moduleNumber - b.moduleNumber);
 
             state.actualModules = modulesForSorting;
         },
@@ -59,69 +59,92 @@ const courseSlice = createSlice({
             const newModule = {
                 id: -1,
                 code: random(),
-                name: `Новый модуль ${modulesNumber}`,
+                title: `Новый модуль ${modulesNumber}`,
                 description: '',
-                modulesNumber: modulesNumber
+                moduleNumber: modulesNumber
             }
             state.modulesForExchange.push(newModule)
         },
         deleteModule: (state, action: PayloadAction<{ client_id: number, modulesNumber: number }>) => {
             const { client_id, modulesNumber } = action.payload;
-            state.modulesForExchange = state.modulesForExchange.filter(module_ => module_.modulesNumber !== modulesNumber);
+            state.modulesForExchange = state.modulesForExchange.filter(module_ => module_.moduleNumber !== modulesNumber);
             state.modulesForExchange = enumerateModules(state.modulesForExchange);
             state.needToRerender++;
         },
         changeModule: (state, action: PayloadAction<{ client_id: number, modulesNumber: number, title: string | null, description: string | null }>) => {
             const { client_id, title, description, modulesNumber } = action.payload;
             state.modulesForExchange.forEach(module_ => {
-                if (module_.modulesNumber === modulesNumber) {
+                if (module_.moduleNumber === modulesNumber) {
                     module_.description = description ? description : module_.description;
-                    module_.name = title ? title : module_.name;
+                    module_.title = title ? title : module_.title;
                 }
             })
         },
         updateLoadedLessonsForCourse: (state, action: PayloadAction<{ lessons: LessonType[] }>) => {
 
-            const { lessons } = action.payload;
-            let lessonsForSorting = [...lessons]
+            let { lessons } = action.payload;
+            let lessonsForSorting: LessonType[] = [...lessons];
 
             lessonsForSorting = lessonsForSorting.sort((a, b) => a.lessonNumber - b.lessonNumber);
+            lessonsForSorting = lessonsForSorting.map(lesson => {
+                return {
+                    ...lesson,
+                    status: 'SAVED'
+                }
+
+            })
+            //lessonsForSorting.forEach(lesson => lesson.status = 'SAVED')
             state.actualLessons = lessonsForSorting;
+            state.lessonsForExchange = lessonsForSorting;
+
         },
         initializeLessonsForExchange: (state) => {
             state.lessonsForExchange = state.actualLessons
         },
-        createNewLesson: (state, action: PayloadAction<{ client_id_ref: number }>) => {
+        createNewLesson: (state, action: PayloadAction<{ code: number, title: string }>) => {
 
-            const { client_id_ref } = action.payload;
+            const { code } = action.payload;
+            const { title } = action.payload;
 
-            const lessonNumber = state.lessonsForExchange.length + 1;
             const random = uniqueRandom(-10000, -1);
 
-            const newLesson = {
+            const newLesson : LessonType = {
                 id: -1,
-                code: client_id_ref,
+                code: code,
                 client_lesson_id: random(),
-                title: `Новый урок ${lessonNumber}`,
-                lessonNumber: lessonNumber
+                title: title,
+                lessonNumber: -1,
+                status: 'CREATED'
             }
             state.lessonsForExchange.push(newLesson)
+
+            state.lessonsForExchange = state.lessonsForExchange.sort((a, b) => a.code - b.code)
+            state.lessonsForExchange = enumerateLessons(state.lessonsForExchange, state.modulesForExchange);
+
+
         },
-        deleteLesson: (state, action: PayloadAction<{ client_lesson_id: number }>) => {
-            const { client_lesson_id } = action.payload;
+        deleteLesson: (state, action: PayloadAction<{ lessonNumber: number }>) => {
+            const { lessonNumber } = action.payload;
             state.lessonsForExchange =
-                state.lessonsForExchange.filter(module_ => module_.client_lesson_id !== client_lesson_id);
-            state.lessonsForExchange = enumerateLessons(state.lessonsForExchange);
+                state.lessonsForExchange.filter(lesson => lesson.lessonNumber !== lessonNumber);
+            state.lessonsForExchange = enumerateLessons(state.lessonsForExchange, state.modulesForExchange);
             state.needToRerender++;
         },
-        changeLesson: (state, action: PayloadAction<{ client_lesson_id: number, title: string | null }>) => {
-            const { client_lesson_id, title } = action.payload;
-            state.modulesForExchange.forEach(lesson => {
-                if (lesson.code === client_lesson_id) {
-                    lesson.name = title ? title : lesson.name;
+        changeLesson: (state, action: PayloadAction<{ lessonNumber: number, title: string | null }>) => {
+            const { lessonNumber, title } = action.payload;
+            state.lessonsForExchange.forEach(lesson => {
+                if (lesson.lessonNumber === lessonNumber) {
+                    lesson.title = title ? title : lesson.title;
                 }
             })
+
         },
+        clearActualCourse: (state) => {
+            state.modulesForExchange = []
+            state.lessonsForExchange = []
+            state.actualLessons = []
+            state.actualModules = []
+        }
     }
 })
 
@@ -133,8 +156,13 @@ export const {
     createNewModule,
     changeModule,
     deleteModule,
+    initializeModulesForExchange,
     updateLoadedLessonsForCourse,
-    initializeModulesForExchange
+    createNewLesson,
+    changeLesson,
+    deleteLesson,
+    initializeLessonsForExchange,
+    clearActualCourse
 } = courseSlice.actions;
 
 export default courseSlice.reducer;

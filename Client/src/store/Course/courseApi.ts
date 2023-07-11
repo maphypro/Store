@@ -69,23 +69,6 @@ export const courseApi = createApi({
                 }
             }
         }),
-        updateActualModules: build.mutation<any, { courseId: number, modules: ModuleType[] }>({
-            query: ({ courseId, modules }: { courseId: number, modules: ModuleType[] }) => {
-                return {
-                    url: 'modules/update_modules',
-                    method: 'POST',
-                    body: {
-                        courseId,
-                        modules
-                    }
-                }
-            },
-            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-                const { data } = await queryFulfilled;
-                dispatch(updateLoadedModulesForCourse({ modules: data }));
-
-            }
-        }),
         loadLessons: build.query<LessonType[], number>({
             query: (moduleId: number) => {
                 return {
@@ -105,20 +88,44 @@ export const courseApi = createApi({
                 }
             }
         }),
-        updateActualLessons: build.mutation<any, { courseId: number, lessons: ModuleType[] }>({
-            query: ({ courseId, lessons }: { courseId: number, lessons: ModuleType[] }) => {
+        loadFullCourse: build.query<{modules: ModuleType[], lessons: LessonType[]}, number>({
+            query: (courseId: number) => {
                 return {
-                    url: 'modules/update_modules',
+                    url: 'course/get_full_course',
+                    params: { id: courseId },
+                    method: 'GET'
+                }
+            },
+            async onQueryStarted(id, { dispatch, queryFulfilled }) {
+                try {
+                    const { data } = await queryFulfilled;
+                    const {modules, lessons} = data;
+                    dispatch(updateLoadedModulesForCourse({ modules: modules }));
+                    dispatch(updateLoadedLessonsForCourse({ lessons: lessons }));
+                } catch (e) {
+                    console.log(e);
+                    console.log('Cannot load course')
+                }
+            }
+        }),
+        updateActualCourse: build.mutation<any, { courseId: number, modules: ModuleType[], lessons: LessonType[] }>({
+            query: ({ courseId, lessons, modules }: { courseId: number, modules: ModuleType[], lessons: LessonType[] }) => {
+                return {
+                    url: 'course/save_course',
                     method: 'POST',
                     body: {
                         courseId,
-                        lessons
+                        lessons,
+                        modules
                     }
                 }
             },
             async onQueryStarted(arg, { dispatch, queryFulfilled }) {
                 const { data } = await queryFulfilled;
-                dispatch(updateLoadedModulesForCourse({ modules: data }));
+                const modules = data.modules
+                const lessons = data.lessons
+                dispatch(updateLoadedModulesForCourse({ modules: modules }));
+                dispatch(updateLoadedLessonsForCourse({ lessons: lessons }));
 
             }
         }),
@@ -133,5 +140,7 @@ export const { useCreateEmptyCourseMutation,
     useLoadCardsQuery,
     useLoadCoursesListQuery,
     useLoadModulesQuery,
-    useUpdateActualModulesMutation,
+    useLoadFullCourseQuery,
+    useLazyLoadFullCourseQuery,
+    useUpdateActualCourseMutation,
     useLazyLoadModulesQuery } = courseApi;
