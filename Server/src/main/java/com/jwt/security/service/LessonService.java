@@ -117,16 +117,4 @@ public class LessonService {
         modulesRepository.save(module);
     }
 
-    public LessonResponse changeLesson(Modules modules){
-        LessonResponse lessonResponse = null;
-        for(Lesson lesson : modules.getLessons()){
-             lessonResponse = new LessonResponse();
-            lessonResponse.setId(lesson.getId());
-            lessonResponse.setTitle(lesson.getTitle());
-            lessonResponse.setModuleId(modules.getId());
-            lessonResponse.setLessonNumber(lesson.getLessonNumber());
-            lessonResponse.setCode(lesson.getCode());
-        }
-        return lessonResponse;
-    }
 }
