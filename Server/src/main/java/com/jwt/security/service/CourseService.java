@@ -163,8 +163,8 @@ public class CourseService {
             course.getModules().add(module);
         }
         //modulesRepository.save(module);
-        Set<Lesson> lessonsToSave = new HashSet<>();
-        Set<LessonRequest> lessonsToRemove = new HashSet<>();
+        List<Lesson> lessonsToSave = new ArrayList<>();
+        List<LessonRequest> lessonsToRemove = new ArrayList<>();
 
         for (LessonRequest lessonRequest : lessons) {
             if (lessonRequest.getCode().equals(moduleRequest.getCode())) {
@@ -212,9 +212,17 @@ public class CourseService {
             modulesResponse.setModuleNumber(modules.getModuleNumber());
             modulesResponse.setCode(modules.getCode());
             modulesResponses.add(modulesResponse);
-
+            System.out.println(modules.getLessons().size());
             if(modules.getLessons().size() != 0){
-                lessonResponses.add(lessonService.changeLesson(modules));
+                for(Lesson lesson : modules.getLessons()){
+                    LessonResponse lessonResponse = new LessonResponse();
+                    lessonResponse.setId(lesson.getId());
+                    lessonResponse.setTitle(lesson.getTitle());
+                    lessonResponse.setModuleId(modules.getId());
+                    lessonResponse.setLessonNumber(lesson.getLessonNumber());
+                    lessonResponse.setCode(lesson.getCode());
+                    lessonResponses.add(lessonResponse);
+                }
             }
 
         }
