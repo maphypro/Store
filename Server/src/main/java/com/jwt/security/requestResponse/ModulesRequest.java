@@ -17,7 +17,7 @@ public class ModulesRequest {
     private Long id;
 
     @Schema(description = "Номер модуля", required = true)
-    private Integer moduleNumber;
+    private Double moduleNumber;
 
     @Schema(description = "Название модуля", required = true)
     private String title;

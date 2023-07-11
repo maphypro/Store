@@ -30,6 +30,7 @@ public class ModulesService {
             modules.setModuleNumber(moduleRequest.getModuleNumber());
             modules.setTitle(moduleRequest.getTitle());
             modules.setDescription(moduleRequest.getDescription());
+            modules.setCode(moduleRequest.getCode());
             modules.setCourse(course);
 
             course.getModules().add(modules);
@@ -68,7 +69,7 @@ public class ModulesService {
         modulesResponse.setModuleNumber(modules.getModuleNumber());
         modulesResponse.setTitle(modules.getTitle());
         modulesResponse.setDescription(modules.getDescription());
-
+        modulesResponse.setCode(modulesResponse.getCode());
         return modulesResponse;
     }
 
@@ -113,6 +114,7 @@ public class ModulesService {
             System.out.println(modules.getTitle());
             modules.setDescription(moduleRequest.getDescription());
             modules.setModuleNumber(moduleRequest.getModuleNumber());
+            modules.setCode(moduleRequest.getCode());
 
             if (!course.getModules().contains(modules)) {
                 course.getModules().add(modules);

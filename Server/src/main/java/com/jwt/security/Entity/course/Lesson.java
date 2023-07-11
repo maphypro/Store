@@ -22,9 +22,10 @@ public class Lesson {
     private Long id;
 
     @JoinColumn(name = "lesson_number")
-    private Integer lessonNumber;
+    private Double lessonNumber;
 
     private String title;
+    private Integer code;
 
     @ManyToOne
     @JoinColumn(name = "module_id")

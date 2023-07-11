@@ -13,6 +13,6 @@ public class LessonRequest {
 
     private Long id;
     private String title;
-    private Integer lessonNumber;
+    private Double lessonNumber;
     private Integer code;
 }

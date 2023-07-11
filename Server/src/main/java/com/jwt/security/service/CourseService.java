@@ -148,7 +148,6 @@ public class CourseService {
             fullUpdateCourse(modules, moduleRequest, request.getLessons(), course);
             // todo  доработать в случае чего
         }
-        System.out.println("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj");
         modulesRepository.saveAll(course.getModules());
         courseRepository.save(course);
         return getFullCourse(courseId);
@@ -159,7 +158,7 @@ public class CourseService {
         module.setDescription(moduleRequest.getDescription());
         module.setModuleNumber(moduleRequest.getModuleNumber());
         module.setCourse(course);
-
+        module.setCode(moduleRequest.getCode());
         if (!course.getModules().contains(module)) {
             course.getModules().add(module);
         }
@@ -179,6 +178,7 @@ public class CourseService {
                 lesson.setTitle(lessonRequest.getTitle());
                 lesson.setModules(module);
                 lesson.setLessonNumber(lessonRequest.getLessonNumber());
+                lesson.setCode(lessonRequest.getCode());
                 lessonsToSave.add(lesson);
                 lessonsToRemove.add(lessonRequest);
             }
@@ -210,6 +210,7 @@ public class CourseService {
             modulesResponse.setTitle(modules.getTitle());
             modulesResponse.setDescription(modules.getDescription());
             modulesResponse.setModuleNumber(modules.getModuleNumber());
+            modulesResponse.setCode(modules.getCode());
             modulesResponses.add(modulesResponse);
 
             if(modules.getLessons().size() != 0){

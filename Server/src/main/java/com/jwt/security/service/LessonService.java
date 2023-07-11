@@ -29,9 +29,10 @@ public class LessonService {
         int i = 0;
         for (LessonRequest lessonRequest : lessonRequests) {
             Lesson lesson = new Lesson();
-            lesson.setLessonNumber(i++);
+            lesson.setLessonNumber(lessonRequest.getLessonNumber());
             lesson.setTitle(lessonRequest.getTitle());
             lesson.setModules(modules);
+            lesson.setCode(lessonRequest.getCode());
             Long lessonId = lessonRepository.save(lesson).getId();
             ListModulesResponses.add(lessonResponse(lesson, lessonId));
             modules.getLessons().add(lesson);
@@ -62,7 +63,7 @@ public class LessonService {
         lessonResponse.setLessonNumber(lesson.getLessonNumber());
         lessonResponse.setTitle(lesson.getTitle());
         lessonResponse.setModuleId(lesson.getModules().getId());
-
+        lessonResponse.setCode(lesson.getCode());
         return lessonResponse;
     }
 
@@ -81,11 +82,13 @@ public class LessonService {
                 lesson.setTitle(name);
                 // Связать урок с соответствующим модулем и курсом, если необходимо
                 lesson.setModules(module);
+                lesson.setCode(lessonRequest.getCode());
             } else {
                 lesson = new Lesson();
                 lesson.setTitle(name);
                 // Связать урок с соответствующим модулем и курсом, если необходимо
                 lesson.setModules(module);
+                lesson.setCode(lessonRequest.getCode());
                 module.getLessons().add(lesson);
             }
             lessonRepository.save(lesson);
@@ -122,7 +125,7 @@ public class LessonService {
             lessonResponse.setTitle(lesson.getTitle());
             lessonResponse.setModuleId(modules.getId());
             lessonResponse.setLessonNumber(lesson.getLessonNumber());
-
+            lessonResponse.setCode(lesson.getCode());
         }
         return lessonResponse;
     }
