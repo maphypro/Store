@@ -165,41 +165,33 @@ public class CourseService {
 //        module.getLessons().addAll(lessonsToSave);
 //    }
 
-    public FullCourseResponse getFullCourse(Long courseId){
+    public FullCourseResponse getFullCourse(Long courseId) {
         FullCourseResponse fullCourseResponse = new FullCourseResponse();
+
         // Получение курса по courseId или выброс исключения, если курс не найден
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new YourCustomException("Course not found"));
+
         fullCourseResponse.setCourseId(courseId);
+
         List<ModulesResponse> modulesResponses = new ArrayList<>();
         List<LessonResponse> lessonResponses = new ArrayList<>();
 
-        for(Modules modules : course.getModules()){
-            ModulesResponse modulesResponse = new ModulesResponse();
-            modulesResponse.setId(modules.getId());
-            modulesResponse.setTitle(modules.getTitle());
-            modulesResponse.setDescription(modules.getDescription());
-            modulesResponse.setModuleNumber(modules.getModuleNumber());
-            modulesResponse.setCode(modules.getCode());
+        for (Modules modules : course.getModules()) {
+            ModulesResponse modulesResponse = modulesService.getModulesResponse(modules);
             modulesResponses.add(modulesResponse);
-            System.out.println(modules.getLessons().size());
-            if(modules.getLessons().size() != 0){
-                for(Lesson lesson : modules.getLessons()){
-                    LessonResponse lessonResponse = new LessonResponse();
-                    lessonResponse.setId(lesson.getId());
-                    lessonResponse.setTitle(lesson.getTitle());
-                    lessonResponse.setModuleId(modules.getId());
-                    lessonResponse.setLessonNumber(lesson.getLessonNumber());
-                    lessonResponse.setCode(lesson.getCode());
-                    lessonResponse.setStatus("");
+
+            if (!modules.getLessons().isEmpty()) {
+                for (Lesson lesson : modules.getLessons()) {
+                    LessonResponse lessonResponse = lessonService.getLessonResponse(lesson, modules.getId());
                     lessonResponses.add(lessonResponse);
                 }
             }
-
         }
 
         fullCourseResponse.setModules(modulesResponses);
         fullCourseResponse.setLessons(lessonResponses);
+
         return fullCourseResponse;
     }
     public List<CategoriesResponse> getCategories() {
