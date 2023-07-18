@@ -15,8 +15,10 @@ import com.jwt.security.Entity.user.User;
 import com.jwt.security.Entity.user.repository.UserRepository;
 import com.jwt.security.exception.YourCustomException;
 import com.jwt.security.requestResponse.*;
+import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -193,6 +195,36 @@ public class CourseService {
         fullCourseResponse.setLessons(lessonResponses);
 
         return fullCourseResponse;
+    }
+
+    public List<CourseResponse> searchCourses(String title, boolean hasCertificate, boolean isFree, int maxDistance) {
+        if (StringUtils.isEmpty(title)) {
+            // Если заданная часть названия пуста, вернуть 8 случайных курсов
+            int limit = 8;
+            int totalCourseCount = courseRepository.getTotalCourseCount();
+            int randomCourseLimit = Math.min(totalCourseCount, limit);
+            List<Course> randomCourses = courseRepository.findRandomCourses(randomCourseLimit);
+            List<CourseResponse> fullCourseResponses = new ArrayList<>();
+            for (Course course: randomCourses){
+                CourseResponse courseResponse = courseResponse(course);
+                fullCourseResponses.add(courseResponse);
+            }
+            return fullCourseResponses;
+        } else {
+            List<Course> courses = courseRepository.findByTitleLevenshteinDistance(title, maxDistance);
+
+//            // Фильтровать курсы по наличию сертификата и стоимости
+//            courses = courses.stream()
+//                    .filter(course -> course.isHasCertificate() == hasCertificate)
+//                    .filter(course -> course.isFree() == isFree)
+//                    .collect(Collectors.toList());
+            List<CourseResponse> fullCourseResponses = new ArrayList<>();
+            for (Course course: courses){
+                CourseResponse courseResponse = courseResponse(course);
+                fullCourseResponses.add(courseResponse);
+            }
+            return fullCourseResponses;
+        }
     }
     public List<CategoriesResponse> getCategories() {
         List<Categories> categoriesResponseList = categoriesRepository.findAll();
