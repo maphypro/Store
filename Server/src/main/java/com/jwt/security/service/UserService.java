@@ -6,14 +6,13 @@ import com.jwt.security.Entity.user.User;
 import com.jwt.security.Entity.user.repository.CourseCreatorRepository;
 import com.jwt.security.Entity.user.repository.UserRepository;
 import com.jwt.security.exception.YourCustomException;
-import com.jwt.security.requestResponse.AuthenticationResponse;
-import com.jwt.security.requestResponse.GetUserResponse;
-import com.jwt.security.requestResponse.Message;
-import com.jwt.security.requestResponse.UpdateUserRequest;
+import com.jwt.security.requestResponse.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -63,4 +62,10 @@ public class UserService {
             throw  new YourCustomException("You are the creator");
         }
     }
+
+//    public List<GetUserResponse> getUsers(User user, SearchUserResponse searchUserResponse){
+//        GetUserResponse getUserResponse = new GetUserResponse();
+//        List<GetUserResponse> userList = new ArrayList<>();
+//        return userList;
+//    }
 }

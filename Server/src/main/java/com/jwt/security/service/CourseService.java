@@ -15,8 +15,10 @@ import com.jwt.security.Entity.user.User;
 import com.jwt.security.Entity.user.repository.UserRepository;
 import com.jwt.security.exception.YourCustomException;
 import com.jwt.security.requestResponse.*;
+import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -165,42 +167,64 @@ public class CourseService {
 //        module.getLessons().addAll(lessonsToSave);
 //    }
 
-    public FullCourseResponse getFullCourse(Long courseId){
+    public FullCourseResponse getFullCourse(Long courseId) {
         FullCourseResponse fullCourseResponse = new FullCourseResponse();
+
         // Получение курса по courseId или выброс исключения, если курс не найден
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new YourCustomException("Course not found"));
+
         fullCourseResponse.setCourseId(courseId);
+
         List<ModulesResponse> modulesResponses = new ArrayList<>();
         List<LessonResponse> lessonResponses = new ArrayList<>();
 
-        for(Modules modules : course.getModules()){
-            ModulesResponse modulesResponse = new ModulesResponse();
-            modulesResponse.setId(modules.getId());
-            modulesResponse.setTitle(modules.getTitle());
-            modulesResponse.setDescription(modules.getDescription());
-            modulesResponse.setModuleNumber(modules.getModuleNumber());
-            modulesResponse.setCode(modules.getCode());
+        for (Modules modules : course.getModules()) {
+            ModulesResponse modulesResponse = modulesService.getModulesResponse(modules);
             modulesResponses.add(modulesResponse);
-            System.out.println(modules.getLessons().size());
-            if(modules.getLessons().size() != 0){
-                for(Lesson lesson : modules.getLessons()){
-                    LessonResponse lessonResponse = new LessonResponse();
-                    lessonResponse.setId(lesson.getId());
-                    lessonResponse.setTitle(lesson.getTitle());
-                    lessonResponse.setModuleId(modules.getId());
-                    lessonResponse.setLessonNumber(lesson.getLessonNumber());
-                    lessonResponse.setCode(lesson.getCode());
-                    lessonResponse.setStatus("");
+
+            if (!modules.getLessons().isEmpty()) {
+                for (Lesson lesson : modules.getLessons()) {
+                    LessonResponse lessonResponse = lessonService.getLessonResponse(lesson, modules.getId());
                     lessonResponses.add(lessonResponse);
                 }
             }
-
         }
 
         fullCourseResponse.setModules(modulesResponses);
         fullCourseResponse.setLessons(lessonResponses);
+
         return fullCourseResponse;
+    }
+
+    public List<CourseResponse> searchCourses(String title, boolean hasCertificate, boolean isFree, int maxDistance) {
+        if (StringUtils.isEmpty(title)) {
+            // Если заданная часть названия пуста, вернуть 8 случайных курсов
+            int limit = 8;
+            int totalCourseCount = courseRepository.getTotalCourseCount();
+            int randomCourseLimit = Math.min(totalCourseCount, limit);
+            List<Course> randomCourses = courseRepository.findRandomCourses(randomCourseLimit);
+            List<CourseResponse> fullCourseResponses = new ArrayList<>();
+            for (Course course: randomCourses){
+                CourseResponse courseResponse = courseResponse(course);
+                fullCourseResponses.add(courseResponse);
+            }
+            return fullCourseResponses;
+        } else {
+            List<Course> courses = courseRepository.findByTitleLevenshteinDistance(title, maxDistance);
+
+//            // Фильтровать курсы по наличию сертификата и стоимости
+//            courses = courses.stream()
+//                    .filter(course -> course.isHasCertificate() == hasCertificate)
+//                    .filter(course -> course.isFree() == isFree)
+//                    .collect(Collectors.toList());
+            List<CourseResponse> fullCourseResponses = new ArrayList<>();
+            for (Course course: courses){
+                CourseResponse courseResponse = courseResponse(course);
+                fullCourseResponses.add(courseResponse);
+            }
+            return fullCourseResponses;
+        }
     }
     public List<CategoriesResponse> getCategories() {
         List<Categories> categoriesResponseList = categoriesRepository.findAll();

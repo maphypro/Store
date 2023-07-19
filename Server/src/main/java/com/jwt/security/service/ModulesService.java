@@ -104,17 +104,11 @@ public class ModulesService {
         for (ModulesRequest moduleRequest : moduleRequests) {
             Long moduleRequestId = moduleRequest.getId();
 
-            Modules modules = course.getModules().stream()
-                    .filter(module -> Objects.equals(module.getId(), moduleRequestId) && module.getId() != null)
-                    .findFirst()
-                    .orElseGet(Modules::new);
-
-            modules.setCourse(course);
-            modules.setTitle(moduleRequest.getTitle());
-            System.out.println(modules.getTitle());
-            modules.setDescription(moduleRequest.getDescription());
-            modules.setModuleNumber(moduleRequest.getModuleNumber());
-            modules.setCode(moduleRequest.getCode());
+//            Modules modules = course.getModules().stream()
+//                    .filter(module -> Objects.equals(module.getId(), moduleRequestId) && module.getId() != null)
+//                    .findFirst()
+//                    .orElseGet(Modules::new);
+            Modules modules = getModules(moduleRequest, moduleRequestId, course);
 
             if (!course.getModules().contains(modules)) {
                 course.getModules().add(modules);
@@ -167,18 +161,9 @@ public class ModulesService {
 
         for (ModulesRequest moduleRequest : moduleRequests) {
             Long moduleRequestId = moduleRequest.getId();
-            Modules modules = course.getModules().stream()
-                    .filter(module -> Objects.equals(module.getId(), moduleRequestId) && module.getId() != null)
-                    .findFirst()
-                    .orElseGet(Modules::new);
-
+            Modules modules = getModules(moduleRequest, moduleRequestId, course);
             // Обновление свойств модуля
-            // ...
-            modules.setTitle(moduleRequest.getTitle());
-            modules.setDescription(moduleRequest.getDescription());
-            modules.setModuleNumber(moduleRequest.getModuleNumber());
-            modules.setCourse(course);
-            modules.setCode(moduleRequest.getCode());
+
             if (modules.getLessons() == null) {
                 modules.setLessons(new ArrayList<>());
             }
@@ -187,5 +172,27 @@ public class ModulesService {
             }
         }
         return course.getModules();
+    }
+
+    public ModulesResponse getModulesResponse(Modules modules) {
+        ModulesResponse modulesResponse = new ModulesResponse();
+        modulesResponse.setId(modules.getId());
+        modulesResponse.setTitle(modules.getTitle());
+        modulesResponse.setDescription(modules.getDescription());
+        modulesResponse.setModuleNumber(modules.getModuleNumber());
+        modulesResponse.setCode(modules.getCode());
+        return modulesResponse;
+    }
+    public Modules getModules(ModulesRequest moduleRequest,Long moduleRequestId,  Course course){
+        Modules modules = course.getModules().stream()
+                .filter(module -> Objects.equals(module.getId(), moduleRequestId) && module.getId() != null)
+                .findFirst()
+                .orElseGet(Modules::new);
+        modules.setTitle(moduleRequest.getTitle());
+        modules.setDescription(moduleRequest.getDescription());
+        modules.setModuleNumber(moduleRequest.getModuleNumber());
+        modules.setCourse(course);
+        modules.setCode(moduleRequest.getCode());
+        return modules;
     }
 }
