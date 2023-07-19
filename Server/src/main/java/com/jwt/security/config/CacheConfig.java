@@ -12,6 +12,6 @@ public class CacheConfig {
 
     @Bean
     public CacheManager cacheManager() {
-        return new ConcurrentMapCacheManager("rateLimitCache"); // Замените "myCache" на имя вашего кэша
+        return new ConcurrentMapCacheManager("rateLimitCache");
     }
 }

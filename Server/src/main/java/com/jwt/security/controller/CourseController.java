@@ -3,11 +3,13 @@ package com.jwt.security.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jwt.security.Entity.course.Course;
 import com.jwt.security.Entity.user.User;
 import com.jwt.security.requestResponse.*;
 import com.jwt.security.service.CourseService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -84,11 +86,25 @@ public class CourseController {
 
     @GetMapping("/get_full_course")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<FullCourseResponse> getModules(
+    public ResponseEntity<FullCourseResponse> getFullCourse(
             @AuthenticationPrincipal User user,
             @RequestParam Long id
     ) {
         //Long id = Long.parseLong(idRequest);
         return ResponseEntity.ok(courseService.getFullCourse(id));
+    }
+
+    @GetMapping("/search_courses")
+    public ResponseEntity<SearchCourseResponse> searchCourses(@ModelAttribute SearchCourseRequest request) {
+        String title = request.getTitle();
+        boolean hasCertificate = request.isHasCertificate();
+        boolean isFree = request.isFree();
+        int maxDistance = request.getMaxDistance();
+
+        List<CourseResponse> courses = courseService.searchCourses(title, hasCertificate, isFree, maxDistance);
+
+        HttpStatus status = courses.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
+        SearchCourseResponse response = new SearchCourseResponse(status, courses);
+        return new ResponseEntity<>(response, status);
     }
 }

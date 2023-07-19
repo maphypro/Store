@@ -108,18 +108,8 @@ public class LessonService {
 
             for (LessonRequest lessonRequest : lessonRequests) {
                 if (lessonRequest.getCode().equals(module.getCode())) {
-                    Lesson lesson = module.getLessons().stream()
-                            .filter(l -> Objects.equals(l.getId(), lessonRequest.getId()))
-                            .findFirst()
-                            .orElseGet(Lesson::new);
+                    Lesson lesson = getLesson(lessonRequest, module);
 
-                    // Обновление свойств урока
-                    // ...
-                    lesson.setTitle(lessonRequest.getTitle());
-                    // Связать урок с соответствующим модулем и курсом, если необходимо
-                    lesson.setModules(module);
-                    lesson.setLessonNumber(lessonRequest.getLessonNumber());
-                    lesson.setCode(lessonRequest.getCode());
                     lessonsToSave.add(lesson);
                     lessonsToRemove.add(lessonRequest);
                 }
@@ -156,4 +146,28 @@ public class LessonService {
         modulesRepository.save(module);
     }
 
+    public LessonResponse getLessonResponse(Lesson lesson, Long moduleId) {
+        LessonResponse lessonResponse = new LessonResponse();
+        lessonResponse.setId(lesson.getId());
+        lessonResponse.setTitle(lesson.getTitle());
+        lessonResponse.setModuleId(moduleId);
+        lessonResponse.setLessonNumber(lesson.getLessonNumber());
+        lessonResponse.setCode(lesson.getCode());
+        lessonResponse.setStatus("");
+        return lessonResponse;
+    }
+    public Lesson getLesson(LessonRequest lessonRequest, Modules module){
+        Lesson lesson = module.getLessons().stream()
+                .filter(l -> Objects.equals(l.getId(), lessonRequest.getId()))
+                .findFirst()
+                .orElseGet(Lesson::new);
+
+        // Обновление свойств урока
+        lesson.setTitle(lessonRequest.getTitle());
+        // Связать урок с соответствующим модулем и курсом, если необходимо
+        lesson.setModules(module);
+        lesson.setLessonNumber(lessonRequest.getLessonNumber());
+        lesson.setCode(lessonRequest.getCode());
+        return lesson;
+    }
 }
