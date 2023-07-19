@@ -8,12 +8,7 @@ import { initializeModulesForExchange, initializeLessonsForExchange } from "../.
 export default function EditSyllabus() {
 
 
-  const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    dispatch(initializeModulesForExchange());
-    dispatch(initializeLessonsForExchange());
-  }, [])
 
   return (
     <Container sx={{w:1, pb: 10}}>

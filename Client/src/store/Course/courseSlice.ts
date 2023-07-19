@@ -93,7 +93,6 @@ const courseSlice = createSlice({
                 }
 
             })
-            //lessonsForSorting.forEach(lesson => lesson.status = 'SAVED')
             state.actualLessons = lessonsForSorting;
             state.lessonsForExchange = lessonsForSorting;
 

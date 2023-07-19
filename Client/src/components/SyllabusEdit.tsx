@@ -3,8 +3,9 @@ import { useAppDispatch, useAppSelector } from "../hook";
 import { Box, Button, List, ListItem } from "@mui/material";
 import SyllabusEditModule from "./SyllabusEditModule";
 import SyllabusEditLesson from "./SyllabusEditLesson";
-import { createNewModule, initializeModulesForExchange } from "../store/Course/courseSlice";
+import { createNewModule, initializeLessonsForExchange, initializeModulesForExchange } from "../store/Course/courseSlice";
 import { useEffect } from "react";
+import { useLazyLoadFullCourseQuery } from "../store/Course/courseApi";
 
 
 
@@ -16,10 +17,19 @@ export default function SyllabusEdit() {
   const dispatch = useAppDispatch();
 
 
+  const [loadFullCourse] = useLazyLoadFullCourseQuery()
+
+  useEffect(() => {
+    loadFullCourse(course_id)
+  }, [course_id])
+
+  useEffect(() => {
+    dispatch(initializeModulesForExchange());
+    dispatch(initializeLessonsForExchange());
+  })
+
   const modulesForExchange = useAppSelector(state => state.courseReducer.modulesForExchange)
   const lessonsForExchange = useAppSelector(state => state.courseReducer.lessonsForExchange)
-
-  const needToRerender = useAppSelector(state => state.courseReducer.needToRerender)
 
 
   const handleCreateNewModule = () => {

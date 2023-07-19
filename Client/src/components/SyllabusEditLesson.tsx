@@ -56,15 +56,7 @@ export default function SyllabusEditLesson({ lesson, courseId, status, code }: {
               Создать урок
             </Typography>
           </Button>
-          <Box sx={{ border: '0px solid red' }}>
-            <IconButton
-              aria-label="more"
-              id="long-button"
-            //onClick={handleClick}
-            >
-              <MoreVertIcon />
-            </IconButton>
-          </Box>
+
         </Box>
       </Paper >
     )
@@ -94,9 +86,8 @@ export default function SyllabusEditLesson({ lesson, courseId, status, code }: {
           {
             status === 'SAVED' ?
               <Box sx={{ml: 2}}>
-                <Link to='/d'>
+                <Link to={`/edit-lesson/${lesson?.id}/step/1`}>
                   <Button
-                    onClick={handleCreateLesson}
                     sx={{
                       pl: 2,
                       pr: 2,
