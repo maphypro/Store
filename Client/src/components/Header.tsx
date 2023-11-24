@@ -38,7 +38,6 @@ const settings = ['Профиль', 'Настройки', 'Уведомлени�
 const AuthButtonStyle = {
     display: 'block',
     color: 'white',
-    padding: '16px 8px',
     textDecoration: 'none'
 }
 
@@ -76,9 +75,9 @@ function ResponsiveAppBar() {
     const isAuth: boolean = useAppSelector(state => state.userReduces.isAuth)
 
     return (
-        <AppBar position="static" sx={{ mb: 2 }}>
-            <Container maxWidth="xl">
-                <Toolbar disableGutters sx={{ display: 'flex' }}>
+        <AppBar position="static" sx={{ mb: 2, height: '50px', display: 'flex', alignItems: 'center' }}>
+            <Container maxWidth="xl" sx={{border: '1px solid black', pt: 0, height: '100%'}}>
+                <Toolbar variant='dense' disableGutters sx={{ display: 'flex', alignItems: 'center',  m: 0, p: 0}}>
                     <CameraIcon sx={{
                         display: { xs: 'none', md: 'flex' },
                         flexDirection: { xs: 'column', md: 'row' }, mr: 1
@@ -96,17 +95,18 @@ function ResponsiveAppBar() {
                             letterSpacing: '.1rem',
                             color: 'inherit',
                             textDecoration: 'none',
+                            fontSize: '1.5em'
                         }}
                     >
                         Vodim
                     </Typography>
-                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, fontSize: '1em' }}>
                         {pagesRoutes.map((page) => (
-                            <Link to={page.path} style={AuthButtonStyle} >
+                            <Link to={page.path} key={page.name} style={AuthButtonStyle} >
                                 <Button
                                     key={page.name}
                                     onClick={handleCloseNavMenu}
-                                    sx={{ color: 'white', display: 'block' }}
+                                    sx={{ color: 'white', display: 'block', textTransform: 'none' }}
                                 >
                                     {page.name}
                                 </Button>
@@ -117,7 +117,7 @@ function ResponsiveAppBar() {
 
 
                     <Box sx={{ display: { xs: 'none', md: 'flex' }, flexGrow: 1, mr: 5, bgcolor: 'info.main' }}>
-                        <TextField variant='standard' type='search' sx={{ width: "100%" }} />
+                        <TextField variant='standard' type='search' sx={{ width: "100%", height: '100%' }} />
                     </Box>
 
 
@@ -152,8 +152,8 @@ function ResponsiveAppBar() {
                             }}
                         >
                             {pagesRoutes.map((page) => (
-                                <Link to={page.path} style={{ textDecoration: 'none', color: 'inherit' }}>
-                                    <MenuItem key={page.name} onClick={handleCloseNavMenu}>
+                                <Link to={page.path} key={page.name} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                    <MenuItem onClick={handleCloseNavMenu}>
                                         <Typography textAlign="center">{page.name}</Typography>
                                     </MenuItem>
                                 </Link>
@@ -176,7 +176,6 @@ function ResponsiveAppBar() {
                                 </Tooltip>
 
                                 <Menu
-                                    sx={{ mt: '45px' }}
                                     id="menu-appbar"
                                     anchorEl={anchorElUser}
                                     anchorOrigin={{
@@ -194,12 +193,12 @@ function ResponsiveAppBar() {
                                     {settings.map((setting, index) => {
                                         if (index === setting.length - 2) {
                                             return (
-                                                <>
+                                                <Box key={setting}>
                                                     <Divider />
                                                     <MenuItem key={setting} onClick={handleLogoutClick}>
                                                         <Typography textAlign="center">{setting}</Typography>
                                                     </MenuItem>
-                                                </>
+                                                </Box>
                                             )
                                         }
                                         else {

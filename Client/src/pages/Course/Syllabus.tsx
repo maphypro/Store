@@ -11,7 +11,6 @@ export default function Syllabus() {
 
   let course_id: number = id ? +id : -1
 
-  console.log('Syllabus')
   //useLoadFullCourseQuery(course_id);
 
   const [loadFullCourse] = useLazyLoadFullCourseQuery()

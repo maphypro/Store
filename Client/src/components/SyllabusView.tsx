@@ -4,6 +4,7 @@ import SyllabusViewLesson from "./SyllabusViewLesson";
 import { useLoadModulesQuery } from "../store/Course/courseApi";
 import { useAppSelector } from "../hook";
 import { useParams } from "react-router-dom";
+import { v4 as uuidv4 } from 'uuid';
 
 
 export default function SyllabusView() {
@@ -26,7 +27,7 @@ export default function SyllabusView() {
                     {
                         modules.map(module_ => {
                             return (
-                                <ListItem sx={{
+                                <ListItem key={uuidv4()} sx={{
                                     mb: 3, w: 1,
                                     display: 'flex',
                                     flexDirection: 'column',
@@ -43,7 +44,7 @@ export default function SyllabusView() {
                                             lessons.map(lesson => {
                                                 if (module_.code === lesson.code) {
                                                     return (
-                                                        <ListItem sx={{ flexGrow: 4 }}>
+                                                        <ListItem key={uuidv4()} sx={{ flexGrow: 4 }}>
                                                             <SyllabusViewLesson lesson={lesson} />
                                                         </ListItem>
                                                     )

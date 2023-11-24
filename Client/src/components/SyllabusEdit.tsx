@@ -6,7 +6,7 @@ import SyllabusEditLesson from "./SyllabusEditLesson";
 import { createNewModule, initializeLessonsForExchange, initializeModulesForExchange } from "../store/Course/courseSlice";
 import { useEffect } from "react";
 import { useLazyLoadFullCourseQuery } from "../store/Course/courseApi";
-
+import { v4 as uuidv4 } from 'uuid';
 
 
 export default function SyllabusEdit() {
@@ -26,13 +26,14 @@ export default function SyllabusEdit() {
   useEffect(() => {
     dispatch(initializeModulesForExchange());
     dispatch(initializeLessonsForExchange());
-  })
+  }, [])
 
   const modulesForExchange = useAppSelector(state => state.courseReducer.modulesForExchange)
   const lessonsForExchange = useAppSelector(state => state.courseReducer.lessonsForExchange)
 
 
   const handleCreateNewModule = () => {
+    console.log('handleCreateNewModule triggered')
     dispatch(createNewModule())
   }
 
@@ -70,7 +71,7 @@ export default function SyllabusEdit() {
                   mb: 3, w: 1,
                   display: 'flex',
                   flexDirection: 'column',
-                }}>
+                }} key={uuidv4()}>
                   <SyllabusEditModule module_={module_} courseId={course_id} />
                   <List sx={{
                     display: 'flex',
@@ -83,7 +84,7 @@ export default function SyllabusEdit() {
                       lessonsForExchange.map(lesson => {
                         if (module_.code === lesson.code) {
                           return (
-                            <ListItem sx={{ flexGrow: 4 }}>
+                            <ListItem sx={{ flexGrow: 4 }} key={uuidv4()}>
                               <SyllabusEditLesson
                                 lesson={lesson}
                                 courseId={course_id}

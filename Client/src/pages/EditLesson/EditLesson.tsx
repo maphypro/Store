@@ -6,6 +6,7 @@ import SyllabusViewModule from '../../components/SyllabusViewModule'
 import { useAppSelector } from '../../hook'
 import Header from '../../components/Header'
 import { Link } from 'react-router-dom'
+import { v4 as uuidv4 } from 'uuid';
 
 export const EditLesson = () => {
 
@@ -32,7 +33,7 @@ export const EditLesson = () => {
             {
               modules.map(module_ => {
                 return (
-                  <ListItem sx={{
+                  <ListItem key={uuidv4()} sx={{
                     mb: 3, w: 1,
                     display: 'flex',
                     flexDirection: 'column',
@@ -49,7 +50,7 @@ export const EditLesson = () => {
                         lessons.map(lesson => {
                           if (module_.code === lesson.code) {
                             return (
-                              <ListItem sx={{
+                              <ListItem  key={uuidv4()} sx={{
                                 flexGrow: 4,
                                 "&:hover": {
                                   boxShadow: "2px 2px 2px grey"
